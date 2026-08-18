@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { of } from 'rxjs';
 import { FormIntakeService } from './formIntake.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
 import { ApplicationService } from '../application/application.service';
@@ -16,6 +19,14 @@ describe('FormIntakeService', () => {
     createApplication: jest.fn(),
   };
 
+  const mockHttpService = {
+    get: jest.fn(),
+  };
+
+  const mockConfigService = {
+    get: jest.fn(),
+  };
+
   const mockLogger = {
     log: jest.fn(),
     error: jest.fn(),
@@ -30,6 +41,8 @@ describe('FormIntakeService', () => {
           useValue: mockSubmissionService,
         },
         { provide: ApplicationService, useValue: mockApplicationService },
+        { provide: HttpService, useValue: mockHttpService },
+        { provide: ConfigService, useValue: mockConfigService },
         { provide: LoggerService, useValue: mockLogger },
       ],
     }).compile();
@@ -145,6 +158,109 @@ describe('FormIntakeService', () => {
       await expect(
         service.processWebhookSubmission(unknownFormData, 'sub-123', 'form-id'),
       ).rejects.toThrow('No form configuration found for form: "Unknown Form"');
+    });
+  });
+
+  describe('fetchAndProcessSubmission', () => {
+    const submissionId = '11111111-2222-3333-4444-555555555555';
+    const formId = '99999999-8888-7777-6666-555555555555';
+
+    const withConfig = (overrides: Record<string, string | undefined> = {}) => {
+      const values: Record<string, string | undefined> = {
+        CHEFS_API_URL: 'https://chefs.example/app/api/v1',
+        CSSA_FORM_ID: formId,
+        CSSA_FORM_API_KEY: 'test-key',
+        ...overrides,
+      };
+      mockConfigService.get.mockImplementation((key: string) => values[key]);
+    };
+
+    const apiResponse = {
+      data: {
+        form: { id: formId, name: 'Contaminated Site Services Application' },
+        version: { version: 2 },
+        submission: {
+          id: submissionId,
+          confirmationId: 'CONF-001',
+          createdAt: '2026-08-06T19:34:21.833Z',
+          submission: {
+            data: { '7-siteIdIncludeAllRelatedNumbers': '12345' },
+          },
+        },
+      },
+    };
+
+    it('should fetch the submission and process it', async () => {
+      withConfig();
+      mockHttpService.get.mockReturnValue(of(apiResponse));
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 7 },
+      );
+
+      const result = await service.fetchAndProcessSubmission(
+        'CSR',
+        submissionId,
+        'IDIR\\tester',
+      );
+
+      expect(mockHttpService.get).toHaveBeenCalledWith(
+        `https://chefs.example/app/api/v1/submissions/${submissionId}`,
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${formId}:test-key`).toString(
+              'base64',
+            )}`,
+          },
+        },
+      );
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          chefsFormId: formId,
+          chefsSubmissionId: submissionId,
+          chefsFormVersionNumber: '2',
+          chefsConfirmationId: 'CONF-001',
+        }),
+        'IDIR\\tester',
+      );
+      expect(result.applicationId).toBe(7);
+    });
+
+    it('should reject a malformed submission id', async () => {
+      await expect(
+        service.fetchAndProcessSubmission('CSR', 'not-a-uuid'),
+      ).rejects.toThrow('Invalid CHEFS submission ID: not-a-uuid');
+      expect(mockHttpService.get).not.toHaveBeenCalled();
+    });
+
+    it('should throw for an unknown app type', async () => {
+      await expect(
+        service.fetchAndProcessSubmission('NOPE', submissionId),
+      ).rejects.toThrow('No form configuration found for appType: NOPE');
+    });
+
+    it('should throw when the form id is not configured', async () => {
+      withConfig({ CSSA_FORM_ID: undefined });
+
+      await expect(
+        service.fetchAndProcessSubmission('CSR', submissionId),
+      ).rejects.toThrow(
+        'CHEFS form ID not configured for appType CSR (CSSA_FORM_ID)',
+      );
+    });
+
+    it('should throw when the submission belongs to a different form', async () => {
+      withConfig();
+      mockHttpService.get.mockReturnValue(
+        of({
+          data: { ...apiResponse.data, form: { id: 'other-form', name: 'X' } },
+        }),
+      );
+
+      await expect(
+        service.fetchAndProcessSubmission('CSR', submissionId),
+      ).rejects.toThrow('belongs to form other-form');
     });
   });
 });

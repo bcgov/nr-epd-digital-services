@@ -1,16 +1,113 @@
 import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
 import { LoggerService } from '../../logger/logger.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
 import { ApplicationService } from '../application/application.service';
-import { getFormConfigByFormName } from './formIntake.constants';
+import {
+  getFormConfigByAppType,
+  getFormConfigByFormName,
+} from './formIntake.constants';
+
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 @Injectable()
 export class FormIntakeService {
   constructor(
     private readonly applicationSubmissionService: ApplicationSubmissionService,
     private readonly applicationService: ApplicationService,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
     private readonly loggerService: LoggerService,
   ) {}
+
+  async fetchAndProcessSubmission(
+    appTypeAbbrev: string,
+    chefsSubmissionId: string,
+    user: string = 'SYSTEM',
+  ) {
+    if (!UUID_PATTERN.test(chefsSubmissionId ?? '')) {
+      throw new Error(`Invalid CHEFS submission ID: ${chefsSubmissionId}`);
+    }
+
+    const formConfig = getFormConfigByAppType(appTypeAbbrev);
+    if (!formConfig) {
+      throw new Error(
+        `No form configuration found for appType: ${appTypeAbbrev}`,
+      );
+    }
+
+    const chefsBaseUrl = this.configService.get<string>('CHEFS_API_URL');
+    if (!chefsBaseUrl) {
+      throw new Error('CHEFS_API_URL is not configured');
+    }
+
+    const chefsFormId = this.configService.get<string>(
+      formConfig.chefsFormIdEnvKey,
+    );
+    if (!chefsFormId) {
+      throw new Error(
+        `CHEFS form ID not configured for appType ${appTypeAbbrev} (${formConfig.chefsFormIdEnvKey})`,
+      );
+    }
+
+    const apiKey = this.configService.get<string>(formConfig.apiKeyEnvKey);
+    if (!apiKey) {
+      throw new Error(
+        `CHEFS API key not configured for appType ${appTypeAbbrev} (${formConfig.apiKeyEnvKey})`,
+      );
+    }
+    // DO NOT COMMIT THIS.
+
+    this.loggerService.log(
+      `Fetching CHEFS submission ${chefsSubmissionId} for appType ${appTypeAbbrev}`,
+    );
+
+    const auth = Buffer.from(`${chefsFormId}:${apiKey}`).toString('base64');
+    const response = await firstValueFrom(
+      this.httpService.get(`${chefsBaseUrl}/submissions/${chefsSubmissionId}`, {
+        headers: { Authorization: `Basic ${auth}` },
+      }),
+    );
+
+    const returnedFormId = response.data?.form?.id;
+    if (returnedFormId && returnedFormId !== chefsFormId) {
+      throw new Error(
+        `Submission ${chefsSubmissionId} belongs to form ${returnedFormId}, not the selected form`,
+      );
+    }
+
+    const rawFormData = this.mapApiSubmissionToWebhookPayload(response.data);
+
+    return this.processWebhookSubmission(
+      rawFormData,
+      chefsSubmissionId,
+      chefsFormId,
+      user,
+    );
+  }
+
+  // CHEFS GET /submissions/{id} nests the answers differently than the webhook payload.
+  private mapApiSubmissionToWebhookPayload(
+    data: Record<string, any>,
+  ): Record<string, any> {
+    const submission = data?.submission;
+    const answers = submission?.submission?.data ?? {};
+
+    return {
+      ...answers,
+      form: {
+        id: data?.form?.id,
+        formName: data?.form?.name,
+        version: data?.version?.version,
+        submissionId: submission?.id,
+        confirmationId: submission?.confirmationId,
+        submittedAt: submission?.createdAt,
+      },
+    };
+  }
 
   async processWebhookSubmission(
     rawFormData: Record<string, any>,
@@ -66,7 +163,7 @@ export class FormIntakeService {
         `Webhook submission processed successfully for chefsSubmissionId ${chefsSubmissionId}`,
       );
       return submission;
-    } catch (error) {
+    } catch (error: any) {
       this.loggerService.error(
         `Failed to process webhook submission for chefsSubmissionId ${chefsSubmissionId}: ${error.message}`,
         null,
@@ -103,7 +200,7 @@ export class FormIntakeService {
       applicationStatus: [
         {
           applicationId: 0,
-          statusTypeAbbrev: 'RECEIVED',
+          statusTypeAbbrev: 'Received',
           isCurrent: true,
           formId: chefsFormId,
           submissionId: chefsSubmissionId,

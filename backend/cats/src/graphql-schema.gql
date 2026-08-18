@@ -345,7 +345,7 @@ type ApplicationSubmissionDto {
   applicationId: Int
   chefsFormId: String!
   chefsSubmissionId: String!
-  chefsFormVersionId: String
+  chefsFormVersionNumber: String
   chefsConfirmationId: String
   linkedConfirmationIds: [String!]
   formData: String
@@ -698,6 +698,32 @@ type ColumnPreferencesResponse {
   data: ViewColumnPreferences
 }
 
+type ManualIntakeFormDto {
+  appTypeAbbrev: String!
+  displayName: String!
+}
+
+type ManualIntakeFormsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ManualIntakeFormDto!]
+}
+
+type ManualIntakeResultDto {
+  submissionId: String!
+  applicationId: Int
+}
+
+type ManualIntakeResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ManualIntakeResultDto
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -746,6 +772,7 @@ type Query {
   getApplications: DashboardResponse!
   getObject(objectId: String!, downloadType: DownloadType): ComsResponse!
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
+  getManualIntakeForms: ManualIntakeFormsResponse!
 }
 
 enum Filter {
@@ -821,6 +848,7 @@ type Mutation {
   deleteBucket(bucketId: String!): ComsResponse!
   deleteObject(objectId: String!, versionId: String): ComsResponse!
   saveUserColumnPreferences(columnPreferences: SaveColumnPreferencesDto!): ColumnPreferencesResponse!
+  processChefsSubmissionManually(appTypeAbbrev: String!, chefsSubmissionId: String!): ManualIntakeResponse!
 }
 
 input CreatePerson {
