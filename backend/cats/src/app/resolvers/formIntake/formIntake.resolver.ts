@@ -49,7 +49,7 @@ export class FormIntakeResolver {
       const submission = await this.formIntakeService.fetchAndProcessSubmission(
         appTypeAbbrev,
         chefsSubmissionId,
-        user?.preferred_username ?? 'SYSTEM',
+        user?.name?.slice(0, 20) ?? 'SYSTEM',
       );
 
       this.loggerService.log(
