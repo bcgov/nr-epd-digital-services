@@ -20,6 +20,9 @@ RUN npm ci --silent
 # add app files
 COPY . ./
 
+# Build CHEFS custom formio components
+RUN cd common-hosted-form-service/components && npm ci --silent && npm run build
+
 # Allocate extra build memory to avoid a heap allocation error I encountered.
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
