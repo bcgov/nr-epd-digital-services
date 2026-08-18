@@ -20,7 +20,6 @@ export class StatusTypeService {
       this.loggerService.debug(
         `Fetching status type with abbrev: ${statusTypeAbbrev}`,
       );
-
       const statusType = await this.statusTypeRepository.findOne({
         where: { abbrev: statusTypeAbbrev },
       });

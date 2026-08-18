@@ -1,14 +1,18 @@
 export interface FormConfig {
   appTypeAbbrev: string;
+  displayName: string;
   siteIdField: string;
   apiKeyEnvKey: string;
+  chefsFormIdEnvKey: string;
 }
 
 export const FORM_REGISTRY: Record<string, FormConfig> = {
   CSR: {
     appTypeAbbrev: 'CSR',
+    displayName: 'Contaminated Site Services Application',
     siteIdField: '7-siteIdIncludeAllRelatedNumbers',
     apiKeyEnvKey: 'CSSA_FORM_API_KEY',
+    chefsFormIdEnvKey: 'CSSA_FORM_ID',
   },
 };
 
@@ -26,4 +30,14 @@ export function getFormConfigByAppType(
   appTypeAbbrev: string,
 ): FormConfig | null {
   return FORM_REGISTRY[appTypeAbbrev] ?? null;
+}
+
+export function getAvailableForms(): {
+  appTypeAbbrev: string;
+  displayName: string;
+}[] {
+  return Object.values(FORM_REGISTRY).map(({ appTypeAbbrev, displayName }) => ({
+    appTypeAbbrev,
+    displayName,
+  }));
 }
