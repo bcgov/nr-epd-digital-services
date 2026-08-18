@@ -107,6 +107,7 @@ import { ApplicationSecondaryServiceType } from './entities/applicationSecondary
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
 import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
 import { FormIntakeService } from './services/formIntake/formIntake.service';
+import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -221,6 +222,7 @@ import { FormIntakeService } from './services/formIntake/formIntake.service';
     ColumnPreferencesService,
     ApplicationSubmissionService,
     FormIntakeService,
+    FormIntakeResolver,
   ],
   controllers: [UserController, EmailController, UploadController],
 })

@@ -19,6 +19,7 @@ import Invoice from '@cats/features/applications/application/applicationTabs/app
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 import MyTasks from '../features/mytasks/mytasks';
 import Assignment from '@cats/features/assignment/Assignment';
+import FormIntake from '../features/formIntake/FormIntake';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -30,6 +31,8 @@ const roleBasedRoutes: any = {
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
     { path: '/applications-v2', element: <ApplicationsV2 /> },
+    // Manual escape hatch for CHEFS submissions; intentionally not linked in the nav.
+    { path: '/form-intake', element: <FormIntake /> },
     // { path: '/mytasks', element: <MyTasks /> },
     {
       path: '/applications/:id',
