@@ -25,11 +25,12 @@ WORKDIR /chefs-components
 COPY common-hosted-form-service/components/package.json common-hosted-form-service/components/package-lock.json ./
 RUN npm ci
 COPY common-hosted-form-service/components/ ./
-RUN npx tsc
+RUN npm run build
 
-# Copy built lib back into the app directory
+# Copy built lib and node_modules back into the app directory
 WORKDIR /app
-RUN cp -r /chefs-components/lib common-hosted-form-service/components/lib
+RUN cp -r /chefs-components/lib common-hosted-form-service/components/lib && \
+    cp -r /chefs-components/node_modules common-hosted-form-service/components/node_modules
 
 # Allocate extra build memory to avoid a heap allocation error I encountered.
 ENV NODE_OPTIONS=--max-old-space-size=4096
