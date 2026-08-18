@@ -20,8 +20,16 @@ RUN npm ci --silent
 # add app files
 COPY . ./
 
-# Build CHEFS custom formio components
-RUN cd common-hosted-form-service/components && npm ci && npx tsc --skipLibCheck
+# Build CHEFS custom formio components in different directory 
+WORKDIR /chefs-components
+COPY common-hosted-form-service/components/package.json common-hosted-form-service/components/package-lock.json ./
+RUN npm ci
+COPY common-hosted-form-service/components/ ./
+RUN npx tsc
+
+# Copy built lib back into the app directory
+WORKDIR /app
+RUN cp -r /chefs-components/lib common-hosted-form-service/components/lib
 
 # Allocate extra build memory to avoid a heap allocation error I encountered.
 ENV NODE_OPTIONS=--max-old-space-size=4096
