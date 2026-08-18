@@ -27,14 +27,17 @@ export class ApplicationNotesResolver {
   @UsePipes(new GenericValidationPipe())
   async getApplicationNotesByApplicationId(
     @Args('applicationId', { type: () => Int }) applicationId: number,
+    @Args('syncChefs', { type: () => Boolean, nullable: true, defaultValue: false })
+    syncChefs: boolean,
   ) {
     this.loggerService.log(
-      `ApplicationNotesResolver.getApplicationNotesByApplicationId: Getting notes for application ID ${applicationId}`,
+      `ApplicationNotesResolver.getApplicationNotesByApplicationId: Getting notes for application ID ${applicationId} (syncChefs=${syncChefs})`,
     );
 
     const result =
       await this.applicationNotesService.getApplicationNotesByApplicationId(
         applicationId,
+        syncChefs,
       );
 
     this.loggerService.log(

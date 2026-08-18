@@ -73,6 +73,7 @@ import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
 import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
 import { ApplicationNotesService } from './services/application/applicationNotes.service';
+import { ChefsService } from './services/chefs/chefs.service';
 import { StaffResolver } from './resolvers/staff/staff.resolver';
 import { StaffService } from './services/staff/staff.service';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
@@ -205,6 +206,7 @@ import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
     InvoiceService,
     ApplicationNotesResolver,
     ApplicationNotesService,
+    ChefsService,
     StaffResolver,
     StaffService,
     StaffAssignmentResolver,
