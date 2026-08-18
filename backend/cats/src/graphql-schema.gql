@@ -345,7 +345,7 @@ type ApplicationSubmissionDto {
   applicationId: Int
   chefsFormId: String!
   chefsSubmissionId: String!
-  chefsFormVersionId: String
+  chefsFormVersionNumber: String
   chefsConfirmationId: String
   linkedConfirmationIds: [String!]
   formData: String

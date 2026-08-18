@@ -7,3 +7,22 @@ query getApplicationById($applicationId: Int!) {
     }
   }
 }
+
+query getSubmissionByApplicationId($applicationId: Int!) {
+  getSubmissionByApplicationId(applicationId: $applicationId) {
+    message
+    httpStatusCode
+    success
+    data {
+      id
+      applicationId
+      chefsFormId
+      chefsSubmissionId
+      chefsConfirmationId
+      linkedConfirmationIds
+      formData
+      formSchema
+      receivedAt
+    }
+  }
+}
