@@ -1,5 +1,14 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { IsUUID } from 'class-validator';
 import { ResponseDto } from './response/response.dto';
+
+export class ChefsWebhookPayloadDto {
+  @IsUUID()
+  formId: string;
+
+  @IsUUID()
+  submissionId: string;
+}
 
 @ObjectType()
 export class ManualIntakeFormDto {
