@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cats-backend
+  namespace: e38158-test
+  labels:
+    app.kubernetes.io/name: cats-backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cats-backend
+  minAvailable: 2

@@ -72,12 +72,12 @@ objects:
                 secretKeyRef:
                   name: "${DB_SECRETS}"
                   key: database-password
-            - name: POSTGRESQL_DATABASE
+            - name: POSTGRES_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: "${DB_SECRETS}"
                   key: database-name
-            - name: POSTGRESQL_HOST
+            - name: POSTGRES_HOST
               value: "${DATABASE_HOST}"
   
           # command:

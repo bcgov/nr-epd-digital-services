@@ -104,6 +104,10 @@ import { ColumnPreferencesResolver } from './resolvers/application/columnPrefere
 import { ColumnPreferencesService } from './services/application/columnPreferences.service';
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
+import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
+import { FormIntakeService } from './services/formIntake/formIntake.service';
+import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -171,6 +175,7 @@ import { ApplicationSecondaryServiceType } from './entities/applicationSecondary
       ApplicationSite,
       UserColumnPreferences,
       ApplicationSecondaryServiceType,
+      ApplicationSubmission,
     ]),
     HttpModule,
   ],
@@ -215,6 +220,9 @@ import { ApplicationSecondaryServiceType } from './entities/applicationSecondary
     ComsResolver,
     ColumnPreferencesResolver,
     ColumnPreferencesService,
+    ApplicationSubmissionService,
+    FormIntakeService,
+    FormIntakeResolver,
   ],
   controllers: [UserController, EmailController, UploadController],
 })

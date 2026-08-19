@@ -113,6 +113,12 @@ const roleBasedSideBarList: Record<string, SideNav[]> = {
           icon: icons.folios,
           linkTo: '/applications',
         }),
+        createSideNav({
+          displayText: 'Applications v2',
+          hasChildren: false,
+          icon: icons.folios,
+          linkTo: '/applications-v2',
+        }),
       ],
     }),
     createSideNav({

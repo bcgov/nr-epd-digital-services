@@ -190,6 +190,8 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           serviceTypeCW.serviceType = item.type;
           serviceTypeCW.serviceFeeInCents =
             item.fee != null ? Math.round(item.fee * 100) : null;
+          serviceTypeCW.serviceFeeInCents =
+            item.fee != null ? Math.round(item.fee * 100) : null;
           await manager.save(serviceTypeCW);
         } else if (
           item.fee != null &&

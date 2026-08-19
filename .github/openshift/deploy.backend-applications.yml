@@ -102,11 +102,11 @@ objects:
             - name: ${NAME}-${COMPONENT}
               image: "${REGISTRY}/${PROMOTE}:${IMAGE_TAG}"
               env:
-                - name: POSTGRESQL_HOST
+                - name: POSTGRES_HOST
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
-                      key: POSTGRESQL_HOST
+                      key: POSTGRES_HOST
                 - name: POSTGRES_DATABASE
                   valueFrom:
                     configMapKeyRef:
@@ -182,16 +182,16 @@ objects:
               env:
                 - name: Typeorm-migration-applications
                   value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
-                - name: POSTGRESQL_HOST
+                - name: POSTGRES_HOST
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
-                      key: POSTGRESQL_HOST
-                - name: POSTGRESQL_PORT
+                      key: POSTGRES_HOST
+                - name: POSTGRES_PORT
                   valueFrom:
                     configMapKeyRef:
                       name: ${NAME}-database
-                      key: POSTGRESQL_PORT
+                      key: POSTGRES_PORT
                 - name: POSTGRES_DATABASE
                   valueFrom:
                     configMapKeyRef:

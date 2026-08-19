@@ -38,6 +38,11 @@ export type GetAllStatusTypesQueryVariables = Types.Exact<{ [key: string]: never
 
 export type GetAllStatusTypesQuery = { __typename?: 'Query', getAllStatusTypes: Array<{ __typename?: 'StatusType', id: number, abbrev?: string | null, description: string }> };
 
+export type GetAllAppTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetAllAppTypesQuery = { __typename?: 'Query', getAllAppTypes: Array<{ __typename?: 'AppType', id: number, abbrev?: string | null, description: string }> };
+
 
 export const SearchApplicationsDocument = gql`
     query SearchApplications($searchParam: String!, $page: Int!, $pageSize: Int!, $filter: Filter!, $sortBy: ApplicationSortByField!, $sortByDir: ApplicationSortByDirection!, $filterId: String, $filterServiceType: String, $filterCommonName: String, $filterCsapReference: String, $filterSiteId: String, $filterSiteRiskClassification: String, $filterSiteAddress: String, $filterApplicationType: String, $filterStatus: String, $filterStaffAssigned: String, $filterPriority: String, $filterDateReceivedFrom: DateTime, $filterDateReceivedTo: DateTime, $filterLastUpdatedFrom: DateTime, $filterLastUpdatedTo: DateTime, $filterDateCompletedFrom: DateTime, $filterDateCompletedTo: DateTime, $filterInvoiceStatus: String) {
@@ -190,3 +195,44 @@ export type GetAllStatusTypesQueryHookResult = ReturnType<typeof useGetAllStatus
 export type GetAllStatusTypesLazyQueryHookResult = ReturnType<typeof useGetAllStatusTypesLazyQuery>;
 export type GetAllStatusTypesSuspenseQueryHookResult = ReturnType<typeof useGetAllStatusTypesSuspenseQuery>;
 export type GetAllStatusTypesQueryResult = Apollo.QueryResult<GetAllStatusTypesQuery, GetAllStatusTypesQueryVariables>;
+export const GetAllAppTypesDocument = gql`
+    query getAllAppTypes {
+  getAllAppTypes {
+    id
+    abbrev
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetAllAppTypesQuery__
+ *
+ * To run a query within a React component, call `useGetAllAppTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllAppTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllAppTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllAppTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>(GetAllAppTypesDocument, options);
+      }
+export function useGetAllAppTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>(GetAllAppTypesDocument, options);
+        }
+export function useGetAllAppTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>(GetAllAppTypesDocument, options);
+        }
+export type GetAllAppTypesQueryHookResult = ReturnType<typeof useGetAllAppTypesQuery>;
+export type GetAllAppTypesLazyQueryHookResult = ReturnType<typeof useGetAllAppTypesLazyQuery>;
+export type GetAllAppTypesSuspenseQueryHookResult = ReturnType<typeof useGetAllAppTypesSuspenseQuery>;
+export type GetAllAppTypesQueryResult = Apollo.QueryResult<GetAllAppTypesQuery, GetAllAppTypesQueryVariables>;

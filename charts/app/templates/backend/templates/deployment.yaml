@@ -52,12 +52,12 @@ spec:
                   name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
             - name: POSTGRES_DB_SCHEMA
               value: {{ .Values.global.config.schemaName }}
-            - name: POSTGRESQL_HOST
+            - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
                   key: host
                   name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRESQL_PORT
+            - name: POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
                   key: port
@@ -125,12 +125,12 @@ spec:
                   name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
             - name: POSTGRES_DB_SCHEMA
               value: {{ .Values.global.config.schemaName }}
-            - name: POSTGRESQL_HOST
+            - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
                   key: host
                   name: postgres-crunchy-pguser-{{ .Values.global.config.dbUser }}
-            - name: POSTGRESQL_PORT
+            - name: POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
                   key: port

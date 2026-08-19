@@ -1,0 +1,35 @@
+.selected-filter {
+  gap: var(--layout-margin-xsmall);
+  margin-top: 10px;
+}
+
+.custom-pill {
+  padding: var(--layout-padding-xsmall) var(--layout-padding-medium)
+    var(--layout-padding-xsmall) var(--layout-padding-medium);
+  border-radius: 16px;
+  background-color: var(--surface-color-primary-default);
+  color: var(--typography-color-primary-invert);
+  font-family: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  gap: var(--layout-margin-xsmall);
+}
+
+.custom-pill:focus-within {
+  outline: 3px solid var(--surface-color-primary-hover, #2e5dd7);
+  outline-offset: 1px;
+}
+
+.custom-pill:hover {
+  background: var(--surface-color-primary-hover);
+}
+
+.x-mark {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--typography-color-primary-invert);
+  cursor: pointer;
+}
