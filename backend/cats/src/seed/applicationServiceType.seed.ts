@@ -1,4 +1,6 @@
 import { EntityManager } from 'typeorm';
+import { Application } from '../app/entities/application.entity';
+import { ApplicationSecondaryServiceType } from '../app/entities/applicationSecondaryServiceType.entity';
 import { ApplicationServiceType } from '../app/entities/applicationServiceType.entity';
 import { ParticipantRole } from '../app/entities/participantRole.entity';
 import { ServiceAssignmentFactor } from '../app/entities/serviceAssignmentFactor';
@@ -66,6 +68,25 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
         where: { serviceName: deletion.name, serviceType: deletion.type },
       });
       if (existing) {
+        // Check if the service type is assigned to any applications (primary or secondary).
+        const primaryUsageCount = await manager.count(Application, {
+          where: { serviceTypeId: Number(existing.id) },
+        });
+        const secondaryUsageCount = await manager.count(
+          ApplicationSecondaryServiceType,
+          {
+            where: { serviceTypeId: Number(existing.id) },
+          },
+        );
+
+        if (primaryUsageCount > 0 || secondaryUsageCount > 0) {
+          console.log(
+            `Skipping deletion of service type: ${deletion.type} - ${deletion.name} ` +
+              `(in use by ${primaryUsageCount} primary and ${secondaryUsageCount} secondary assignments)`,
+          );
+          continue;
+        }
+
         await manager.delete(ServiceAssignmentFactor, {
           applicationServiceType: { id: existing.id },
         });
