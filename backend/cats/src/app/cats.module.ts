@@ -106,6 +106,8 @@ import { ColumnPreferencesService } from './services/application/columnPreferenc
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { FinancialSummaryService } from './services/financialSummary/financialSummary.service';
+import { FinancialSummaryResolver } from './resolvers/financialSummary/financialSummary.resolver';
 import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
 import { FormIntakeService } from './services/formIntake/formIntake.service';
 import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
@@ -222,6 +224,8 @@ import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
     ComsResolver,
     ColumnPreferencesResolver,
     ColumnPreferencesService,
+    FinancialSummaryService,
+    FinancialSummaryResolver,
     ApplicationSubmissionService,
     FormIntakeService,
     FormIntakeResolver,

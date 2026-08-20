@@ -566,6 +566,9 @@ const Invoice: React.FC = () => {
                             .times(100)
                             .toDecimalPlaces(0)
                             .toNumber(),
+                          serviceTypeId: item.serviceTypeId
+                            ? Number(item.serviceTypeId)
+                            : null,
                         };
                       },
                     ),

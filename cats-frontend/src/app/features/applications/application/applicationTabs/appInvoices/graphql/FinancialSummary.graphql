@@ -1,0 +1,16 @@
+query GetFinancialSummary($applicationId: Int!) {
+  getFinancialSummary(applicationId: $applicationId) {
+    message
+    httpStatusCode
+    success
+    timestamp
+    data {
+      totalHoursWorked
+      totalHoursInvoiced
+      totalCostOfServicesInCents
+      totalAmountInvoicedInCents
+      totalAmountPaidInCents
+      outstandingBalanceInCents
+    }
+  }
+}
