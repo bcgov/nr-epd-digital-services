@@ -1,0 +1,29 @@
+query getManualIntakeForms {
+  getManualIntakeForms {
+    message
+    httpStatusCode
+    success
+    data {
+      appTypeAbbrev
+      displayName
+    }
+  }
+}
+
+mutation processChefsSubmissionManually(
+  $appTypeAbbrev: String!
+  $chefsSubmissionId: String!
+) {
+  processChefsSubmissionManually(
+    appTypeAbbrev: $appTypeAbbrev
+    chefsSubmissionId: $chefsSubmissionId
+  ) {
+    message
+    httpStatusCode
+    success
+    data {
+      submissionId
+      applicationId
+    }
+  }
+}

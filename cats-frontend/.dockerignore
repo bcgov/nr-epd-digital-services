@@ -1,2 +1,4 @@
 node_modules
 build
+common-hosted-form-service/components/node_modules
+common-hosted-form-service/components/dist

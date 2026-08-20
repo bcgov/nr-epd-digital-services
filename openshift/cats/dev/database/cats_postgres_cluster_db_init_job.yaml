@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cats-postgres-cluster-db-init
+  namespace: e38158-dev
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: image-registry.openshift-image-registry.svc:5000/e38158-tools/cats-postgres-cluster-db-init:latest
+          command:
+            - /bin/sh
+            - /app/scripts/initialize_database.sh
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-postgres
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-postgres
+                  key: port
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-cats
+                  key: dbname
+            - name: POSTGRES_DB_SCHEMA
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster
+                  key: postgres_db_schema
+            - name: POSTGRES_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-cats
+                  key: user
+            - name: POSTGRES_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-cats
+                  key: password
+            - name: POSTGRES_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-postgres
+                  key: user
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cats-postgres-cluster-pguser-postgres
+                  key: password
+            - name: SEED_DATA_PATH
+              value: /mnt/sql
+          volumeMounts:
+            - name: seed-data
+              mountPath: /mnt/sql
+      volumes:
+        - name: seed-data
+          persistentVolumeClaim:
+            claimName: nr-cats-dbdump-sql
+            readOnly: true

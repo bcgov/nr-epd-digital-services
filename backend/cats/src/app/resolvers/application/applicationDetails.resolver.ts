@@ -1,7 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LoggerService } from '../../logger/logger.service';
 import { ApplicationService } from '../../services/application/application.service';
+import { ApplicationSubmissionService } from '../../services/applicationSubmission/applicationSubmission.service';
 import { ApplicationDetailsResponse } from '../../dto/response/application/applicationResponse';
+import { ApplicationSubmissionResponse } from '../../dto/applicationSubmission.dto';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
 import { HttpStatus } from '@nestjs/common';
 import { ViewApplicationDetails } from '../../dto/application/viewApplicationDetails.dto';
@@ -12,6 +14,7 @@ import { BaseHttpResponse } from '../../dto/response/baseHttpResponse';
 export class ApplicationDetailsResolver {
   constructor(
     private readonly applicationService: ApplicationService,
+    private readonly applicationSubmissionService: ApplicationSubmissionService,
     private readonly loggerService: LoggerService,
     private readonly applicationDetailsResponse: GenericResponseProvider<ViewApplicationDetails>,
   ) {}
@@ -149,6 +152,74 @@ export class ApplicationDetailsResolver {
         error.message || 'Failed to update secondary service types',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
         false,
+      );
+    }
+  }
+
+  @Query(() => ApplicationSubmissionResponse, {
+    name: 'getSubmissionByApplicationId',
+  })
+  async getSubmissionByApplicationId(
+    @Args('applicationId', { type: () => Int }) applicationId: number,
+  ) {
+    const responseProvider = new GenericResponseProvider<any>();
+    try {
+      const submission =
+        await this.applicationSubmissionService.getSubmissionByApplicationId(
+          applicationId,
+        );
+
+      if (!submission) {
+        return responseProvider.createResponse(
+          'No submission found for this application',
+          HttpStatus.NOT_FOUND,
+          false,
+          null,
+        );
+      }
+
+      // Fetching form schema for rendering form
+      const versionNumber = submission.chefsFormVersionNumber
+        ? parseInt(submission.chefsFormVersionNumber, 10)
+        : null;
+      let formSchema: string | null = null;
+      if (versionNumber && submission.application?.appType?.abbrev) {
+        try {
+          const schema =
+            await this.applicationSubmissionService.getFormSchemaByAppType(
+              submission.application.appType.abbrev,
+              submission.chefsFormId,
+              versionNumber,
+            );
+          formSchema = JSON.stringify(schema);
+        } catch (err) {
+          this.loggerService.error(
+            `Could not fetch form schema: ${err.message}`,
+            null,
+          );
+        }
+      }
+
+      return responseProvider.createResponse(
+        'Submission fetched successfully',
+        HttpStatus.OK,
+        true,
+        {
+          ...submission,
+          formData: JSON.stringify(submission.formData),
+          formSchema,
+        },
+      );
+    } catch (error) {
+      this.loggerService.error(
+        `Failed to fetch submission for application ${applicationId}: ${error.message}`,
+        null,
+      );
+      return responseProvider.createResponse(
+        `Failed to fetch submission: ${error.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+        null,
       );
     }
   }

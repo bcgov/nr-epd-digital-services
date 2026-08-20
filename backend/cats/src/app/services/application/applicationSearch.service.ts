@@ -189,8 +189,8 @@ export class ApplicationSearchService {
 
       if (filters.serviceType) {
         query.andWhere(
-          "application.application_specific_data->>'serviceType' ILIKE :filterServiceType",
-          { filterServiceType: `%${filters.serviceType}%` },
+          'application.application_service_type_id = :filterServiceType',
+          { filterServiceType: parseInt(filters.serviceType) },
         );
       }
 
@@ -233,12 +233,9 @@ export class ApplicationSearchService {
       }
 
       if (filters.applicationType) {
-        query.andWhere(
-          'LOWER(appType.description) LIKE LOWER(:filterApplicationType)',
-          {
-            filterApplicationType: `%${filters.applicationType.toLowerCase()}%`,
-          },
-        );
+        query.andWhere('application.app_type_id = :filterApplicationType', {
+          filterApplicationType: parseInt(filters.applicationType),
+        });
       }
 
       if (filters.status) {

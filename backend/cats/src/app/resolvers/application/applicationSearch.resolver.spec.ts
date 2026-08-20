@@ -6,11 +6,13 @@ import { Filter } from '../../utilities/enums/application/filter.enum';
 import { LoggerService } from '../../logger/logger.service';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
+import { AppTypeService } from '../../services/appType/appType.service';
 
 describe('ApplicationSearchResolver', () => {
   let resolver: ApplicationSearchResolver;
   let service: ApplicationSearchService;
   let loggerService: LoggerService;
+  let appTypeService: AppTypeService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,12 +32,19 @@ describe('ApplicationSearchResolver', () => {
             error: jest.fn(),
           },
         },
+        {
+          provide: AppTypeService,
+          useValue: {
+            getAllAppTypes: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     resolver = module.get<ApplicationSearchResolver>(ApplicationSearchResolver);
     service = module.get<ApplicationSearchService>(ApplicationSearchService);
     loggerService = module.get<LoggerService>(LoggerService);
+    appTypeService = module.get<AppTypeService>(AppTypeService);
   });
 
   describe('searchApplications', () => {
@@ -222,6 +231,23 @@ describe('ApplicationSearchResolver', () => {
         'ApplicationSearchResolver.searchApplicationsById: Application not found.',
         null,
       );
+    });
+  });
+
+  describe('getAllAppTypes', () => {
+    it('should return all app types from the service', async () => {
+      const mockAppTypes = [
+        { id: 1, abbrev: 'CSSA', description: 'CSSA Application' },
+        { id: 2, abbrev: 'NONCSSA', description: 'Non-CSSA Application' },
+      ];
+      jest
+        .spyOn(appTypeService, 'getAllAppTypes')
+        .mockResolvedValue(mockAppTypes as any);
+
+      const result = await resolver.getAllAppTypes();
+
+      expect(result).toEqual(mockAppTypes);
+      expect(appTypeService.getAllAppTypes).toHaveBeenCalled();
     });
   });
 });

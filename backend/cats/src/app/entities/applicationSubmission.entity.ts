@@ -26,16 +26,23 @@ export class ApplicationSubmission {
   chefsSubmissionId: string;
 
   @Column('character varying', {
-    name: 'chefs_form_version_id',
+    name: 'chefs_form_version_number',
     nullable: true,
   })
-  chefsFormVersionId: string | null;
+  chefsFormVersionNumber: string | null;
 
   @Column('character varying', {
     name: 'chefs_confirmation_id',
     nullable: true,
   })
   chefsConfirmationId: string | null;
+
+  @Column('text', {
+    name: 'linked_confirmation_ids',
+    array: true,
+    nullable: true,
+  })
+  linkedConfirmationIds: string[] | null;
 
   @Column('jsonb', { name: 'form_data' })
   formData: Record<string, any>;

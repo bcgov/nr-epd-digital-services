@@ -1,0 +1,86 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: cats-promote-test-to-prod
+  namespace: e38158-tools
+spec:
+  tasks:
+    - name: promote-test-to-prod
+      taskSpec:
+        steps:
+          - name: get-test-image-hashes
+            image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+            script: |
+              # Get the hashes for the current test images.
+
+              set -eu
+
+              TOOLS_NAMESPACE="e38158-tools"
+              SHARED_DIR="/workspace/shared"
+              mkdir -p "${SHARED_DIR}"
+
+              oc -n "${TOOLS_NAMESPACE}" get istag cats-backend-init:test -o jsonpath='{.image.dockerImageReference}' > "${SHARED_DIR}/cats-backend-init.ref"
+              oc -n "${TOOLS_NAMESPACE}" get istag cats-backend:test -o jsonpath='{.image.dockerImageReference}' > "${SHARED_DIR}/cats-backend.ref"
+              oc -n "${TOOLS_NAMESPACE}" get istag cats-frontend:test -o jsonpath='{.image.dockerImageReference}' > "${SHARED_DIR}/cats-frontend.ref"
+
+          - name: tag-images
+            image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+            script: |
+              # Retag the test images with the prod tag.
+
+              set -eu
+
+              TOOLS_NAMESPACE="e38158-tools"
+              oc -n "${TOOLS_NAMESPACE}" tag cats-backend-init:test cats-backend-init:prod
+              oc -n "${TOOLS_NAMESPACE}" tag cats-backend:test cats-backend:prod
+              oc -n "${TOOLS_NAMESPACE}" tag cats-frontend:test cats-frontend:prod
+
+          - name: verify-test-tags
+            image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+            script: |
+              # Wait until the test hashes match the prod hashes.
+
+              set -eu
+
+              TOOLS_NAMESPACE="e38158-tools"
+              SHARED_DIR="/workspace/shared"
+              ATTEMPTS=30
+              SLEEP_SECONDS=2
+
+              EXPECTED_BACKEND_INIT_REF="$(cat "${SHARED_DIR}/cats-backend-init.ref")"
+              EXPECTED_BACKEND_REF="$(cat "${SHARED_DIR}/cats-backend.ref")"
+              EXPECTED_FRONTEND_REF="$(cat "${SHARED_DIR}/cats-frontend.ref")"
+
+              i=1
+              while [ "${i}" -le "${ATTEMPTS}" ]; do
+                ACTUAL_BACKEND_INIT_REF="$(oc -n "${TOOLS_NAMESPACE}" get istag cats-backend-init:test -o jsonpath='{.image.dockerImageReference}')"
+                ACTUAL_BACKEND_REF="$(oc -n "${TOOLS_NAMESPACE}" get istag cats-backend:test -o jsonpath='{.image.dockerImageReference}')"
+                ACTUAL_FRONTEND_REF="$(oc -n "${TOOLS_NAMESPACE}" get istag cats-frontend:test -o jsonpath='{.image.dockerImageReference}')"
+
+                if [ "${ACTUAL_BACKEND_INIT_REF}" = "${EXPECTED_BACKEND_INIT_REF}" ] && [ "${ACTUAL_BACKEND_REF}" = "${EXPECTED_BACKEND_REF}" ] && [ "${ACTUAL_FRONTEND_REF}" = "${EXPECTED_FRONTEND_REF}" ]; then
+                  echo "All test tags point to the expected image references."
+                  exit 0
+                fi
+
+                echo "Waiting for test tags to update (attempt ${i}/${ATTEMPTS})..."
+                sleep "${SLEEP_SECONDS}"
+                i=$((i + 1))
+              done
+
+              echo "Timed out waiting for test tags to match prod image references." >&2
+              exit 1
+
+          - name: restart-and-wait-rollouts
+            image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+            script: |
+              # Restart the backend and frontend deployments and wait for completion.
+
+              set -eu
+
+              TEST_NAMESPACE="e38158-test"
+
+              oc -n "${TEST_NAMESPACE}" rollout restart deployment/cats-backend
+              oc -n "${TEST_NAMESPACE}" rollout restart deployment/cats-frontend
+
+              oc -n "${TEST_NAMESPACE}" rollout status deployment/cats-backend --timeout=5m
+              oc -n "${TEST_NAMESPACE}" rollout status deployment/cats-frontend --timeout=5m

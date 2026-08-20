@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AppType {
+  id: Int!
+  abbrev: String
+  description: String!
+}
+
 type StatusType {
   id: Int!
   abbrev: String
@@ -332,6 +338,31 @@ type ApplicationStatusResponse {
   success: Boolean
   timestamp: String
   data: [ViewApplicationStatus!]
+}
+
+type ApplicationSubmissionDto {
+  id: String!
+  applicationId: Int
+  chefsFormId: String!
+  chefsSubmissionId: String!
+  chefsFormVersionNumber: String
+  chefsConfirmationId: String
+  linkedConfirmationIds: [String!]
+  formData: String
+  formSchema: String
+  receivedAt: DateTime
+  createdBy: String!
+  createdDateTime: DateTime!
+  updatedBy: String!
+  updatedDateTime: DateTime!
+}
+
+type ApplicationSubmissionResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ApplicationSubmissionDto
 }
 
 type SiteDetailsDTO {
@@ -684,6 +715,32 @@ type FinancialSummaryResponse {
   data: FinancialSummaryDto
 }
 
+type ManualIntakeFormDto {
+  appTypeAbbrev: String!
+  displayName: String!
+}
+
+type ManualIntakeFormsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ManualIntakeFormDto!]
+}
+
+type ManualIntakeResultDto {
+  submissionId: String!
+  applicationId: Int
+}
+
+type ManualIntakeResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ManualIntakeResultDto
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -702,6 +759,7 @@ type Query {
   findAllPerson: PersonResponse!
   findPersonById(id: Float!): PersonResponse!
   searchPerson(searchParam: String!, page: Int!, pageSize: Int!, searchMode: String = "OR", activeFilter: String = "all"): SearchPersonResponse!
+  getAllAppTypes: [AppType!]!
   searchApplications(searchParam: String!, page: Int!, pageSize: Int!, filter: Filter!, sortBy: ApplicationSortByField, sortByDir: ApplicationSortByDirection, filterId: String, filterServiceType: String, filterCommonName: String, filterCsapReference: String, filterSiteId: String, filterSiteRiskClassification: String, filterSiteAddress: String, filterApplicationType: String, filterStatus: String, filterStaffAssigned: String, filterPriority: String, filterDateReceivedFrom: DateTime, filterDateReceivedTo: DateTime, filterLastUpdatedFrom: DateTime, filterLastUpdatedTo: DateTime, filterDateCompletedFrom: DateTime, filterDateCompletedTo: DateTime, filterInvoiceStatus: String): ApplicationSearchResponse!
   searchApplicationsById(query: String!): ApplicationSearchResponse!
   getAppParticipantsByAppId(applicationId: Int!, filter: AppParticipantFilter): AppParticipantsResponse!
@@ -712,6 +770,7 @@ type Query {
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
+  getSubmissionByApplicationId(applicationId: Int!): ApplicationSubmissionResponse!
   getAllStatusTypes: [StatusType!]!
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
@@ -731,6 +790,7 @@ type Query {
   getObject(objectId: String!, downloadType: DownloadType): ComsResponse!
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
   getFinancialSummary(applicationId: Int!): FinancialSummaryResponse!
+  getManualIntakeForms: ManualIntakeFormsResponse!
 }
 
 enum Filter {
@@ -806,6 +866,7 @@ type Mutation {
   deleteBucket(bucketId: String!): ComsResponse!
   deleteObject(objectId: String!, versionId: String): ComsResponse!
   saveUserColumnPreferences(columnPreferences: SaveColumnPreferencesDto!): ColumnPreferencesResponse!
+  processChefsSubmissionManually(appTypeAbbrev: String!, chefsSubmissionId: String!): ManualIntakeResponse!
 }
 
 input CreatePerson {

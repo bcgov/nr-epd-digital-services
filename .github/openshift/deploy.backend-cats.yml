@@ -103,16 +103,16 @@ objects:
             imagePullPolicy: Always
             name: ${NAME}-${COMPONENT}
             env:
-            - name: POSTGRESQL_HOST
+            - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_HOST
-            - name: POSTGRESQL_PORT
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_PORT
+                  key: POSTGRES_PORT
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:
@@ -163,6 +163,26 @@ objects:
                 configMapKeyRef:
                   name: keycloak-config
                   key: KEYCLOCK_REALM
+            -name: KEYCLOAK_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_CLIENT_ID
+            -name: KEYCLOAK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_SECRET
+            -name: KEYCLOAK_AUTH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOCK_AUTH_URL
+            -name: KEYCLOAK_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOCK_REALM
             - name: LOG_FILE_LOCATION
               value: ./logs/sites-%DATE%.log
             - name: LOG_FILE_MAX_SIZE
@@ -171,7 +191,14 @@ objects:
               value: 7d
             - name: KEYCLOCK_MASTER_REALM
               value: master
+            - name: KEYCLOAK_MASTER_REALM
+              value: master
             - name: KEYCLOCK_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_USERNAME
+            - name: KEYCLOAK_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: keycloak
@@ -181,9 +208,18 @@ objects:
                 secretKeyRef:
                   name: keycloak
                   key: KEYCLOCK_PASSWORD
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: KEYCLOCK_PASSWORD
             - name: KEYCLOCK_ADMIN_CLIENT_ID
               value: admin-cli
+            - name: KEYCLOAK_ADMIN_CLIENT_ID
+              value: admin-cli
             - name: KEYCLOCK_GRANT_TYPE
+              value: password
+            - name: KEYCLOAK_GRANT_TYPE
               value: password
             - name: LRS_APPROVING_AUTHORITY_GROUP_NAME
               value: lrs-approving-authority
@@ -222,16 +258,16 @@ objects:
             env:
             - name: Typeorm-migration
               value: "jdbc:postgresql://${COMPONENT}-postgres:5432/${COMPONENT}"
-            - name: POSTGRESQL_HOST
+            - name: POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_HOST
-            - name: POSTGRESQL_PORT
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
                   name: ${NAME}-database
-                  key: POSTGRESQL_PORT
+                  key: POSTGRES_PORT
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:

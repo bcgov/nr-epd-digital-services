@@ -11,6 +11,7 @@ import Search from '../features/people/Search';
 import Person from '../features/people/person/Person';
 import ApplicationDetails from '../features/applications/application/ApplicationDetails';
 import ApplicationSearch from '../features/applications/search/Search';
+import ApplicationsV2 from '../features/v2/applications/ApplicationsV2';
 import StaffDashboard from '../features/staff/Staff';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from '@cats/features/dashboard/Dashboard';
@@ -18,6 +19,7 @@ import Invoice from '@cats/features/applications/application/applicationTabs/app
 import ApplicationTabsRouter from '../features/applications/application/ApplicationTabsRouter';
 import MyTasks from '../features/mytasks/mytasks';
 import Assignment from '@cats/features/assignment/Assignment';
+import FormIntake from '../features/formIntake/FormIntake';
 
 const roleBasedRoutes: any = {
   [UserRoleType.INTERNAL]: [
@@ -28,6 +30,9 @@ const roleBasedRoutes: any = {
     { path: '/person/:id', element: <Person /> },
     { path: '/person', element: <Person /> },
     { path: '/applications', element: <ApplicationSearch /> },
+    { path: '/applications-v2', element: <ApplicationsV2 /> },
+    // Manual escape hatch for CHEFS submissions; intentionally not linked in the nav.
+    { path: '/form-intake', element: <FormIntake /> },
     // { path: '/mytasks', element: <MyTasks /> },
     {
       path: '/applications/:id',

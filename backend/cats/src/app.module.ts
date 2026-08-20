@@ -29,10 +29,10 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
     KeycloakConnectModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        authServerUrl: config.get('KEYCLOCK_AUTH_URL'),
-        realm: config.get('KEYCLOCK_REALM'),
-        clientId: config.get('KEYCLOCK_CLIENT_ID'),
-        secret: config.get('KEYCLOCK_SECRET'),
+        authServerUrl: config.get('KEYCLOAK_AUTH_URL'),
+        realm: config.get('KEYCLOAK_REALM'),
+        clientId: config.get('KEYCLOAK_CLIENT_ID'),
+        secret: config.get('KEYCLOAK_SECRET'),
       }),
       // Secret key of the client taken from keycloak server
     }),
@@ -41,8 +41,8 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get('POSTGRESQL_HOST') || 'gldatabase',
-        port: parseInt(config.get('POSTGRESQL_PORT')) || 5432,
+        host: config.get('POSTGRES_HOST') || 'gldatabase',
+        port: parseInt(config.get('POSTGRES_PORT')) || 5432,
         database: config.get('POSTGRES_DATABASE') || 'xyz',
         username: config.get('POSTGRES_DB_USERNAME') || 'xyzuser',
         password: config.get('POSTGRES_DB_PASSWORD') || 'xyzuser',
