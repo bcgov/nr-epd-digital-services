@@ -5,11 +5,8 @@ import './Application.css';
 import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
-import { Formio } from 'formiojs';
 import 'formiojs/dist/formio.full.min.css';
-import BcGovFormioComponents from '../../../../../../../common-hosted-form-service/components/lib';
-
-Formio.use(BcGovFormioComponents);
+import '../../../../../../../common-hosted-form-service/components/lib/use';
 
 type FormJson = {
   title?: string;
