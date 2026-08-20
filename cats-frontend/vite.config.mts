@@ -24,6 +24,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@cats': path.resolve(__dirname, './src/app'),
+        formiojs: path.resolve(__dirname, './node_modules/formiojs'),
       },
     },
   };
