@@ -11,6 +11,12 @@ describe('ChefsService', () => {
   const mockedGet = axios.get as jest.Mock;
   const mockedIsAxiosError = axios.isAxiosError as unknown as jest.Mock;
 
+  const configValues: Record<string, string> = {
+    CHEFS_API_URL: 'https://submit.digital.gov.bc.ca/app/api/v1',
+    CSSA_FORM_ID: 'cssa-form-id',
+    CSSA_FORM_API_KEY: 'cssa-api-key',
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
     mockedIsAxiosError.mockImplementation(
@@ -28,15 +34,7 @@ describe('ChefsService', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn((key: string) => {
-              if (key === 'CHEFS_API_URL') {
-                return 'https://submit.digital.gov.bc.ca/app/api/v1';
-              }
-              if (key === 'CHEFS_NOM_API_KEY') {
-                return 'test-api-key';
-              }
-              return undefined;
-            }),
+            get: jest.fn((key: string) => configValues[key]),
           },
         },
       ],
@@ -46,7 +44,7 @@ describe('ChefsService', () => {
   });
 
   describe('getSubmissionNotes', () => {
-    it('fetches notes with Basic Auth (formId:apiKey)', async () => {
+    it('fetches notes with Basic Auth using API key resolved by form id', async () => {
       const chefsNotes = [
         {
           id: 'note-1',
@@ -62,13 +60,33 @@ describe('ChefsService', () => {
       ];
       mockedGet.mockResolvedValue({ data: chefsNotes });
 
-      const result = await service.getSubmissionNotes('form-1', 'sub-1');
+      const result = await service.getSubmissionNotes(
+        'cssa-form-id',
+        'sub-1',
+      );
 
       expect(result).toEqual(chefsNotes);
       expect(mockedGet).toHaveBeenCalledWith(
         'https://submit.digital.gov.bc.ca/app/api/v1/submissions/sub-1/notes',
         expect.objectContaining({
-          auth: { username: 'form-1', password: 'test-api-key' },
+          auth: { username: 'cssa-form-id', password: 'cssa-api-key' },
+        }),
+      );
+    });
+
+    it('resolves API key by app type when form id is not configured', async () => {
+      mockedGet.mockResolvedValue({ data: [] });
+
+      await service.getSubmissionNotes(
+        'unknown-form-uuid',
+        'sub-1',
+        'CSR',
+      );
+
+      expect(mockedGet).toHaveBeenCalledWith(
+        'https://submit.digital.gov.bc.ca/app/api/v1/submissions/sub-1/notes',
+        expect.objectContaining({
+          auth: { username: 'unknown-form-uuid', password: 'cssa-api-key' },
         }),
       );
     });
@@ -76,7 +94,7 @@ describe('ChefsService', () => {
     it('returns empty array when CHEFS returns non-array', async () => {
       mockedGet.mockResolvedValue({ data: null });
       await expect(
-        service.getSubmissionNotes('form-1', 'sub-1'),
+        service.getSubmissionNotes('cssa-form-id', 'sub-1'),
       ).resolves.toEqual([]);
     });
 
@@ -89,24 +107,35 @@ describe('ChefsService', () => {
       mockedGet.mockRejectedValue(error);
 
       await expect(
-        service.getSubmissionNotes('form-1', 'sub-1'),
+        service.getSubmissionNotes('cssa-form-id', 'sub-1'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
     });
 
-    it('throws BadRequestException when API key missing', async () => {
+    it('throws BadRequestException when API key missing for resolved form', async () => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
           ChefsService,
           {
             provide: ConfigService,
-            useValue: { get: jest.fn(() => undefined) },
+            useValue: {
+              get: jest.fn((key: string) => {
+                if (key === 'CSSA_FORM_ID') return 'cssa-form-id';
+                return undefined;
+              }),
+            },
           },
         ],
       }).compile();
       const bareService = module.get<ChefsService>(ChefsService);
 
       await expect(
-        bareService.getSubmissionNotes('form-1', 'sub-1'),
+        bareService.getSubmissionNotes('cssa-form-id', 'sub-1'),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('throws BadRequestException when form cannot be resolved', async () => {
+      await expect(
+        service.getSubmissionNotes('unknown-form', 'sub-1'),
       ).rejects.toBeInstanceOf(BadRequestException);
     });
   });
