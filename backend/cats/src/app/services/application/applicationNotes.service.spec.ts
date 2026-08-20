@@ -134,6 +134,7 @@ describe('ApplicationNotesService', () => {
         applicationId: 123,
         chefsFormId: 'form-1',
         chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
       } as ApplicationSubmission);
       jest.spyOn(chefsService, 'getSubmissionNotes').mockResolvedValue([
         {
@@ -162,6 +163,7 @@ describe('ApplicationNotesService', () => {
       expect(chefsService.getSubmissionNotes).toHaveBeenCalledWith(
         'form-1',
         'sub-1',
+        'CSR',
       );
       expect(appNoteRepository.save).toHaveBeenCalled();
     });
@@ -171,6 +173,7 @@ describe('ApplicationNotesService', () => {
         applicationId: 123,
         chefsFormId: 'form-1',
         chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
       } as ApplicationSubmission);
       jest.spyOn(chefsService, 'getSubmissionNotes').mockResolvedValue([]);
       jest.spyOn(appNoteRepository, 'find').mockResolvedValue(mockNotes);
@@ -179,6 +182,11 @@ describe('ApplicationNotesService', () => {
       await service.getApplicationNotesByApplicationId(123, true);
 
       expect(chefsService.getSubmissionNotes).toHaveBeenCalledTimes(2);
+      expect(chefsService.getSubmissionNotes).toHaveBeenCalledWith(
+        'form-1',
+        'sub-1',
+        'CSR',
+      );
     });
 
     it('should still return local notes if CHEFS sync fails', async () => {
@@ -186,6 +194,7 @@ describe('ApplicationNotesService', () => {
         applicationId: 123,
         chefsFormId: 'form-1',
         chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
       } as ApplicationSubmission);
       jest
         .spyOn(chefsService, 'getSubmissionNotes')

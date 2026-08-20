@@ -98,6 +98,7 @@ export class ApplicationNotesService {
       const submission = await this.applicationSubmissionRepository.findOne({
         where: { applicationId },
         order: { updatedDateTime: 'DESC' },
+        relations: ['application', 'application.appType'],
       });
 
       if (
@@ -110,9 +111,20 @@ export class ApplicationNotesService {
         return;
       }
 
+      const appTypeAbbrev =
+        submission.application?.appType?.abbrev ??
+        (
+          await this.applicationRepository.findOne({
+            where: { id: applicationId },
+            relations: ['appType'],
+          })
+        )?.appType?.abbrev ??
+        null;
+
       const chefsNotes = await this.chefsService.getSubmissionNotes(
         submission.chefsFormId,
         submission.chefsSubmissionId,
+        appTypeAbbrev,
       );
 
       this.lastChefsSyncAt.set(applicationId, Date.now());
