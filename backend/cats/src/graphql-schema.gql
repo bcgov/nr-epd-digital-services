@@ -467,6 +467,7 @@ type InvoicesResponse {
 type AppNoteDto {
   id: Int!
   applicationId: Int!
+  chefsNoteId: String
   noteDate: String!
   noteText: String!
   createdBy: String!
@@ -775,7 +776,7 @@ type Query {
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
   getInvoiceById(invoiceId: Int!): InvoiceResponse!
-  getApplicationNotesByApplicationId(applicationId: Int!): ApplicationNotesResponse!
+  getApplicationNotesByApplicationId(applicationId: Int!, syncChefs: Boolean = false): ApplicationNotesResponse!
   getStaffs(page: Int!, pageSize: Int!, filter: Filter, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection): StaffResponse!
   getApplicationsByStaff(page: Int!, pageSize: Int!, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection, personId: Int!, roleId: Int): ViewApplicationResponse!
   getStaffAssignedByAppId(applicationId: Int!): ViewStaffAssignedResponse!
