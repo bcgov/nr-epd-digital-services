@@ -33,6 +33,7 @@ export type AddHousingInputDto = {
 export type AppNoteDto = {
   __typename?: 'AppNoteDto';
   applicationId: Scalars['Int']['output'];
+  chefsNoteId?: Maybe<Scalars['String']['output']>;
   createdBy: Scalars['String']['output'];
   createdDateTime: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
@@ -822,6 +823,7 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+  syncChefs?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 

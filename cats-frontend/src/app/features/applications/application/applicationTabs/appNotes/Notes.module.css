@@ -10,3 +10,16 @@
   justify-content: center;
   color: var(--theme-primary-blue);
 }
+
+.chefsBadge {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--theme-primary-blue, #003366);
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  vertical-align: middle;
+}

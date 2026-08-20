@@ -4,7 +4,6 @@ import {
   IFormField,
 } from '@cats/components/input-controls/IFormField';
 import { TableColumn } from '@cats/components/table/TableColumn';
-import { formatDate } from '@cats/helpers/utility';
 import { PencilIcon } from '@cats/components/common/icon';
 import styles from './Notes.module.css';
 import type { Note } from './Notes';
@@ -41,6 +40,17 @@ export const getApplicationNotesColumns = ({
     active: true,
     graphQLPropertyName: 'noteText',
     displayType: { type: FormFieldType.Label },
+    renderCell: (_, row: Note) => {
+      if (!row.chefsNoteId) {
+        return row.noteText;
+      }
+      return (
+        <span>
+          <span className={styles.chefsBadge}>CHEFS</span>
+          {row.noteText}
+        </span>
+      );
+    },
   },
   {
     id: 4,
@@ -51,6 +61,9 @@ export const getApplicationNotesColumns = ({
     displayType: { type: FormFieldType.Label },
     columnSize: ColumnSize.XtraSmall,
     renderCell: (_, row: Note) => {
+      if (row.chefsNoteId) {
+        return null;
+      }
       return (
         <button className={styles.editNoteButton} onClick={() => onEdit(row)}>
           <PencilIcon /> Edit
