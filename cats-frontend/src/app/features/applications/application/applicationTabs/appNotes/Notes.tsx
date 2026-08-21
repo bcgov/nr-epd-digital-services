@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   useGetApplicationNotesByApplicationIdQuery,
@@ -24,6 +24,9 @@ type SortColumn = {
   >[number]['graphQLPropertyName'];
   direction: 'asc' | 'desc';
 };
+
+/** Coalesce visibility + focus events that fire together when returning to CATS. */
+const RETURN_SYNC_DEBOUNCE_MS = 1_000;
 
 const sortNotes = (data: Note[], sortColumn: SortColumn | null) => {
   if (!sortColumn) return data;
@@ -53,14 +56,57 @@ const sortNotes = (data: Note[], sortColumn: SortColumn | null) => {
 export const Notes = () => {
   const auth = useAuth();
   const { id: applicationId } = useParams();
+  const parsedApplicationId = parseInt(applicationId ?? '0', 10);
+  const lastReturnSyncRef = useRef(0);
+
   const { data, loading, refetch } = useGetApplicationNotesByApplicationIdQuery(
     {
       variables: {
-        applicationId: parseInt(applicationId ?? '0', 10),
+        applicationId: parsedApplicationId,
+        syncChefs: true,
       },
       skip: !applicationId,
+      fetchPolicy: 'cache-and-network',
     },
   );
+
+  const refetchLocalNotes = () =>
+    refetch({
+      applicationId: parsedApplicationId,
+      syncChefs: false,
+    });
+
+  const syncFromChefs = useCallback(() => {
+    const now = Date.now();
+    if (now - lastReturnSyncRef.current < RETURN_SYNC_DEBOUNCE_MS) {
+      return;
+    }
+    lastReturnSyncRef.current = now;
+    void refetch({
+      applicationId: parsedApplicationId,
+      syncChefs: true,
+    });
+  }, [parsedApplicationId, refetch]);
+
+  // After adding a note in CHEFS and switching back, sync without a hard reload.
+  useEffect(() => {
+    if (!applicationId) {
+      return;
+    }
+
+    const onReturnToCats = () => {
+      if (document.visibilityState === 'visible') {
+        syncFromChefs();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onReturnToCats);
+    window.addEventListener('focus', onReturnToCats);
+    return () => {
+      document.removeEventListener('visibilitychange', onReturnToCats);
+      window.removeEventListener('focus', onReturnToCats);
+    };
+  }, [applicationId, syncFromChefs]);
 
   const [selectedNoteIds, setSelectedNoteIds] = useState<Set<Note['id']>>(
     new Set(),
@@ -87,6 +133,9 @@ export const Notes = () => {
   const tableChangeHandler = (event: any) => {
     if (event.property === 'select_row') {
       const row = event.row as Note;
+      if (row.chefsNoteId) {
+        return;
+      }
       setSelectedNoteIds((prev) => {
         const ids = new Set(prev);
         ids.has(row.id) ? ids.delete(row.id) : ids.add(row.id);
@@ -159,10 +208,10 @@ export const Notes = () => {
       </Widget>
 
       <NoteModal
-        applicationId={parseInt(applicationId, 10)}
+        applicationId={parsedApplicationId}
         noteModal={noteModal}
         setNoteModal={setNoteModal}
-        refetchTableData={refetch}
+        refetchTableData={refetchLocalNotes}
         selectedNoteIds={selectedNoteIds}
       />
     </div>

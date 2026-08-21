@@ -33,6 +33,7 @@ export type AddHousingInputDto = {
 export type AppNoteDto = {
   __typename?: 'AppNoteDto';
   applicationId: Scalars['Int']['output'];
+  chefsNoteId?: Maybe<Scalars['String']['output']>;
   createdBy: Scalars['String']['output'];
   createdDateTime: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
@@ -410,6 +411,25 @@ export enum Filter {
   Unassigned = 'UNASSIGNED'
 }
 
+export type FinancialSummaryDto = {
+  __typename?: 'FinancialSummaryDto';
+  outstandingBalanceInCents: Scalars['Int']['output'];
+  totalAmountInvoicedInCents: Scalars['Int']['output'];
+  totalAmountPaidInCents: Scalars['Int']['output'];
+  totalCostOfServicesInCents: Scalars['Int']['output'];
+  totalHoursInvoiced: Scalars['Int']['output'];
+  totalHoursWorked: Scalars['Float']['output'];
+};
+
+export type FinancialSummaryResponse = {
+  __typename?: 'FinancialSummaryResponse';
+  data?: Maybe<FinancialSummaryDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type HousingDto = {
   __typename?: 'HousingDto';
   effectiveDate?: Maybe<Scalars['DateTime']['output']>;
@@ -766,6 +786,7 @@ export type Query = {
   getApplicationServiceTypes: DropdownResponse;
   getApplications: DashboardResponse;
   getApplicationsByStaff: ViewApplicationResponse;
+  getFinancialSummary: FinancialSummaryResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoiceById: InvoiceResponse;
   getInvoices: InvoicesResponse;
@@ -822,6 +843,7 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+  syncChefs?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -832,6 +854,11 @@ export type QueryGetApplicationsByStaffArgs = {
   roleId?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetFinancialSummaryArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
