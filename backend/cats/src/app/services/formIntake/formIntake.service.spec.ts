@@ -6,6 +6,7 @@ import { FormIntakeService } from './formIntake.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
 import { ApplicationService } from '../application/application.service';
 import { LoggerService } from '../../logger/logger.service';
+import { getFormConfigByFormName } from './formIntake.constants';
 
 describe('FormIntakeService', () => {
   let service: FormIntakeService;
@@ -62,6 +63,20 @@ describe('FormIntakeService', () => {
     confirmationId: ['LINKED-A', 'LINKED-B'],
     '7-siteIdIncludeAllRelatedNumbers': '12345',
   };
+
+  describe('form registry', () => {
+    it.each([
+      ['Contaminated Site Services Application', 'CSR'],
+      ['Contaminated Site Services Authorization', 'CSR'],
+      ['Contaminated Site Request', 'CSR'],
+      ['Notice of Independent Remediation', 'NIR'],
+      ['Notice of Likely or Actual Migration', 'NOM'],
+      ['Site Disclosure Statement', 'SDS'],
+      ['Site Information Request', 'IR'],
+    ])('should resolve %s to %s', (formName, appType) => {
+      expect(getFormConfigByFormName(formName)?.appTypeAbbrev).toBe(appType);
+    });
+  });
 
   describe('processWebhookSubmission', () => {
     it('should upsert submission and create application for new submission', async () => {
