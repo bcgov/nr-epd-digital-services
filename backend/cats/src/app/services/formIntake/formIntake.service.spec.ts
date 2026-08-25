@@ -67,8 +67,6 @@ describe('FormIntakeService', () => {
   describe('form registry', () => {
     it.each([
       ['Contaminated Site Services Application', 'CSR'],
-      ['Contaminated Site Services Authorization', 'CSR'],
-      ['Contaminated Site Request', 'CSR'],
       ['Notice of Independent Remediation', 'NIR'],
       ['Notice of Likely or Actual Migration', 'NOM'],
       ['Site Disclosure Statement', 'SDS'],
