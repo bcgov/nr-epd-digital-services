@@ -145,6 +145,36 @@
   background: var(--surface-color-background-white);
 }
 
+.data-table__table tbody td a {
+  color: var(--typography-color-link);
+  text-decoration: underline;
+}
+
+.data-table__table tbody td a:hover,
+.data-table__table tbody td a:focus-visible {
+  color: var(--typography-color-link-hover);
+}
+
+.data-table__table tbody td a.data-table__external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-margin-xsmall);
+}
+
+.data-table__table tbody td a.data-table__action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-margin-xsmall);
+  font: var(--typography-bold-label);
+  color: var(--surface-color-primary-default);
+  text-decoration: none;
+}
+
+.data-table__table tbody td a.data-table__action-link:hover,
+.data-table__table tbody td a.data-table__action-link:focus-visible {
+  color: var(--typography-color-link-hover);
+}
+
 .data-table__table tbody td:last-child {
   border-right: none;
 }

@@ -33,7 +33,7 @@ describe('useApplicationsV2FilterLookups', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2FilterLookups(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -53,7 +53,7 @@ describe('useApplicationsV2FilterLookups', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2FilterLookups(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));

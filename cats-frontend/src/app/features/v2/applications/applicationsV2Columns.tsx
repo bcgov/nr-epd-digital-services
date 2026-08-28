@@ -2,10 +2,9 @@ import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import { Link } from 'react-router-dom';
 import { ExternalLink, FileLinesIcon } from '../../../components/common/icon';
 import { formatDateUTC } from '../../../helpers/utility';
-import StaffAssigned from '../../applications/search/StaffAssigned';
+import StaffAssigned from './StaffAssigned';
 import type { ApplicationsSearchResult } from './api/ApplicationsApi';
 import { isSortableColumnId } from './applicationsV2Sort';
-import '../../applications/search/Search.css';
 
 export type ApplicationV2Row = ApplicationsSearchResult['applications'][number];
 
@@ -42,12 +41,7 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     accessorKey: 'id',
     header: 'Application ID',
     cell: ({ row }) => (
-      <Link
-        to={`/applications/${row.original.id}`}
-        className="custom-applications-input-txt"
-      >
-        {row.original.id}
-      </Link>
+      <Link to={`/applications/${row.original.id}`}>{row.original.id}</Link>
     ),
   }),
   withSortFlag({
@@ -57,19 +51,15 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     cell: ({ row }) => {
       const siteId = row.original.siteId;
       return (
-        <div className="custom-applications-link-wrapper">
-          <a
-            href={`${siteRegistryBaseUrl()}/site/details/${siteId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="custom-applications-input-txt"
-          >
-            {siteId}
-            <span className="ps-2 custom-applications-external-link">
-              <ExternalLink />
-            </span>
-          </a>
-        </div>
+        <a
+          href={`${siteRegistryBaseUrl()}/site/details/${siteId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="data-table__external-link"
+        >
+          {siteId}
+          <ExternalLink aria-hidden />
+        </a>
       );
     },
   }),
@@ -147,7 +137,7 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     cell: ({ row }) => (
       <Link
         to={`/applications/${row.original.id}`}
-        className="custom-applications-edit-lbl"
+        className="data-table__action-link"
         aria-label={`View application ${row.original.id}`}
       >
         <FileLinesIcon aria-hidden />
@@ -163,7 +153,7 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     cell: ({ row }) => (
       <Link
         to={`/assignment/${row.original.id}`}
-        className="custom-applications-edit-lbl"
+        className="data-table__action-link"
         aria-label={`Manage staff for application ${row.original.id}`}
       >
         <FileLinesIcon aria-hidden />

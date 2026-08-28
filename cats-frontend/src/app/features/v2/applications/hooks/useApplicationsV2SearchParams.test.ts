@@ -13,7 +13,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('defaults page, pageSize, and sort when params are absent', () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     expect(result.current.page).toBe(
@@ -33,7 +33,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('reads page and pageSize from the URL', () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=3&pageSize=25'] },
+      { initialEntries: ['/applications?page=3&pageSize=25'] },
     );
 
     expect(result.current.page).toBe(3);
@@ -45,7 +45,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('reads search from the URL into variables.searchParam', () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?search=site-42'] },
+      { initialEntries: ['/applications?search=site-42'] },
     );
 
     expect(result.current.search).toBe('site-42');
@@ -57,7 +57,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          `/applications-v2?sortBy=${ApplicationSortByField.Status}&sortByDir=${ApplicationSortByDirection.Asc}`,
+          `/applications?sortBy=${ApplicationSortByField.Status}&sortByDir=${ApplicationSortByDirection.Asc}`,
         ],
       },
     );
@@ -74,7 +74,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          `/applications-v2?sortBy=${ApplicationSortByField.ReceivedDate}&sortByDir=${ApplicationSortByDirection.Asc}`,
+          `/applications?sortBy=${ApplicationSortByField.ReceivedDate}&sortByDir=${ApplicationSortByDirection.Asc}`,
         ],
       },
     );
@@ -89,7 +89,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          `/applications-v2?sortBy=${ApplicationSortByField.DateCompleted}&sortByDir=${ApplicationSortByDirection.Desc}`,
+          `/applications?sortBy=${ApplicationSortByField.DateCompleted}&sortByDir=${ApplicationSortByDirection.Desc}`,
         ],
       },
     );
@@ -104,7 +104,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('updates the page in the URL', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     act(() => {
@@ -118,7 +118,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('resets to page 1 when page size changes', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=3&pageSize=10'] },
+      { initialEntries: ['/applications?page=3&pageSize=10'] },
     );
 
     act(() => {
@@ -136,7 +136,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          `/applications-v2?page=3&sortBy=${ApplicationSortByField.Status}&sortByDir=${ApplicationSortByDirection.Asc}`,
+          `/applications?page=3&sortBy=${ApplicationSortByField.Status}&sortByDir=${ApplicationSortByDirection.Asc}`,
         ],
       },
     );
@@ -160,7 +160,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('updates search in the URL and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=3'] },
+      { initialEntries: ['/applications?page=3'] },
     );
 
     act(() => {
@@ -177,7 +177,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('clears search in the URL and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=2&search=acme'] },
+      { initialEntries: ['/applications?page=2&search=acme'] },
     );
 
     act(() => {
@@ -196,7 +196,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          '/applications-v2?id=7&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
+          '/applications?id=7&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
         ],
       },
     );
@@ -236,7 +236,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(lookupOptions),
       {
         initialEntries: [
-          '/applications-v2?serviceType=svc-1&applicationType=3&status=Open&staffAssigned=12',
+          '/applications?serviceType=svc-1&applicationType=3&status=Open&staffAssigned=12',
         ],
       },
     );
@@ -260,7 +260,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('applies backend-backed dropdown filters and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=3'] },
+      { initialEntries: ['/applications?page=3'] },
     );
 
     act(() => {
@@ -281,7 +281,7 @@ describe('useApplicationsV2SearchParams', () => {
   it('applies advanced filters to the URL and resets to page 1', async () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
-      { initialEntries: ['/applications-v2?page=4'] },
+      { initialEntries: ['/applications?page=4'] },
     );
 
     act(() => {
@@ -307,7 +307,7 @@ describe('useApplicationsV2SearchParams', () => {
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2SearchParams(),
       {
-        initialEntries: ['/applications-v2?page=2&id=1&priority=Low'],
+        initialEntries: ['/applications?page=2&id=1&priority=Low'],
       },
     );
 
@@ -330,7 +330,7 @@ describe('useApplicationsV2SearchParams', () => {
       () => useApplicationsV2SearchParams(),
       {
         initialEntries: [
-          '/applications-v2?page=2&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
+          '/applications?page=2&priority=High&dateReceivedFrom=2024-01-01&dateReceivedTo=2024-01-31',
         ],
       },
     );
