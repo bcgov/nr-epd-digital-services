@@ -3,7 +3,7 @@
 .applications-v2-filter-panel__range-inputs {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--layout-margin-xsmall);
   min-width: 0;
 }
 
@@ -14,10 +14,10 @@
 
 .applications-v2-filter-panel__range-separator {
   flex: 0 0 auto;
-  color: var(--typography-color-secondary, #474747);
+  color: var(--typography-color-secondary);
 }
 
 .applications-v2-filter-panel__lookup-error {
-  margin: 0 0 var(--layout-margin-medium, 1rem);
-  color: var(--surface-color-primary-danger-default, #d8292f);
+  margin: 0 0 var(--layout-margin-medium);
+  color: var(--typography-color-danger);
 }
