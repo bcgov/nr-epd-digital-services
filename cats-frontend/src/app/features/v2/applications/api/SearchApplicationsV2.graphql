@@ -62,7 +62,6 @@ query SearchApplicationsV2(
         lastName
       }
       priority
-      url
       siteRiskClassification
       csapReference
       serviceType

@@ -1,4 +1,5 @@
 import type { FilterPill } from '../../../../components/filter/filterPill';
+import type { SearchApplicationsV2QueryVariables } from '../api/ApplicationsApi';
 import {
   APPLICATIONS_V2_FILTER_FIELDS,
   type ApplicationsV2FilterField,
@@ -27,6 +28,28 @@ export type ApplicationsV2AdvancedFilters = {
 
 export type ApplicationsV2AdvancedFilterUrlKey =
   keyof ApplicationsV2AdvancedFilters;
+
+type AdvancedFilterGraphqlVariables = Pick<
+  SearchApplicationsV2QueryVariables,
+  | 'filterId'
+  | 'filterServiceType'
+  | 'filterApplicationType'
+  | 'filterCommonName'
+  | 'filterCsapReference'
+  | 'filterSiteId'
+  | 'filterSiteAddress'
+  | 'filterSiteRiskClassification'
+  | 'filterStatus'
+  | 'filterStaffAssigned'
+  | 'filterPriority'
+  | 'filterInvoiceStatus'
+  | 'filterDateReceivedFrom'
+  | 'filterDateReceivedTo'
+  | 'filterLastUpdatedFrom'
+  | 'filterLastUpdatedTo'
+  | 'filterDateCompletedFrom'
+  | 'filterDateCompletedTo'
+>;
 
 export const EMPTY_ADVANCED_FILTERS: ApplicationsV2AdvancedFilters = {
   id: '',
@@ -81,8 +104,8 @@ export const parseAdvancedFiltersFromUrl = (
 
 export const advancedFiltersToGraphqlVariables = (
   filters: ApplicationsV2AdvancedFilters,
-) => {
-  const variables: Record<string, string> = {};
+): Partial<AdvancedFilterGraphqlVariables> => {
+  const variables: Partial<AdvancedFilterGraphqlVariables> = {};
 
   if (filters.id) variables.filterId = filters.id;
   if (filters.serviceType) variables.filterServiceType = filters.serviceType;
