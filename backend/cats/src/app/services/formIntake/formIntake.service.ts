@@ -59,7 +59,6 @@ export class FormIntakeService {
         `CHEFS API key not configured for appType ${appTypeAbbrev} (${formConfig.apiKeyEnvKey})`,
       );
     }
-    // DO NOT COMMIT THIS.
 
     this.loggerService.log(
       `Fetching CHEFS submission ${chefsSubmissionId} for appType ${appTypeAbbrev}`,
@@ -79,6 +78,13 @@ export class FormIntakeService {
       );
     }
 
+    if (this.isDraftSubmission(response.data)) {
+      this.loggerService.log(
+        `CHEFS submission ${chefsSubmissionId} is a draft, skipping processing`,
+      );
+      return null;
+    }
+
     const rawFormData = this.mapApiSubmissionToWebhookPayload(response.data);
 
     return this.processWebhookSubmission(
@@ -87,6 +93,10 @@ export class FormIntakeService {
       chefsFormId,
       user,
     );
+  }
+
+  private isDraftSubmission(data: Record<string, any>): boolean {
+    return data?.submission?.draft === true;
   }
 
   // CHEFS GET /submissions/{id} nests the answers differently than the webhook payload.

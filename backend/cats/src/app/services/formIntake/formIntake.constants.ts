@@ -1,3 +1,5 @@
+import { ConfigService } from '@nestjs/config';
+
 export interface FormConfig {
   appTypeAbbrev: string;
   displayName: string;
@@ -62,6 +64,21 @@ export function getFormConfigByAppType(
   appTypeAbbrev: string,
 ): FormConfig | null {
   return FORM_REGISTRY[appTypeAbbrev] ?? null;
+}
+
+export function getAppTypeAbbrevByChefsFormId(
+  configService: ConfigService,
+  chefsFormId: string,
+): string | null {
+  for (const formConfig of Object.values(FORM_REGISTRY)) {
+    if (
+      configService.get<string>(formConfig.chefsFormIdEnvKey) === chefsFormId
+    ) {
+      return formConfig.appTypeAbbrev;
+    }
+  }
+
+  return null;
 }
 
 export function getAvailableForms(): {
