@@ -28,12 +28,28 @@ export class ChefsWebhookController {
   @ApiOperation({
     summary: 'CHEFS submission webhook',
     description:
-      'Called by the CHEFS Event Subscription feature when a form is submitted. Triggers processing of the submission if the formId is registered.',
+      'Called by the CHEFS Event Subscription feature when a form is submitted. Triggers processing of the submission if the formId is registered and submission is not a draft.',
   })
   @ApiResponse({ status: 200, description: 'Webhook received' })
   async handleChefsWebhook(@Body() payload: ChefsWebhookPayloadDto) {
-    // We only care about the formId and submissionId from the webhook payload. Everything else is ignored.
-    const { formId, submissionId } = payload;
+    const formId = payload.formId || payload.meta?.formId;
+    const submissionId = payload.submissionId || payload.meta?.submissionId;
+    const isDraft = payload.draft ?? payload.meta?.draft ?? false;
+
+    if (!formId || !submissionId) {
+      this.loggerService.error(
+        'CHEFS webhook received with missing formId or submissionId',
+        null,
+      );
+      return { received: true, processed: false };
+    }
+
+    if (isDraft) {
+      this.loggerService.log(
+        `CHEFS webhook received for draft submission ${submissionId}, skipping processing`,
+      );
+      return { received: true, processed: false };
+    }
 
     const appTypeAbbrev = getAppTypeAbbrevByChefsFormId(
       this.configService,

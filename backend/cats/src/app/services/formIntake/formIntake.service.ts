@@ -79,6 +79,12 @@ export class FormIntakeService {
       );
     }
 
+    if (response.data?.submission?.draft === true) {
+      throw new Error(
+        `Submission ${chefsSubmissionId} is in draft state and cannot be processed`,
+      );
+    }
+
     const rawFormData = this.mapApiSubmissionToWebhookPayload(response.data);
 
     return this.processWebhookSubmission(

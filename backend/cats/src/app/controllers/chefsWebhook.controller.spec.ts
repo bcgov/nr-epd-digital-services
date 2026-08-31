@@ -56,6 +56,58 @@ describe('ChefsWebhookController', () => {
     expect(result).toEqual({ received: true, processed: true });
   });
 
+  it('skips processing when draft is true', async () => {
+    mockConfigService.get.mockImplementation((key: string) =>
+      key === 'CSSA_FORM_ID' ? formId : undefined,
+    );
+
+    const result = await controller.handleChefsWebhook({
+      formId,
+      submissionId,
+      draft: true,
+    });
+
+    expect(
+      mockFormIntakeService.fetchAndProcessSubmission,
+    ).not.toHaveBeenCalled();
+    expect(mockLogger.log).toHaveBeenCalledWith(
+      `CHEFS webhook received for draft submission ${submissionId}, skipping processing`,
+    );
+    expect(result).toEqual({ received: true, processed: false });
+  });
+
+  it('skips processing when meta.draft is true', async () => {
+    mockConfigService.get.mockImplementation((key: string) =>
+      key === 'CSSA_FORM_ID' ? formId : undefined,
+    );
+
+    const result = await controller.handleChefsWebhook({
+      meta: {
+        formId,
+        submissionId,
+        draft: true,
+      },
+    });
+
+    expect(
+      mockFormIntakeService.fetchAndProcessSubmission,
+    ).not.toHaveBeenCalled();
+    expect(result).toEqual({ received: true, processed: false });
+  });
+
+  it('skips processing when formId or submissionId is missing', async () => {
+    const result = await controller.handleChefsWebhook({});
+
+    expect(
+      mockFormIntakeService.fetchAndProcessSubmission,
+    ).not.toHaveBeenCalled();
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'CHEFS webhook received with missing formId or submissionId',
+      null,
+    );
+    expect(result).toEqual({ received: true, processed: false });
+  });
+
   it('skips processing when formId is not registered', async () => {
     mockConfigService.get.mockReturnValue(undefined);
 

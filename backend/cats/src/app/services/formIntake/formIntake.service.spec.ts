@@ -250,6 +250,27 @@ describe('FormIntakeService', () => {
       );
     });
 
+    it('should throw when the submission is in draft state', async () => {
+      withConfig();
+      mockHttpService.get.mockReturnValue(
+        of({
+          data: {
+            ...apiResponse.data,
+            submission: {
+              ...apiResponse.data.submission,
+              draft: true,
+            },
+          },
+        }),
+      );
+
+      await expect(
+        service.fetchAndProcessSubmission('CSR', submissionId),
+      ).rejects.toThrow(
+        `Submission ${submissionId} is in draft state and cannot be processed`,
+      );
+    });
+
     it('should throw when the submission belongs to a different form', async () => {
       withConfig();
       mockHttpService.get.mockReturnValue(

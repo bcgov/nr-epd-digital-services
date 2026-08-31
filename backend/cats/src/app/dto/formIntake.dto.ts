@@ -1,13 +1,28 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { IsBoolean, IsObject, IsOptional, IsUUID } from 'class-validator';
 import { ResponseDto } from './response/response.dto';
 
 export class ChefsWebhookPayloadDto {
+  @IsOptional()
   @IsUUID()
-  formId: string;
+  formId?: string;
 
+  @IsOptional()
   @IsUUID()
-  submissionId: string;
+  submissionId?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  draft?: boolean;
+
+  @IsOptional()
+  @IsObject()
+  meta?: {
+    formId?: string;
+    submissionId?: string;
+    draft?: boolean;
+    [key: string]: any;
+  };
 }
 
 @ObjectType()
