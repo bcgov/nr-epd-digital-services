@@ -16,6 +16,9 @@ import { TimesheetsWeekSelection } from './components/TimesheetsWeekSelection';
 import { TimesheetsTableBody } from './components/TimesheetsTableBody';
 import { TimesheetsTableFooter } from './components/TimesheetsTableFooter';
 import { TimesheetsActions } from './components/TimesheetsActions';
+import ModalDialog from '@cats/components/modaldialog/ModalDialog';
+import { LockIcon } from '@cats/components/common/icon';
+import { Button } from '@cats/components/button/Button';
 import {
   NormalizedTimesheetData,
   EditsData,
@@ -23,6 +26,7 @@ import {
   StaffRow,
 } from './types';
 import { useUnsavedChangesWarning } from '@cats/hooks/useUnsavedChangesWarning';
+import styles from './Timesheets.module.css';
 
 function getWeekRange(date: Date) {
   const monday = startOfWeek(date, { weekStartsOn: 1 });
@@ -130,6 +134,8 @@ export const Timesheets = () => {
   const endDateStr = format(endDate, 'yyyy-MM-dd');
 
   const [edits, setEdits] = useState<EditsData>({});
+  const [isOverrideEditing, setIsOverrideEditing] = useState(false);
+  const [showReopenConfirmation, setShowReopenConfirmation] = useState(false);
 
   const hasUnsavedChanges = Object.keys(edits).length > 0;
   useUnsavedChangesWarning({
@@ -169,6 +175,13 @@ export const Timesheets = () => {
 
   const staffRows: StaffRow[] =
     (data?.getTimesheetDaysForAssignedStaff?.data as StaffRow[]) || [];
+  const isTimesheetLocked = Boolean(
+    data?.getTimesheetDaysForAssignedStaff?.isTimesheetLocked,
+  );
+  const canOverrideTimesheetLock = Boolean(
+    data?.getTimesheetDaysForAssignedStaff?.canOverrideTimesheetLock,
+  );
+  const isReadOnlyLocked = isTimesheetLocked && !isOverrideEditing;
 
   const weekDays: Date[] = useMemo(() => {
     return Array.from({ length: 5 }, (_, i) => {
@@ -221,9 +234,15 @@ export const Timesheets = () => {
           entries: changes,
         },
       });
+      setIsOverrideEditing(false);
       isRefetchingRef.current = true;
       refetch();
     }
+  };
+
+  const handleCancelOverride = () => {
+    setEdits({});
+    setIsOverrideEditing(false);
   };
 
   const totalHoursPerDay: number[] = weekDays.map((d) => {
@@ -251,6 +270,28 @@ export const Timesheets = () => {
 
   return (
     <div>
+      {isTimesheetLocked && (
+        <div className={styles.lockBanner}>
+          <div className={styles.lockBannerMessage}>
+            <span className={styles.lockBannerIcon}>
+              <LockIcon />
+            </span>
+            <span>
+              Timesheets are locked as this application has reached invoice
+              determination (ODM).
+            </span>
+          </div>
+          {canOverrideTimesheetLock && !isOverrideEditing && (
+            <Button
+              variant="secondary"
+              disabled={saveTimesheetDaysLoading}
+              onClick={() => setShowReopenConfirmation(true)}
+            >
+              Re-open Timesheet
+            </Button>
+          )}
+        </div>
+      )}
       <TimesheetsWeekSelection
         startDate={startDate}
         endDate={endDate}
@@ -266,15 +307,36 @@ export const Timesheets = () => {
         normalizedData={normalizedData}
         edits={edits}
         onCellChange={handleCellChange}
-        disabled={saveTimesheetDaysLoading}
+        disabled={saveTimesheetDaysLoading || isReadOnlyLocked}
       />
 
       <TimesheetsTableFooter totalHoursForAllStaff={totalHoursForAllStaff} />
       <TimesheetsActions
         onSave={handleSave}
+        onCancelOverride={handleCancelOverride}
         hasEdits={hasUnsavedChanges}
         disabled={saveTimesheetDaysLoading}
+        isOverrideEditing={isOverrideEditing}
       />
+
+      {showReopenConfirmation && (
+        <ModalDialog
+          headerLabel="Re-open Timesheet"
+          saveBtnLabel="Continue"
+          cancelBtnLabel="Cancel"
+          closeHandler={(confirmed) => {
+            setShowReopenConfirmation(false);
+            if (confirmed) {
+              setIsOverrideEditing(true);
+            }
+          }}
+        >
+          <p>
+            Re-opening this timesheet will allow further edits and may impact
+            invoicing and reporting. Continue?
+          </p>
+        </ModalDialog>
+      )}
     </div>
   );
 };

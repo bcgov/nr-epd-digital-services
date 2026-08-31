@@ -104,3 +104,27 @@
   align-items: center;
   font-size: 16px;
 }
+
+.lockBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: var(--layout-margin-small);
+  padding: var(--layout-padding-small) var(--layout-padding-medium);
+  border: 1px solid var(--surface-color-border-medium);
+  background-color: var(--theme-gray-20);
+  color: var(--typography-color-secondary);
+  font-size: var(--typography-font-size-small-body);
+}
+
+.lockBannerMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lockBannerIcon {
+  display: flex;
+  align-items: center;
+}

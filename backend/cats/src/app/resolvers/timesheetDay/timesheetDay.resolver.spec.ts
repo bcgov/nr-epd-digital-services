@@ -56,6 +56,7 @@ describe('TimesheetDayResolver', () => {
           useValue: {
             upsertTimesheetDays: jest.fn(),
             getTimesheetDaysForAssignedStaff: jest.fn(),
+            getTimesheetLockStatus: jest.fn(),
           },
         },
         {
@@ -80,6 +81,11 @@ describe('TimesheetDayResolver', () => {
       GenericResponseProvider,
     );
     logger = module.get<LoggerService>(LoggerService);
+
+    jest.spyOn(service, 'getTimesheetLockStatus').mockResolvedValue({
+      isLocked: false,
+      canOverride: false,
+    });
   });
 
   describe('upsertTimesheetDays', () => {
@@ -157,6 +163,32 @@ describe('TimesheetDayResolver', () => {
           httpStatusCode: HttpStatus.OK,
           success: true,
           data: mockPersonWithTimesheetData,
+          isTimesheetLocked: false,
+          canOverrideTimesheetLock: false,
+        }),
+      );
+    });
+
+    it('should include lock metadata', async () => {
+      jest
+        .spyOn(service, 'getTimesheetDaysForAssignedStaff')
+        .mockResolvedValue(mockPersonWithTimesheetData as any);
+      jest.spyOn(service, 'getTimesheetLockStatus').mockResolvedValue({
+        isLocked: true,
+        canOverride: true,
+      });
+
+      const result = await resolver.getTimesheetDaysForAssignedStaff(
+        1,
+        '2025-06-01',
+        '2025-06-30',
+        mockUser,
+      );
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          isTimesheetLocked: true,
+          canOverrideTimesheetLock: true,
         }),
       );
     });

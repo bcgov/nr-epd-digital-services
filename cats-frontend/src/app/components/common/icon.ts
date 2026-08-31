@@ -49,6 +49,7 @@ import {
   FaSquareCheck,
   FaSquare,
   FaCirclePlus,
+  FaLock,
 } from 'react-icons/fa6';
 
 import {
@@ -125,3 +126,4 @@ export const FileContractIcon = FaFileContract;
 export const SquareCheck = FaSquareCheck;
 export const Square = FaSquare;
 export const PlusCircle = FaPlusCircle;
+export const LockIcon = FaLock;

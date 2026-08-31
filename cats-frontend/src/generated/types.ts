@@ -751,8 +751,10 @@ export type PersonWithTimesheetDaysDto = {
 
 export type PersonWithTimesheetDaysResponse = {
   __typename?: 'PersonWithTimesheetDaysResponse';
+  canOverrideTimesheetLock?: Maybe<Scalars['Boolean']['output']>;
   data?: Maybe<Array<PersonWithTimesheetDaysDto>>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  isTimesheetLocked?: Maybe<Scalars['Boolean']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
