@@ -246,7 +246,7 @@ describe('FormIntakeService', () => {
         of({
           data: {
             ...apiResponse.data,
-            submission: { ...apiResponse.data.submission, status: 'draft' },
+            submission: { ...apiResponse.data.submission, draft: true },
           },
         }),
       );

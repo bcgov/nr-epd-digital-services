@@ -96,8 +96,7 @@ export class FormIntakeService {
   }
 
   private isDraftSubmission(data: Record<string, any>): boolean {
-    const status = data?.submission?.status ?? data?.submission?.statusType;
-    return typeof status === 'string' && status.toLowerCase() === 'draft';
+    return data?.submission?.draft === true;
   }
 
   // CHEFS GET /submissions/{id} nests the answers differently than the webhook payload.
