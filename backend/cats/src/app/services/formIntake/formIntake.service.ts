@@ -78,6 +78,13 @@ export class FormIntakeService {
       );
     }
 
+    if (this.isDraftSubmission(response.data)) {
+      this.loggerService.log(
+        `CHEFS submission ${chefsSubmissionId} is a draft, skipping processing`,
+      );
+      return null;
+    }
+
     const rawFormData = this.mapApiSubmissionToWebhookPayload(response.data);
 
     return this.processWebhookSubmission(
@@ -86,6 +93,11 @@ export class FormIntakeService {
       chefsFormId,
       user,
     );
+  }
+
+  private isDraftSubmission(data: Record<string, any>): boolean {
+    const status = data?.submission?.status ?? data?.submission?.statusType;
+    return typeof status === 'string' && status.toLowerCase() === 'draft';
   }
 
   // CHEFS GET /submissions/{id} nests the answers differently than the webhook payload.

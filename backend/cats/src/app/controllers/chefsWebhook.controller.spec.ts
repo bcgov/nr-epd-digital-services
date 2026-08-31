@@ -61,15 +61,12 @@ describe('ChefsWebhookController', () => {
     );
   });
 
-  it('acknowledges a draft submission without processing it', async () => {
-    await expect(
-      controller.handleChefsWebhook(
-        { ...payload, draft: true },
-        'endpoint-token',
-      ),
-    ).resolves.toEqual({ received: true, processed: false });
+  it('acknowledges a draft submission skipped by form intake', async () => {
+    formIntakeService.fetchAndProcessSubmission.mockResolvedValue(null);
 
-    expect(formIntakeService.fetchAndProcessSubmission).not.toHaveBeenCalled();
+    await expect(
+      controller.handleChefsWebhook(payload, 'endpoint-token'),
+    ).resolves.toEqual({ received: true, processed: false });
   });
 
   it.each([undefined, 'incorrect-token'])(

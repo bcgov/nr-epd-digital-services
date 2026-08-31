@@ -240,6 +240,26 @@ describe('FormIntakeService', () => {
       expect(result.applicationId).toBe(7);
     });
 
+    it('should skip a draft submission after fetching it from CHEFS', async () => {
+      withConfig();
+      mockHttpService.get.mockReturnValue(
+        of({
+          data: {
+            ...apiResponse.data,
+            submission: { ...apiResponse.data.submission, status: 'draft' },
+          },
+        }),
+      );
+
+      await expect(
+        service.fetchAndProcessSubmission('CSR', submissionId),
+      ).resolves.toBeNull();
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).not.toHaveBeenCalled();
+      expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+    });
+
     it('should reject a malformed submission id', async () => {
       await expect(
         service.fetchAndProcessSubmission('CSR', 'not-a-uuid'),

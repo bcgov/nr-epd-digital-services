@@ -57,13 +57,6 @@ export class ChefsWebhookController {
   ) {
     this.validateEndpointToken(endpointToken);
 
-    if (payload.draft) {
-      this.loggerService.log(
-        `CHEFS webhook received for draft submission ${payload.submissionId}, skipping processing`,
-      );
-      return { received: true, processed: false };
-    }
-
     const appTypeAbbrev = getAppTypeAbbrevByChefsFormId(
       this.configService,
       payload.formId,
@@ -77,12 +70,12 @@ export class ChefsWebhookController {
     }
 
     try {
-      await this.formIntakeService.fetchAndProcessSubmission(
+      const submission = await this.formIntakeService.fetchAndProcessSubmission(
         appTypeAbbrev,
         payload.submissionId,
         'CHEFS_WEBHOOK',
       );
-      return { received: true, processed: true };
+      return { received: true, processed: submission !== null };
     } catch (error: any) {
       this.loggerService.error(
         `Failed to process CHEFS webhook for submissionId ${payload.submissionId}: ${error.message}`,

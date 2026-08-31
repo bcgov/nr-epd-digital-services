@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsIn, IsOptional, IsUUID } from 'class-validator';
+import { IsIn, IsUUID } from 'class-validator';
 import { ResponseDto } from './response/response.dto';
 
 export class ChefsWebhookPayloadDto {
@@ -14,10 +14,6 @@ export class ChefsWebhookPayloadDto {
 
   @IsUUID()
   submissionId: string;
-
-  @IsBoolean()
-  @IsOptional()
-  draft?: boolean;
 }
 
 @ObjectType()
