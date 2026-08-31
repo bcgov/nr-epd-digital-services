@@ -36,7 +36,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -57,7 +57,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -77,7 +77,7 @@ describe('useApplicationsV2ColumnPreferences', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>
@@ -102,13 +102,51 @@ describe('useApplicationsV2ColumnPreferences', () => {
     expect(savePreferencesMock).not.toHaveBeenCalled();
   });
 
+  it('preserves session toggles made before saved preferences finish loading', async () => {
+    let resolvePreferences!: (
+      value: Awaited<
+        ReturnType<typeof ColumnPreferencesApi.getApplicationsColumnPreferences>
+      >,
+    ) => void;
+    getPreferencesMock.mockReturnValue(
+      new Promise((resolve) => {
+        resolvePreferences = resolve;
+      }),
+    );
+
+    const { result } = renderHookWithQueryRouter(
+      () => useApplicationsV2ColumnPreferences(),
+      { initialEntries: ['/applications'] },
+    );
+
+    expect(result.current.isLoadingPreferences).toBe(true);
+
+    act(() => {
+      result.current.setColumnVisibility({
+        ...DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY,
+        status: false,
+      });
+    });
+
+    expect(result.current.isLoadingPreferences).toBe(false);
+    expect(result.current.columnVisibility.status).toBe(false);
+
+    await act(async () => {
+      resolvePreferences([{ id: 6, displayName: 'Status', active: true }]);
+    });
+
+    await waitFor(() => expect(getPreferencesMock).toHaveBeenCalled());
+
+    expect(result.current.columnVisibility.status).toBe(false);
+  });
+
   it('saves the current visibility layout under the applications page', async () => {
     getPreferencesMock.mockResolvedValue(null);
     savePreferencesMock.mockResolvedValue(undefined);
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2ColumnPreferences(),
-      { initialEntries: ['/applications-v2'] },
+      { initialEntries: ['/applications'] },
     );
 
     await waitFor(() =>

@@ -63,7 +63,7 @@ const PanelsFlow = () => {
 describe('Applications V2 panel exclusivity', () => {
   it('keeps the filter and columns panels mutually exclusive', () => {
     renderWithQueryRouter(<PanelsFlow />, {
-      initialEntries: ['/applications-v2'],
+      initialEntries: ['/applications'],
     });
 
     fireEvent.click(screen.getByRole('button', { name: 'Filter' }));

@@ -9,6 +9,9 @@ export class AppNoteDto {
   @Field(() => Int)
   applicationId: number;
 
+  @Field(() => String, { nullable: true })
+  chefsNoteId?: string | null;
+
   @Field()
   noteDate: string;
 

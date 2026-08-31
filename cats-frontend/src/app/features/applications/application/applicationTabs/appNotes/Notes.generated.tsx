@@ -5,10 +5,11 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetApplicationNotesByApplicationIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
+  syncChefs?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type GetApplicationNotesByApplicationIdQuery = { __typename?: 'Query', getApplicationNotesByApplicationId: { __typename?: 'ApplicationNotesResponse', data: Array<{ __typename?: 'AppNoteDto', id: number, applicationId: number, noteDate: string, noteText: string, createdBy: string, createdDateTime: any, updatedBy: string, updatedDateTime: any }> } };
+export type GetApplicationNotesByApplicationIdQuery = { __typename?: 'Query', getApplicationNotesByApplicationId: { __typename?: 'ApplicationNotesResponse', data: Array<{ __typename?: 'AppNoteDto', id: number, applicationId: number, chefsNoteId?: string | null, noteDate: string, noteText: string, createdBy: string, createdDateTime: any, updatedBy: string, updatedDateTime: any }> } };
 
 export type CreateApplicationNoteMutationVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
@@ -37,11 +38,15 @@ export type DeleteApplicationNotesMutation = { __typename?: 'Mutation', deleteAp
 
 
 export const GetApplicationNotesByApplicationIdDocument = gql`
-    query getApplicationNotesByApplicationId($applicationId: Int!) {
-  getApplicationNotesByApplicationId(applicationId: $applicationId) {
+    query getApplicationNotesByApplicationId($applicationId: Int!, $syncChefs: Boolean = false) {
+  getApplicationNotesByApplicationId(
+    applicationId: $applicationId
+    syncChefs: $syncChefs
+  ) {
     data {
       id
       applicationId
+      chefsNoteId
       noteDate
       noteText
       createdBy
@@ -66,6 +71,7 @@ export const GetApplicationNotesByApplicationIdDocument = gql`
  * const { data, loading, error } = useGetApplicationNotesByApplicationIdQuery({
  *   variables: {
  *      applicationId: // value for 'applicationId'
+ *      syncChefs: // value for 'syncChefs'
  *   },
  * });
  */

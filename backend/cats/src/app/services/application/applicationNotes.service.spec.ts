@@ -6,11 +6,15 @@ import { ApplicationNotesService } from './applicationNotes.service';
 import { AppNote } from '../../entities/appNote.entity';
 import { HttpException } from '@nestjs/common';
 import { Application } from '../../entities/application.entity';
+import { ApplicationSubmission } from '../../entities/applicationSubmission.entity';
+import { ChefsService } from '../chefs/chefs.service';
 
 describe('ApplicationNotesService', () => {
   let service: ApplicationNotesService;
   let appNoteRepository: Repository<AppNote>;
   let applicationRepository: Repository<Application>;
+  let applicationSubmissionRepository: Repository<ApplicationSubmission>;
+  let chefsService: ChefsService;
 
   const mockUser = { name: 'Test User' };
 
@@ -18,6 +22,7 @@ describe('ApplicationNotesService', () => {
     {
       id: 1,
       applicationId: 123,
+      chefsNoteId: null,
       noteDate: '2025-01-01',
       noteText: 'Test note 1',
       rowVersionCount: 1,
@@ -29,6 +34,7 @@ describe('ApplicationNotesService', () => {
     {
       id: 2,
       applicationId: 123,
+      chefsNoteId: null,
       noteDate: '2025-01-02',
       noteText: 'Test note 2',
       rowVersionCount: 1,
@@ -40,6 +46,7 @@ describe('ApplicationNotesService', () => {
     {
       id: 3,
       applicationId: 456,
+      chefsNoteId: null,
       noteDate: '2025-01-03',
       noteText: 'Test note for different application',
       rowVersionCount: 1,
@@ -65,6 +72,16 @@ describe('ApplicationNotesService', () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(ApplicationSubmission),
+          useClass: Repository,
+        },
+        {
+          provide: ChefsService,
+          useValue: {
+            getSubmissionNotes: jest.fn().mockResolvedValue([]),
+          },
+        },
+        {
           provide: LoggerService,
           useValue: {
             log: jest.fn(),
@@ -81,10 +98,18 @@ describe('ApplicationNotesService', () => {
     applicationRepository = module.get<Repository<Application>>(
       getRepositoryToken(Application),
     );
+    applicationSubmissionRepository = module.get<
+      Repository<ApplicationSubmission>
+    >(getRepositoryToken(ApplicationSubmission));
+    chefsService = module.get<ChefsService>(ChefsService);
+
+    jest
+      .spyOn(applicationSubmissionRepository, 'findOne')
+      .mockResolvedValue(null);
   });
 
   describe('getApplicationNotesByApplicationId', () => {
-    it('should return notes for an application', async () => {
+    it('should return notes for an application without syncing CHEFS by default', async () => {
       jest.spyOn(appNoteRepository, 'find').mockResolvedValue(mockNotes);
 
       const result = await service.getApplicationNotesByApplicationId(123);
@@ -94,6 +119,7 @@ describe('ApplicationNotesService', () => {
       expect(result[0].noteText).toBe('Test note 1');
       expect(result[1].noteText).toBe('Test note 2');
       expect(result[2].noteText).toBe('Test note for different application');
+      expect(chefsService.getSubmissionNotes).not.toHaveBeenCalled();
       expect(appNoteRepository.find).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
@@ -101,6 +127,83 @@ describe('ApplicationNotesService', () => {
           },
         }),
       );
+    });
+
+    it('should sync CHEFS notes when syncChefs is true', async () => {
+      jest.spyOn(applicationSubmissionRepository, 'findOne').mockResolvedValue({
+        applicationId: 123,
+        chefsFormId: 'form-1',
+        chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
+      } as ApplicationSubmission);
+      jest.spyOn(chefsService, 'getSubmissionNotes').mockResolvedValue([
+        {
+          id: 'chefs-note-1',
+          submissionId: 'sub-1',
+          submissionStatusId: null,
+          note: 'Email to user@example.com: revise map',
+          userId: 'u1',
+          createdBy: 'NDIXIT@idir',
+          createdAt: '2026-08-13T18:37:26.103Z',
+          updatedBy: null,
+          updatedAt: '2026-08-13T18:37:26.102Z',
+        },
+      ]);
+      jest
+        .spyOn(appNoteRepository, 'find')
+        .mockResolvedValueOnce([]) // existing chefs notes lookup
+        .mockResolvedValueOnce(mockNotes); // final list
+      jest.spyOn(appNoteRepository, 'create').mockImplementation(
+        (entity) => entity as AppNote,
+      );
+      jest.spyOn(appNoteRepository, 'save').mockResolvedValue([] as any);
+
+      await service.getApplicationNotesByApplicationId(123, true);
+
+      expect(chefsService.getSubmissionNotes).toHaveBeenCalledWith(
+        'form-1',
+        'sub-1',
+        'CSR',
+      );
+      expect(appNoteRepository.save).toHaveBeenCalled();
+    });
+
+    it('should always sync CHEFS when syncChefs is explicitly true', async () => {
+      jest.spyOn(applicationSubmissionRepository, 'findOne').mockResolvedValue({
+        applicationId: 123,
+        chefsFormId: 'form-1',
+        chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
+      } as ApplicationSubmission);
+      jest.spyOn(chefsService, 'getSubmissionNotes').mockResolvedValue([]);
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue(mockNotes);
+
+      await service.getApplicationNotesByApplicationId(123, true);
+      await service.getApplicationNotesByApplicationId(123, true);
+
+      expect(chefsService.getSubmissionNotes).toHaveBeenCalledTimes(2);
+      expect(chefsService.getSubmissionNotes).toHaveBeenCalledWith(
+        'form-1',
+        'sub-1',
+        'CSR',
+      );
+    });
+
+    it('should still return local notes if CHEFS sync fails', async () => {
+      jest.spyOn(applicationSubmissionRepository, 'findOne').mockResolvedValue({
+        applicationId: 123,
+        chefsFormId: 'form-1',
+        chefsSubmissionId: 'sub-1',
+        application: { appType: { abbrev: 'CSR' } },
+      } as ApplicationSubmission);
+      jest
+        .spyOn(chefsService, 'getSubmissionNotes')
+        .mockRejectedValue(new Error('CHEFS down'));
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue(mockNotes);
+
+      const result = await service.getApplicationNotesByApplicationId(123, true);
+
+      expect(result).toHaveLength(3);
     });
 
     it('should throw an exception when find operation fails', async () => {
@@ -127,7 +230,9 @@ describe('ApplicationNotesService', () => {
         noteText,
         rowVersionCount: 0,
         createdBy: mockUser.name,
-        createdDateTime: expect.any(Date),
+        createdDateTime: new Date(),
+        updatedBy: mockUser.name,
+        updatedDateTime: new Date(),
       } as AppNote;
 
       jest
@@ -136,7 +241,7 @@ describe('ApplicationNotesService', () => {
       jest.spyOn(appNoteRepository, 'create').mockReturnValue(mockCreatedNote);
       jest.spyOn(appNoteRepository, 'save').mockResolvedValue(mockCreatedNote);
       jest
-        .spyOn(service, 'getApplicationNotesByApplicationId')
+        .spyOn(appNoteRepository, 'find')
         .mockResolvedValue([...mockNotes, mockCreatedNote]);
 
       const result = await service.createApplicationNote(
@@ -148,6 +253,7 @@ describe('ApplicationNotesService', () => {
 
       expect(result).toBeDefined();
       expect(result.length).toBe(4);
+      expect(chefsService.getSubmissionNotes).not.toHaveBeenCalled();
       expect(appNoteRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
           applicationId,
@@ -157,8 +263,10 @@ describe('ApplicationNotesService', () => {
         }),
       );
       expect(appNoteRepository.save).toHaveBeenCalled();
-      expect(service.getApplicationNotesByApplicationId).toHaveBeenCalledWith(
-        applicationId,
+      expect(appNoteRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { applicationId },
+        }),
       );
     });
 
@@ -214,13 +322,13 @@ describe('ApplicationNotesService', () => {
         noteDate: testDate.toISOString().split('T')[0],
         noteText,
         updatedBy: mockUser.name,
-        updatedDateTime: expect.any(Date),
+        updatedDateTime: new Date(),
       };
 
       jest.spyOn(appNoteRepository, 'findOne').mockResolvedValue(existingNote);
       jest.spyOn(appNoteRepository, 'save').mockResolvedValue(updatedNote);
       jest
-        .spyOn(service, 'getApplicationNotesByApplicationId')
+        .spyOn(appNoteRepository, 'find')
         .mockResolvedValue([updatedNote, mockNotes[1]]);
 
       const result = await service.updateApplicationNote(
@@ -232,6 +340,7 @@ describe('ApplicationNotesService', () => {
 
       expect(result).toBeDefined();
       expect(result.length).toBe(2);
+      expect(chefsService.getSubmissionNotes).not.toHaveBeenCalled();
       expect(appNoteRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
           id: noteId,
@@ -240,8 +349,10 @@ describe('ApplicationNotesService', () => {
           updatedBy: mockUser.name,
         }),
       );
-      expect(service.getApplicationNotesByApplicationId).toHaveBeenCalledWith(
-        existingNote.applicationId,
+      expect(appNoteRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { applicationId: existingNote.applicationId },
+        }),
       );
     });
 
@@ -279,36 +390,27 @@ describe('ApplicationNotesService', () => {
       const remainingNotes = [mockNotes[1]];
 
       jest
-        .spyOn(appNoteRepository, 'find')
-        .mockImplementation((options: any) => {
-          if (options.where && options.where.id) {
-            return Promise.resolve(notesToDelete);
-          } else {
-            return Promise.resolve(remainingNotes);
-          }
-        });
-
-      jest
         .spyOn(appNoteRepository, 'remove')
         .mockResolvedValue(notesToDelete as any);
-      jest
-        .spyOn(service, 'getApplicationNotesByApplicationId')
-        .mockResolvedValue(remainingNotes);
+      jest.spyOn(appNoteRepository, 'find').mockImplementation((options: any) => {
+        if (options.where && options.where.id) {
+          return Promise.resolve(notesToDelete);
+        }
+        return Promise.resolve(remainingNotes);
+      });
 
       const result = await service.deleteApplicationNotes(noteIdsToDelete);
 
       expect(result).toBeDefined();
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe(2);
+      expect(chefsService.getSubmissionNotes).not.toHaveBeenCalled();
       expect(appNoteRepository.find).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: In(noteIdsToDelete) },
         }),
       );
       expect(appNoteRepository.remove).toHaveBeenCalledWith(notesToDelete);
-      expect(service.getApplicationNotesByApplicationId).toHaveBeenCalledWith(
-        123,
-      );
     });
 
     it('should throw an exception when no note IDs are provided', async () => {
@@ -338,13 +440,15 @@ describe('ApplicationNotesService', () => {
     it('should handle partial matches and delete found notes', async () => {
       const foundNotes = [mockNotes[0]];
 
-      jest.spyOn(appNoteRepository, 'find').mockResolvedValue(foundNotes);
       jest
         .spyOn(appNoteRepository, 'remove')
         .mockResolvedValue(foundNotes as any);
-      jest
-        .spyOn(service, 'getApplicationNotesByApplicationId')
-        .mockResolvedValue([mockNotes[1]]);
+      jest.spyOn(appNoteRepository, 'find').mockImplementation((options: any) => {
+        if (options.where && options.where.id) {
+          return Promise.resolve(foundNotes);
+        }
+        return Promise.resolve([mockNotes[1]]);
+      });
 
       const result = await service.deleteApplicationNotes([1, 999]);
 

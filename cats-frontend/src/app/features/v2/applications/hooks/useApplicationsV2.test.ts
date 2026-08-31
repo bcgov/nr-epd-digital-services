@@ -49,7 +49,7 @@ describe('useApplicationsV2', () => {
     searchApplicationsMock.mockResolvedValue(searchResult as any);
 
     const { result } = renderHookWithQueryRouter(() => useApplicationsV2(), {
-      initialEntries: ['/applications-v2'],
+      initialEntries: ['/applications'],
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -77,7 +77,7 @@ describe('useApplicationsV2', () => {
 
     const { result } = renderHookWithQueryRouter(
       () => useApplicationsV2(variables),
-      { initialEntries: ['/applications-v2?page=2&pageSize=25'] },
+      { initialEntries: ['/applications?page=2&pageSize=25'] },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -130,7 +130,7 @@ describe('useApplicationsV2', () => {
       ({ variables }: { variables: SearchApplicationsV2QueryVariables }) =>
         useApplicationsV2(variables),
       {
-        initialEntries: ['/applications-v2'],
+        initialEntries: ['/applications'],
         initialProps: {
           variables: DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
         },
@@ -161,7 +161,7 @@ describe('useApplicationsV2', () => {
     );
 
     const { result } = renderHookWithQueryRouter(() => useApplicationsV2(), {
-      initialEntries: ['/applications-v2'],
+      initialEntries: ['/applications'],
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -191,7 +191,7 @@ describe('useApplicationsV2', () => {
     );
 
     const { unmount } = renderHookWithQueryRouter(() => useApplicationsV2(), {
-      initialEntries: ['/applications-v2'],
+      initialEntries: ['/applications'],
     });
 
     await waitFor(() =>
@@ -225,7 +225,7 @@ describe('useApplicationsV2', () => {
       ({ variables }: { variables: SearchApplicationsV2QueryVariables }) =>
         useApplicationsV2(variables),
       {
-        initialEntries: ['/applications-v2'],
+        initialEntries: ['/applications'],
         initialProps: {
           variables: {
             ...DEFAULT_APPLICATIONS_SEARCH_VARIABLES,
