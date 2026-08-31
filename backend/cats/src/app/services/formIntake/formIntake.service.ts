@@ -59,7 +59,6 @@ export class FormIntakeService {
         `CHEFS API key not configured for appType ${appTypeAbbrev} (${formConfig.apiKeyEnvKey})`,
       );
     }
-    // DO NOT COMMIT THIS.
 
     this.loggerService.log(
       `Fetching CHEFS submission ${chefsSubmissionId} for appType ${appTypeAbbrev}`,
