@@ -18,6 +18,7 @@ interface TableProps {
   resultsPerPage?: number;
   showPageOptions?: boolean;
   allowRowsSelect?: boolean;
+  isRowSelectable?: (row: any) => boolean;
   changeHandler: (eventRecord: any) => void;
   editMode: boolean;
   srMode?: boolean;
@@ -38,6 +39,7 @@ const Table: FC<TableProps> = ({
   resultsPerPage,
   showPageOptions,
   allowRowsSelect,
+  isRowSelectable,
   changeHandler,
   editMode,
   srMode,
@@ -63,10 +65,12 @@ const Table: FC<TableProps> = ({
   const [allRowsSelectedEventFlag, SetAllRowsSelectedEvenFlag] =
     useState(false);
 
+  const resolvedCurrentPage = currentPage ?? 1;
+
   const isCurrentPageAllRowsSelected = () => {
     const isSelected =
       allRowsSelectedPages.findIndex(
-        (pageNumber) => pageNumber === currentPage,
+        (pageNumber) => pageNumber === resolvedCurrentPage,
       ) !== -1;
     SetCurrentPageAllRowSelected(isSelected);
   };
@@ -75,18 +79,23 @@ const Table: FC<TableProps> = ({
     if (event) {
       SetAllRowsSelectedEvenFlag(true);
       if (checked) {
-        let pageFound = allRowsSelectedPages.find(
-          (pageNumber) => pageNumber === currentPage,
-        );
-        if (!pageFound && currentPage !== undefined) {
-          allRowsSelectedPages.push(currentPage);
+        const pageFound = allRowsSelectedPages.includes(resolvedCurrentPage);
+        if (!pageFound) {
+          SetAllRowsSelectedPages([
+            ...allRowsSelectedPages,
+            resolvedCurrentPage,
+          ]);
         }
-        SetAllRowsSelectedPages(allRowsSelectedPages);
+        // Use click intent — allRowsSelectedPages is still stale here until re-render.
+        SetCurrentPageAllRowSelected(true);
       } else {
-        removePageFromAllRowsSelected();
+        SetAllRowsSelectedPages(
+          allRowsSelectedPages.filter(
+            (pageNumber) => pageNumber !== resolvedCurrentPage,
+          ),
+        );
+        SetCurrentPageAllRowSelected(false);
       }
-
-      isCurrentPageAllRowsSelected();
     }
   };
 
@@ -95,16 +104,12 @@ const Table: FC<TableProps> = ({
   };
 
   const removePageFromAllRowsSelected = () => {
-    if (allRowsSelectedPages.length > 0) {
-      let pageFound = allRowsSelectedPages.findIndex(
-        (pageNumber) => pageNumber === currentPage,
-      );
-      if (pageFound !== -1) {
-        allRowsSelectedPages.splice(pageFound, 1);
-      }
-      SetAllRowsSelectedPages(allRowsSelectedPages);
-      isCurrentPageAllRowsSelected();
-    }
+    SetAllRowsSelectedPages(
+      allRowsSelectedPages.filter(
+        (pageNumber) => pageNumber !== resolvedCurrentPage,
+      ),
+    );
+    SetCurrentPageAllRowSelected(false);
   };
 
   useEffect(() => {
@@ -138,6 +143,7 @@ const Table: FC<TableProps> = ({
             columns={columns}
             data={data}
             allowRowsSelect={allowRowsSelect ?? false}
+            isRowSelectable={isRowSelectable}
             changeHandler={changeHandler}
             editMode={editMode}
             srMode={srMode}

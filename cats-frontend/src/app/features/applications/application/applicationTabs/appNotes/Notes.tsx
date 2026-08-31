@@ -53,6 +53,8 @@ const sortNotes = (data: Note[], sortColumn: SortColumn | null) => {
   });
 };
 
+const isCatsOnlyNote = (note: Note) => !note.chefsNoteId;
+
 export const Notes = () => {
   const auth = useAuth();
   const { id: applicationId } = useParams();
@@ -133,7 +135,7 @@ export const Notes = () => {
   const tableChangeHandler = (event: any) => {
     if (event.property === 'select_row') {
       const row = event.row as Note;
-      if (row.chefsNoteId) {
+      if (!isCatsOnlyNote(row)) {
         return;
       }
       setSelectedNoteIds((prev) => {
@@ -142,7 +144,24 @@ export const Notes = () => {
         return ids;
       });
     }
+
+    if (event.property === 'select_all') {
+      const rows = (event.value as Note[]).filter(isCatsOnlyNote);
+      setSelectedNoteIds((prev) => {
+        const ids = new Set(prev);
+        if (event.selected) {
+          rows.forEach((row) => ids.add(row.id));
+        } else {
+          rows.forEach((row) => ids.delete(row.id));
+        }
+        return ids;
+      });
+    }
   };
+
+  const selectedNotes = sortedData.filter((note) => selectedNoteIds.has(note.id));
+  const canDeleteSelected =
+    selectedNotes.length > 0 && selectedNotes.every(isCatsOnlyNote);
 
   if (!applicationId) {
     return null;
@@ -152,7 +171,9 @@ export const Notes = () => {
     <div>
       <Widget
         primaryKeycolumnName="id"
+        currentPage={1}
         allowRowsSelect
+        isRowSelectable={isCatsOnlyNote}
         tableData={sortedData}
         title={'Notes'}
         tableColumns={getApplicationNotesColumns({
@@ -192,7 +213,7 @@ export const Notes = () => {
           </Button>
           <Button
             variant="secondary"
-            disabled={selectedNoteIds.size === 0}
+            disabled={!canDeleteSelected}
             onClick={() => {
               setNoteModal((prev) => ({
                 ...prev,
