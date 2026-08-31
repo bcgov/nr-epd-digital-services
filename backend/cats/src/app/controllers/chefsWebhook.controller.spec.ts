@@ -59,6 +59,9 @@ describe('ChefsWebhookController', () => {
       submissionId,
       'CHEFS_WEBHOOK',
     );
+    expect(loggerService.log).toHaveBeenCalledWith(
+      `CHEFS webhook received for submissionId ${submissionId}, formId ${formId}`,
+    );
   });
 
   it('acknowledges a draft submission skipped by form intake', async () => {

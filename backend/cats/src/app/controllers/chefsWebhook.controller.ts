@@ -55,6 +55,9 @@ export class ChefsWebhookController {
     @Body() payload: ChefsWebhookPayloadDto,
     @Headers('x-endpoint-token') endpointToken: string | undefined,
   ) {
+    this.loggerService.log(
+      `CHEFS webhook received for submissionId ${payload.submissionId}, formId ${payload.formId}`,
+    );
     this.validateEndpointToken(endpointToken);
 
     const appTypeAbbrev = getAppTypeAbbrevByChefsFormId(
