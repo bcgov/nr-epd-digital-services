@@ -111,6 +111,7 @@ import { FinancialSummaryResolver } from './resolvers/financialSummary/financial
 import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
 import { FormIntakeService } from './services/formIntake/formIntake.service';
 import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
+import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -230,6 +231,11 @@ import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
     FormIntakeService,
     FormIntakeResolver,
   ],
-  controllers: [UserController, EmailController, UploadController],
+  controllers: [
+    UserController,
+    EmailController,
+    UploadController,
+    ChefsWebhookController,
+  ],
 })
 export class CatsModule {}
