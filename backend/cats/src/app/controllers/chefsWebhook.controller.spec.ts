@@ -28,6 +28,7 @@ describe('ChefsWebhookController', () => {
     get: jest.fn(),
   };
   const loggerService = {
+    log: jest.fn(),
     error: jest.fn(),
   };
   let controller: ChefsWebhookController;
@@ -58,6 +59,17 @@ describe('ChefsWebhookController', () => {
       submissionId,
       'CHEFS_WEBHOOK',
     );
+  });
+
+  it('acknowledges a draft submission without processing it', async () => {
+    await expect(
+      controller.handleChefsWebhook(
+        { ...payload, draft: true },
+        'endpoint-token',
+      ),
+    ).resolves.toEqual({ received: true, processed: false });
+
+    expect(formIntakeService.fetchAndProcessSubmission).not.toHaveBeenCalled();
   });
 
   it.each([undefined, 'incorrect-token'])(
