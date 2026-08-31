@@ -40,7 +40,6 @@ const sampleRow: ApplicationV2Row = {
     { firstName: 'Grace', lastName: 'Hopper' },
   ],
   priority: 'High',
-  url: 'https://example.test/site/SITE-99',
   siteRiskClassification: 'High',
   csapReference: 'CSAP-1',
   serviceType: 'Service A',

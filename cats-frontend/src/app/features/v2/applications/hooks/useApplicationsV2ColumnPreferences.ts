@@ -21,8 +21,7 @@ export const applicationsV2ColumnPreferenceKeys = {
 export const useApplicationsV2ColumnPreferences = () => {
   const queryClient = useQueryClient();
   const [columnVisibility, setColumnVisibilityState] =
-    useState<VisibilityState>(DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY);
-  const [hasInitialized, setHasInitialized] = useState(false);
+    useState<VisibilityState | null>(null);
 
   const preferencesQuery = useQuery({
     queryKey: applicationsV2ColumnPreferenceKeys.all,
@@ -30,31 +29,30 @@ export const useApplicationsV2ColumnPreferences = () => {
   });
 
   useEffect(() => {
-    if (hasInitialized || preferencesQuery.isPending) {
+    if (columnVisibility !== null || preferencesQuery.isPending) {
       return;
     }
 
-    if (preferencesQuery.isSuccess) {
-      setColumnVisibilityState(
-        mergeApplicationsV2ColumnVisibility(
-          DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY,
-          preferencesQuery.data,
-        ),
-      );
-    }
-
-    setHasInitialized(true);
+    setColumnVisibilityState(
+      preferencesQuery.isSuccess
+        ? mergeApplicationsV2ColumnVisibility(
+            DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY,
+            preferencesQuery.data,
+          )
+        : { ...DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY },
+    );
   }, [
-    hasInitialized,
+    columnVisibility,
     preferencesQuery.isPending,
     preferencesQuery.isSuccess,
     preferencesQuery.data,
   ]);
 
   const setColumnVisibility: OnChangeFn<VisibilityState> = (updater) => {
-    setColumnVisibilityState((previous) =>
-      typeof updater === 'function' ? updater(previous) : updater,
-    );
+    setColumnVisibilityState((previous) => {
+      const base = previous ?? DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY;
+      return typeof updater === 'function' ? updater(base) : updater;
+    });
   };
 
   const resetColumnVisibility = () => {
@@ -81,12 +79,15 @@ export const useApplicationsV2ColumnPreferences = () => {
     },
   });
 
+  const resolvedVisibility =
+    columnVisibility ?? DEFAULT_APPLICATIONS_V2_COLUMN_VISIBILITY;
+
   return {
-    columnVisibility,
+    columnVisibility: resolvedVisibility,
     setColumnVisibility,
     resetColumnVisibility,
-    saveColumnDefaults: () => saveMutation.mutateAsync(columnVisibility),
+    saveColumnDefaults: () => saveMutation.mutateAsync(resolvedVisibility),
     isSavingColumnDefaults: saveMutation.isPending,
-    isLoadingPreferences: preferencesQuery.isPending || !hasInitialized,
+    isLoadingPreferences: columnVisibility === null,
   };
 };

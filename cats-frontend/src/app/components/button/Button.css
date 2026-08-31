@@ -86,6 +86,18 @@
   background-color: var(--surface-color-tertiary-hover);
 }
 
+.SITE-Button.tertiary.btn-active {
+  background: var(--surface-color-primary-default);
+  color: var(--typography-color-primary-invert);
+  border-radius: var(--layout-border-radius-medium)
+    var(--layout-border-radius-medium) 0 0;
+  box-shadow: inset 0 -1px 0 var(--surface-color-border-default);
+}
+
+.SITE-Button.tertiary.btn-active:hover:not(:disabled) {
+  background: var(--surface-color-primary-hover);
+}
+
 .SITE-Button.btn-icon {
   background: transparent;
   border: 1px solid transparent;

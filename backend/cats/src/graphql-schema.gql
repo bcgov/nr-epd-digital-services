@@ -345,7 +345,7 @@ type ApplicationSubmissionDto {
   applicationId: Int
   chefsFormId: String!
   chefsSubmissionId: String!
-  chefsFormVersionId: String
+  chefsFormVersionNumber: String
   chefsConfirmationId: String
   linkedConfirmationIds: [String!]
   formData: String
@@ -467,6 +467,7 @@ type InvoicesResponse {
 type AppNoteDto {
   id: Int!
   applicationId: Int!
+  chefsNoteId: String
   noteDate: String!
   noteText: String!
   createdBy: String!
@@ -698,6 +699,49 @@ type ColumnPreferencesResponse {
   data: ViewColumnPreferences
 }
 
+type FinancialSummaryDto {
+  totalHoursWorked: Float!
+  totalHoursInvoiced: Int!
+  totalCostOfServicesInCents: Int!
+  totalAmountInvoicedInCents: Int!
+  totalAmountPaidInCents: Int!
+  outstandingBalanceInCents: Int!
+}
+
+type FinancialSummaryResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: FinancialSummaryDto
+}
+
+type ManualIntakeFormDto {
+  appTypeAbbrev: String!
+  displayName: String!
+}
+
+type ManualIntakeFormsResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ManualIntakeFormDto!]
+}
+
+type ManualIntakeResultDto {
+  submissionId: String!
+  applicationId: Int
+}
+
+type ManualIntakeResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: ManualIntakeResultDto
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -732,7 +776,7 @@ type Query {
   getSiteDetailsBySiteId(siteId: String!): SiteDetailsResponse!
   getInvoices(applicationId: Int!): InvoicesResponse!
   getInvoiceById(invoiceId: Int!): InvoiceResponse!
-  getApplicationNotesByApplicationId(applicationId: Int!): ApplicationNotesResponse!
+  getApplicationNotesByApplicationId(applicationId: Int!, syncChefs: Boolean = false): ApplicationNotesResponse!
   getStaffs(page: Int!, pageSize: Int!, filter: Filter, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection): StaffResponse!
   getApplicationsByStaff(page: Int!, pageSize: Int!, sortBy: StaffSortByField, sortByDir: ApplicationSortByDirection, personId: Int!, roleId: Int): ViewApplicationResponse!
   getStaffAssignedByAppId(applicationId: Int!): ViewStaffAssignedResponse!
@@ -746,6 +790,8 @@ type Query {
   getApplications: DashboardResponse!
   getObject(objectId: String!, downloadType: DownloadType): ComsResponse!
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
+  getFinancialSummary(applicationId: Int!): FinancialSummaryResponse!
+  getManualIntakeForms: ManualIntakeFormsResponse!
 }
 
 enum Filter {
@@ -821,6 +867,7 @@ type Mutation {
   deleteBucket(bucketId: String!): ComsResponse!
   deleteObject(objectId: String!, versionId: String): ComsResponse!
   saveUserColumnPreferences(columnPreferences: SaveColumnPreferencesDto!): ColumnPreferencesResponse!
+  processChefsSubmissionManually(appTypeAbbrev: String!, chefsSubmissionId: String!): ManualIntakeResponse!
 }
 
 input CreatePerson {

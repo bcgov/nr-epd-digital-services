@@ -73,6 +73,7 @@ import { InvoiceResolver } from './resolvers/invoice/invoice.resolver';
 import { InvoiceService } from './services/invoice/invoice.service';
 import { ApplicationNotesResolver } from './resolvers/application/applicationNotes.resolver';
 import { ApplicationNotesService } from './services/application/applicationNotes.service';
+import { ChefsService } from './services/chefs/chefs.service';
 import { StaffResolver } from './resolvers/staff/staff.resolver';
 import { StaffService } from './services/staff/staff.service';
 import { StaffAssignmentService } from './services/assignment/staffAssignment.service';
@@ -105,8 +106,11 @@ import { ColumnPreferencesService } from './services/application/columnPreferenc
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { FinancialSummaryService } from './services/financialSummary/financialSummary.service';
+import { FinancialSummaryResolver } from './resolvers/financialSummary/financialSummary.resolver';
 import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
 import { FormIntakeService } from './services/formIntake/formIntake.service';
+import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
 
 /**
  * Module for wrapping all functionalities in user microserivce
@@ -204,6 +208,7 @@ import { FormIntakeService } from './services/formIntake/formIntake.service';
     InvoiceService,
     ApplicationNotesResolver,
     ApplicationNotesService,
+    ChefsService,
     StaffResolver,
     StaffService,
     StaffAssignmentResolver,
@@ -219,8 +224,11 @@ import { FormIntakeService } from './services/formIntake/formIntake.service';
     ComsResolver,
     ColumnPreferencesResolver,
     ColumnPreferencesService,
+    FinancialSummaryService,
+    FinancialSummaryResolver,
     ApplicationSubmissionService,
     FormIntakeService,
+    FormIntakeResolver,
   ],
   controllers: [UserController, EmailController, UploadController],
 })

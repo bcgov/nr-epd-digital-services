@@ -18,6 +18,14 @@ export class AppNote {
   @Column('integer', { name: 'application_id' })
   applicationId: number;
 
+  /** CHEFS submission note id — used for idempotent sync from GET …/notes */
+  @Column('character varying', {
+    name: 'chefs_note_id',
+    nullable: true,
+    unique: true,
+  })
+  chefsNoteId: string | null;
+
   @Column('date', { name: 'note_date' })
   noteDate: string;
 

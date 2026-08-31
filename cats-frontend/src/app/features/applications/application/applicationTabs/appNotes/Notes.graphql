@@ -1,8 +1,9 @@
-query getApplicationNotesByApplicationId($applicationId: Int!) {
-  getApplicationNotesByApplicationId(applicationId: $applicationId) {
+query getApplicationNotesByApplicationId($applicationId: Int!, $syncChefs: Boolean = false) {
+  getApplicationNotesByApplicationId(applicationId: $applicationId, syncChefs: $syncChefs) {
     data {
       id
       applicationId
+      chefsNoteId
       noteDate
       noteText
       createdBy

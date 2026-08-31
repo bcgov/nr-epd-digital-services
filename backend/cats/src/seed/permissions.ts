@@ -31,7 +31,7 @@ export const COMMON_PERMISSIONS = [
     description: 'Confirmation of Remediation',
     serviceTypesDetails: [
       {
-        applicationServiceDesc: 'Confirmation of Remediation',
+        applicationServiceDesc: 'Confirmation of remediation',
         serviceType: 'Non-CSAP',
       },
       serviceTypeDetail('26-Confirmation of Remediation', 'Non-CSAP'),
@@ -45,8 +45,6 @@ export const COMMON_PERMISSIONS = [
         applicationServiceDesc: 'Authorizations - Monitoring Report',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail('26-Annual Update - AiP Reporting', 'Non-CSAP'),
-      serviceTypeDetail('26-Annual Update - CoC Reporting', 'Non-CSAP'),
     ],
   },
   {
@@ -100,10 +98,7 @@ export const COMMON_PERMISSIONS = [
         applicationServiceDesc: 'Site ID Release (Scenario 1)',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail(
-        '26-Person Requests a Notice from a Director Stating the Director Does Not Require Site Investigation (Release under Scenario 1)',
-        'Non-CSAP',
-      ),
+      serviceTypeDetail('26-Release under scenario 1', 'Non-CSAP'),
     ],
   },
   {
@@ -113,10 +108,7 @@ export const COMMON_PERMISSIONS = [
         applicationServiceDesc: 'Site ID Release (Scenario 2)',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail(
-        '26-Person Requests a Notice from a Director Stating That the Site Would Not Present a Significant Threat or Risk If the Application Were Approved (Release under Scenario 2)',
-        'Non-CSAP',
-      ),
+      serviceTypeDetail('26-Release under scenario 2', 'Non-CSAP'),
     ],
   },
   {
@@ -126,10 +118,7 @@ export const COMMON_PERMISSIONS = [
         applicationServiceDesc: 'Site ID Release (Scenario 3)',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail(
-        '26-Person Requests a Notice from a Director Stating the Director Has Received a Remediation Plan Supporting Independent Remediation of the Site (Release under Scenario 3)',
-        'Non-CSAP',
-      ),
+      serviceTypeDetail('26-Release under scenario 3', 'Non-CSAP'),
     ],
   },
   {
@@ -151,8 +140,7 @@ export const COMMON_PERMISSIONS = [
         serviceType: 'Non-CSAP',
       },
       {
-        applicationServiceDesc:
-          'Detailed site investigation, Risk assessment with other services',
+        applicationServiceDesc: 'Detailed site investigation',
         serviceType: 'Non-CSAP',
       },
       serviceTypeDetail('26-Approval in Principle', 'Non-CSAP'),
@@ -164,7 +152,7 @@ export const COMMON_PERMISSIONS = [
       serviceTypeDetail('26-Detailed Site Investigation', 'Non-CSAP'),
       serviceTypeDetail('26-Preliminary Site Investigation', 'Non-CSAP'),
       serviceTypeDetail(
-        '26-Risk Assessment Not Included in a Remediation Plan',
+        '26-Risk Assessment (Human health or Environmental risk assessment)',
         'Non-CSAP',
       ),
     ],
@@ -211,7 +199,7 @@ export const COMMON_PERMISSIONS = [
         'Non-CSAP',
       ),
       serviceTypeDetail(
-        '26-Determination of a Contaminated Site - Final',
+        '26-Determination of a contaminated site - Final - no ministry fees',
         'Non-CSAP',
       ),
     ],
@@ -268,7 +256,7 @@ export const COMMON_PERMISSIONS = [
     description: 'Requests to Director',
     serviceTypesDetails: [
       {
-        applicationServiceDesc: 'Requests to Director',
+        applicationServiceDesc: 'Request to Director',
         serviceType: 'Non-CSAP',
       },
       serviceTypeDetail('26-Minor Contribution Status', 'Non-CSAP'),
@@ -326,13 +314,12 @@ export const SDM_PERMISSIONS = [
     description: 'AP Recommended Certifications (Risk Based)',
     serviceTypesDetails: [
       {
-        applicationServiceDesc:
-          'Approval in Principle with or without additional services',
+        applicationServiceDesc: 'Approval in Principle',
         serviceType: 'CSAP',
       },
       {
         applicationServiceDesc:
-          'Certificate of Compliance - detailed risk assessment with or without other reports',
+          'Certificate of Compliance - detailed risk assessment',
         serviceType: 'CSAP',
       },
       serviceTypeDetail('26-Approval in Principle', 'CSAP'),
@@ -346,8 +333,7 @@ export const SDM_PERMISSIONS = [
     description: 'AP Recommended Certifications (Numerical)',
     serviceTypesDetails: [
       {
-        applicationServiceDesc:
-          'Approval in Principle with or without additional services',
+        applicationServiceDesc: 'Approval in Principle',
         serviceType: 'CSAP',
       },
       {
@@ -356,8 +342,7 @@ export const SDM_PERMISSIONS = [
         serviceType: 'CSAP',
       },
       {
-        applicationServiceDesc:
-          'Certificate of Compliance - numerical withor without other reports',
+        applicationServiceDesc: 'Certificate of Compliance - numerical',
         serviceType: 'CSAP',
       },
       {
@@ -365,8 +350,7 @@ export const SDM_PERMISSIONS = [
         serviceType: 'CSAP',
       },
       {
-        applicationServiceDesc:
-          'Preliminary Determination under CSR 15(3), with other reports',
+        applicationServiceDesc: 'Preliminary Determination under CSR 15(3)',
         serviceType: 'CSAP',
       },
       serviceTypeDetail('26-Certificate of Compliance - Numerical', 'CSAP'),
@@ -382,10 +366,13 @@ export const SDM_PERMISSIONS = [
     description: 'Monitoring Reports from CSAP RSC',
     serviceTypesDetails: [
       {
-        applicationServiceDesc: 'Reporting',
+        applicationServiceDesc: 'CSAP - AP Statement or report',
         serviceType: 'CSAP',
       },
-      serviceTypeDetail('26-CSAP - AP Statement or Report', 'CSAP'),
+      serviceTypeDetail(
+        '26-CSAP - AP Statement or report - no ministry fee',
+        'CSAP',
+      ),
     ],
   },
 ];
@@ -407,7 +394,7 @@ export const CASEWORKER_PERMISSIONS = [
         applicationServiceDesc: 'Site ID (Annual Update)',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail('26-Annual Update - Site ID', 'Non-CSAP'),
+      serviceTypeDetail('26-Annual Update - Site ID  (Table 2.16)', 'Non-CSAP'),
     ],
   },
 ];
@@ -417,13 +404,12 @@ export const MENTOR_PERMISSIONS = [
     description: 'AP Recommended Certifications (Risk Based)',
     serviceTypesDetails: [
       {
-        applicationServiceDesc:
-          'Approval in Principle with or without additional services',
+        applicationServiceDesc: 'Approval in Principle',
         serviceType: 'CSAP',
       },
       {
         applicationServiceDesc:
-          'Certificate of Compliance - detailed risk assessment with or without other reports',
+          'Certificate of Compliance - detailed risk assessment',
         serviceType: 'CSAP',
       },
       serviceTypeDetail('26-Approval in Principle', 'CSAP'),
@@ -437,8 +423,7 @@ export const MENTOR_PERMISSIONS = [
     description: 'AP Recommended Certifications (Numerical)',
     serviceTypesDetails: [
       {
-        applicationServiceDesc:
-          'Approval in Principle with or without additional services',
+        applicationServiceDesc: 'Approval in Principle',
         serviceType: 'CSAP',
       },
       {
@@ -447,8 +432,7 @@ export const MENTOR_PERMISSIONS = [
         serviceType: 'CSAP',
       },
       {
-        applicationServiceDesc:
-          'Certificate of Compliance - numerical withor without other reports',
+        applicationServiceDesc: 'Certificate of Compliance - numerical',
         serviceType: 'CSAP',
       },
       {
@@ -456,8 +440,7 @@ export const MENTOR_PERMISSIONS = [
         serviceType: 'CSAP',
       },
       {
-        applicationServiceDesc:
-          'Preliminary Determination under CSR 15(3), with other reports',
+        applicationServiceDesc: 'Preliminary Determination under CSR 15(3)',
         serviceType: 'CSAP',
       },
       serviceTypeDetail('26-Certificate of Compliance - Numerical', 'CSAP'),
@@ -485,7 +468,7 @@ export const MENTOR_PERMISSIONS = [
         applicationServiceDesc: 'Site ID (Annual Update)',
         serviceType: 'Non-CSAP',
       },
-      serviceTypeDetail('26-Annual Update - Site ID', 'Non-CSAP'),
+      serviceTypeDetail('26-Annual Update - Site ID  (Table 2.16)', 'Non-CSAP'),
     ],
   },
 ];

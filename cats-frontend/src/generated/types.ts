@@ -33,6 +33,7 @@ export type AddHousingInputDto = {
 export type AppNoteDto = {
   __typename?: 'AppNoteDto';
   applicationId: Scalars['Int']['output'];
+  chefsNoteId?: Maybe<Scalars['String']['output']>;
   createdBy: Scalars['String']['output'];
   createdDateTime: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
@@ -172,6 +173,33 @@ export type ApplicationStatusDto = {
 export type ApplicationStatusResponse = {
   __typename?: 'ApplicationStatusResponse';
   data?: Maybe<Array<ViewApplicationStatus>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationSubmissionDto = {
+  __typename?: 'ApplicationSubmissionDto';
+  applicationId?: Maybe<Scalars['Int']['output']>;
+  chefsConfirmationId?: Maybe<Scalars['String']['output']>;
+  chefsFormId: Scalars['String']['output'];
+  chefsFormVersionNumber?: Maybe<Scalars['String']['output']>;
+  chefsSubmissionId: Scalars['String']['output'];
+  createdBy: Scalars['String']['output'];
+  createdDateTime: Scalars['DateTime']['output'];
+  formData?: Maybe<Scalars['String']['output']>;
+  formSchema?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  linkedConfirmationIds?: Maybe<Array<Scalars['String']['output']>>;
+  receivedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedBy: Scalars['String']['output'];
+  updatedDateTime: Scalars['DateTime']['output'];
+};
+
+export type ApplicationSubmissionResponse = {
+  __typename?: 'ApplicationSubmissionResponse';
+  data?: Maybe<ApplicationSubmissionDto>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
@@ -383,6 +411,25 @@ export enum Filter {
   Unassigned = 'UNASSIGNED'
 }
 
+export type FinancialSummaryDto = {
+  __typename?: 'FinancialSummaryDto';
+  outstandingBalanceInCents: Scalars['Int']['output'];
+  totalAmountInvoicedInCents: Scalars['Int']['output'];
+  totalAmountPaidInCents: Scalars['Int']['output'];
+  totalCostOfServicesInCents: Scalars['Int']['output'];
+  totalHoursInvoiced: Scalars['Int']['output'];
+  totalHoursWorked: Scalars['Float']['output'];
+};
+
+export type FinancialSummaryResponse = {
+  __typename?: 'FinancialSummaryResponse';
+  data?: Maybe<FinancialSummaryDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type HousingDto = {
   __typename?: 'HousingDto';
   effectiveDate?: Maybe<Scalars['DateTime']['output']>;
@@ -443,6 +490,36 @@ export type InvoicesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ManualIntakeFormDto = {
+  __typename?: 'ManualIntakeFormDto';
+  appTypeAbbrev: Scalars['String']['output'];
+  displayName: Scalars['String']['output'];
+};
+
+export type ManualIntakeFormsResponse = {
+  __typename?: 'ManualIntakeFormsResponse';
+  data?: Maybe<Array<ManualIntakeFormDto>>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ManualIntakeResponse = {
+  __typename?: 'ManualIntakeResponse';
+  data?: Maybe<ManualIntakeResultDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ManualIntakeResultDto = {
+  __typename?: 'ManualIntakeResultDto';
+  applicationId?: Maybe<Scalars['Int']['output']>;
+  submissionId: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
@@ -459,6 +536,7 @@ export type Mutation = {
   deleteInvoice: InvoiceResponse;
   deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
+  processChefsSubmissionManually: ManualIntakeResponse;
   saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
@@ -545,6 +623,12 @@ export type MutationDeleteObjectArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationProcessChefsSubmissionManuallyArgs = {
+  appTypeAbbrev: Scalars['String']['input'];
+  chefsSubmissionId: Scalars['String']['input'];
 };
 
 
@@ -702,9 +786,11 @@ export type Query = {
   getApplicationServiceTypes: DropdownResponse;
   getApplications: DashboardResponse;
   getApplicationsByStaff: ViewApplicationResponse;
+  getFinancialSummary: FinancialSummaryResponse;
   getHousingTypes: HousingTypeResponse;
   getInvoiceById: InvoiceResponse;
   getInvoices: InvoicesResponse;
+  getManualIntakeForms: ManualIntakeFormsResponse;
   getObject: ComsResponse;
   getOrganizations: DropdownResponse;
   getParticipantNames: DropdownResponse;
@@ -715,6 +801,7 @@ export type Query = {
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
   getStaffs: StaffResponse;
+  getSubmissionByApplicationId: ApplicationSubmissionResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   getUserColumnPreferences: ColumnPreferencesResponse;
   searchApplications: ApplicationSearchResponse;
@@ -756,6 +843,7 @@ export type QueryGetApplicationHousingByApplicationIdArgs = {
 
 export type QueryGetApplicationNotesByApplicationIdArgs = {
   applicationId: Scalars['Int']['input'];
+  syncChefs?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -766,6 +854,11 @@ export type QueryGetApplicationsByStaffArgs = {
   roleId?: InputMaybe<Scalars['Int']['input']>;
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetFinancialSummaryArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
@@ -822,6 +915,11 @@ export type QueryGetStaffsArgs = {
   pageSize: Scalars['Int']['input'];
   sortBy?: InputMaybe<StaffSortByField>;
   sortByDir?: InputMaybe<ApplicationSortByDirection>;
+};
+
+
+export type QueryGetSubmissionByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 

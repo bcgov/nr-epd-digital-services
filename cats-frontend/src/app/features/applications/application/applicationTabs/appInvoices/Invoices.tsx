@@ -15,6 +15,7 @@ import ModalDialog from '@cats/components/modaldialog/ModalDialog';
 import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
 import { InvoiceFilter } from './enums/filter';
 import { InvoiceSortBy, InvoiceSortByDir } from './enums/sortBy';
+import { FinancialSummary } from './FinancialSummary';
 
 type Invoices = Pick<
   ViewInvoice,
@@ -221,9 +222,7 @@ export const Invoices: React.FC = () => {
 
   return (
     <div>
-      {/* <div className="d-flex justify-content-between mb-3 align-items-center">
-        <p>Financial Summary Will Go Here</p>
-      </div> */}
+      <FinancialSummary />
       <div>
         <Widget
           customWidgetCss="gap-4"
