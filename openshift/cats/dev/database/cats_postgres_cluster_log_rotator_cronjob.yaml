@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: cleanup
-              image: registry.redhat.io/openshift4/ose-cli:4.13
+              image: registry.redhat.io/openshift4/ose-cli-rhel9:v4.16
               env:
                 - name: CRUNCHY_CLUSTER
                   value: cats-postgres-cluster
