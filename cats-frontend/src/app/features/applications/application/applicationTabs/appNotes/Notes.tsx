@@ -159,7 +159,9 @@ export const Notes = () => {
     }
   };
 
-  const selectedNotes = sortedData.filter((note) => selectedNoteIds.has(note.id));
+  const selectedNotes = sortedData.filter((note) =>
+    selectedNoteIds.has(note.id),
+  );
   const canDeleteSelected =
     selectedNotes.length > 0 && selectedNotes.every(isCatsOnlyNote);
 
