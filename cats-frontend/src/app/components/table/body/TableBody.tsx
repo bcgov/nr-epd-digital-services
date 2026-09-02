@@ -27,6 +27,7 @@ interface TableBodyProps {
   columns: TableColumn[];
   data: any;
   allowRowsSelect: boolean;
+  isRowSelectable?: (row: any) => boolean;
   changeHandler: (data: any) => void;
   editMode: boolean;
   srMode?: boolean;
@@ -49,6 +50,7 @@ const TableBody: FC<TableBodyProps> = ({
   columns,
   data,
   allowRowsSelect,
+  isRowSelectable,
   changeHandler,
   editMode,
   srMode,
@@ -63,13 +65,25 @@ const TableBody: FC<TableBodyProps> = ({
 }) => {
   const [selectedRowIds, SetSelectedRowsId] = useState<SelectedRowsType>({});
 
+  const canSelectRow = (rowIndex: number) => {
+    const row = data[rowIndex];
+    return isRowSelectable ? isRowSelectable(row) : true;
+  };
+
+  const getSelectableRowIds = () =>
+    data
+      .map((item: any, index: number) => {
+        if (!canSelectRow(index)) {
+          return null;
+        }
+        return getValue(index, idColumnName);
+      })
+      .filter(Boolean) as string[];
+
   useEffect(() => {
     if (!allRowsSelectedEventFlag) return;
 
-    const rowsIds: string[] = data.map((item: any, index: number) => {
-      const checkboxId = getValue(index, idColumnName);
-      return checkboxId;
-    });
+    const rowsIds: string[] = getSelectableRowIds();
 
     if (allRowsSelected) {
       SetSelectedRowsId((prevItems) => ({
@@ -86,15 +100,18 @@ const TableBody: FC<TableBodyProps> = ({
     }
 
     if (allRowsSelectedEventFlag) {
+      const selectableRows = data.filter((_: any, index: number) =>
+        canSelectRow(index),
+      );
       changeHandler({
         id: 'select_all',
         property: 'select_all',
-        value: data,
+        value: selectableRows,
         selected: allRowsSelected,
       });
       resetAllRowsSelectedEventFlag();
     }
-  }, [allRowsSelected]);
+  }, [allRowsSelected, allRowsSelectedEventFlag]);
 
   const handleSelectTableRow = (isChecked: any, id: string, rowIndex: any) => {
     if (isChecked) {
@@ -526,26 +543,29 @@ const TableBody: FC<TableBodyProps> = ({
   const renderTableRow = (rowIndex: number) => {
     const checkboxId = getValue(rowIndex, idColumnName);
     const rowChecked = isChecked(checkboxId);
+    const rowIsSelectable = canSelectRow(rowIndex);
 
     return (
       <React.Fragment key={rowIndex}>
         <tr data-testid="table-row" key={rowIndex}>
           {allowRowsSelect && (
             <td className="checkbox-column">
-              <input
-                id={getValue(rowIndex, idColumnName)}
-                type="checkbox"
-                className="checkbox-color"
-                aria-label="Select Row"
-                onChange={(event) => {
-                  handleSelectTableRow(
-                    event.target.checked,
-                    checkboxId,
-                    rowIndex,
-                  );
-                }}
-                checked={rowChecked || false}
-              />
+              {rowIsSelectable ? (
+                <input
+                  id={getValue(rowIndex, idColumnName)}
+                  type="checkbox"
+                  className="checkbox-color"
+                  aria-label="Select Row"
+                  onChange={(event) => {
+                    handleSelectTableRow(
+                      event.target.checked,
+                      checkboxId,
+                      rowIndex,
+                    );
+                  }}
+                  checked={rowChecked || false}
+                />
+              ) : null}
             </td>
           )}
           {columns &&

@@ -15,6 +15,7 @@ const Widget: React.FC<IWidget> = ({
   children,
   customLabelCss,
   allowRowsSelect,
+  isRowSelectable,
   hideTable,
   hideTitle,
   editMode,
@@ -75,6 +76,7 @@ const Widget: React.FC<IWidget> = ({
             data={tableData ?? []}
             showPageOptions={showPageOptions}
             allowRowsSelect={allowRowsSelect}
+            isRowSelectable={isRowSelectable}
             changeHandler={changeHandler ?? (() => {})}
             editMode={editMode ?? false}
             srMode={srMode ?? false}

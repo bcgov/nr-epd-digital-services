@@ -456,6 +456,20 @@ describe('ApplicationNotesService', () => {
       expect(appNoteRepository.remove).toHaveBeenCalledWith(foundNotes);
     });
 
+    it('should throw an exception when attempting to delete CHEFS-synced notes', async () => {
+      const chefsNote = {
+        ...mockNotes[0],
+        chefsNoteId: 'chefs-note-uuid',
+      };
+      jest.spyOn(appNoteRepository, 'find').mockResolvedValue([chefsNote]);
+      const removeSpy = jest.spyOn(appNoteRepository, 'remove');
+
+      await expect(service.deleteApplicationNotes([1])).rejects.toThrow(
+        HttpException,
+      );
+      expect(removeSpy).not.toHaveBeenCalled();
+    });
+
     it('should throw an exception when delete operation fails', async () => {
       jest.spyOn(appNoteRepository, 'find').mockResolvedValue([mockNotes[0]]);
       jest.spyOn(appNoteRepository, 'remove').mockImplementation(() => {

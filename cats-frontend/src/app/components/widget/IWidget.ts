@@ -8,6 +8,8 @@ export interface IWidget {
   customLabelCss?: string;
   children?: React.ReactNode;
   allowRowsSelect?: boolean;
+  /** When set, only rows where this returns true show a selection checkbox. */
+  isRowSelectable?: (row: any) => boolean;
   hideTable?: boolean;
   hideTitle?: boolean;
   editMode?: boolean;
