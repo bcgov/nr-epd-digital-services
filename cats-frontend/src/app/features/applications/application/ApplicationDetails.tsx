@@ -102,10 +102,9 @@ const ApplicationDetails = () => {
       <div className="d-flex flex-column gap-1">
         {(appId || appDescription) && (
           <div>
-            <span
-              className={cx(styles.applicationIdLbl, styles.applicationLbl)}
-            >
-              {appId}
+            <span className={styles.applicationIdLbl}>
+              Application ID:{' '}
+              <span className={styles.applicationIdValue}>{appId}</span>
             </span>
             <span className={cx(styles.customDot, 'px-2')}>•</span>
             <span
@@ -151,7 +150,12 @@ const ApplicationDetails = () => {
           <div className={`gap-3 row ${isVisible ? 'invisible' : ''}`}>
             {(appId || appDescription) && (
               <div className="d-flex flex-column gap-1 flex-wrap">
-                {appId && <CustomLabel label={appId} labelType="r-h5" />}
+                {appId && (
+                  <span className={styles.applicationIdLbl}>
+                    Application ID:{' '}
+                    <span className={styles.applicationIdValue}>{appId}</span>
+                  </span>
+                )}
                 {appDescription && (
                   <CustomLabel label={appDescription} labelType="b-h1" />
                 )}
