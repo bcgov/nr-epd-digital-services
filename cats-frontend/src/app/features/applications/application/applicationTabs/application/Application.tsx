@@ -6,7 +6,9 @@ import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import 'formiojs/dist/formio.full.min.css';
-import '../../../../../../../common-hosted-form-service/components/lib/use';
+import '../../../../../../../vendor/chefs-formio/bcgov-formio-components.css';
+import '../../../../../../../vendor/chefs-formio/chefs-form-viewer.css';
+import { registerChefsComponents } from './registerChefsComponents';
 
 type FormJson = {
   title?: string;
@@ -32,6 +34,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [formJson, setFormJson] = useState<FormJson>({ components: [] });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [componentsReady, setComponentsReady] = useState(false);
 
   const applicationId = parseInt(id ?? '', 10);
 
@@ -46,6 +49,25 @@ export const Application: React.FC<ApplicationProps> = () => {
     submissionData?.getSubmissionByApplicationId?.data?.formData;
   const submissionFormSchema =
     submissionData?.getSubmissionByApplicationId?.data?.formSchema;
+
+  useEffect(() => {
+    let cancelled = false;
+    registerChefsComponents()
+      .then(() => {
+        if (!cancelled) setComponentsReady(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (!cancelled) {
+          setError('Form details not found.');
+          setComponentsReady(true);
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (submissionLoading) return;
@@ -71,8 +93,8 @@ export const Application: React.FC<ApplicationProps> = () => {
     setIsLoading(false);
   }, [submissionLoading, submissionFormData, submissionFormSchema]);
 
-  if (isLoading) {
-    return <LoadingOverlay loading={isLoading} />;
+  if (isLoading || !componentsReady) {
+    return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
   if (error) {
