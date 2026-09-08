@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUser } from '../../../../../helpers/utility';
+import { formatDateUTC, getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
@@ -42,10 +42,15 @@ export const Application: React.FC<ApplicationProps> = () => {
       skip: !applicationId,
     });
 
-  const submissionFormData =
-    submissionData?.getSubmissionByApplicationId?.data?.formData;
-  const submissionFormSchema =
-    submissionData?.getSubmissionByApplicationId?.data?.formSchema;
+  const submission = submissionData?.getSubmissionByApplicationId?.data;
+  const submissionFormData = submission?.formData;
+  const submissionFormSchema = submission?.formSchema;
+
+  const receivedAt =
+    submission?.receivedAt ?? formData?.data?.form?.submittedAt ?? null;
+  const formattedReceivedDate = receivedAt
+    ? formatDateUTC(receivedAt, 'yyyy/MM/dd')
+    : null;
 
   useEffect(() => {
     if (submissionLoading) return;
@@ -90,33 +95,30 @@ export const Application: React.FC<ApplicationProps> = () => {
 
   return (
     <div className="application-container" id="main">
-      <div>
-        <h3
-          className="ml-3 task-head text-truncate fw-bold"
-          style={{ height: '45px' }}
-        >
-          {formJson?.title || 'Application Submission'}
-        </h3>
-        <div className="px-3 py-2">
-          {formJson?.components?.length > 0 ? (
-            <Form
-              src={formJson as any}
-              submission={formData}
-              options={
-                {
-                  hide: { submit: true },
-                  noAlerts: false,
-                  readOnly: true,
-                  viewAsHtml: true,
-                } as any
-              }
-            />
-          ) : (
-            <pre className="submission-data">
-              {JSON.stringify(formData?.data, null, 2)}
-            </pre>
-          )}
-        </div>
+      <div className="application-form-content">
+        {formattedReceivedDate && (
+          <p className="application-received-label">
+            Application Received: {formattedReceivedDate}
+          </p>
+        )}
+        {formJson?.components?.length > 0 ? (
+          <Form
+            src={formJson as any}
+            submission={formData}
+            options={
+              {
+                hide: { submit: true },
+                noAlerts: false,
+                readOnly: true,
+                viewAsHtml: true,
+              } as any
+            }
+          />
+        ) : (
+          <pre className="submission-data">
+            {JSON.stringify(formData?.data, null, 2)}
+          </pre>
+        )}
       </div>
     </div>
   );
