@@ -253,9 +253,7 @@
 }
 
 .application-received-label {
-  color: #313132;
-  font-family: 'Nunito Sans', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 1rem;
+  color: var(--typography-color-primary);
+  font: var(--typography-bold-body);
+  margin: 0 0 var(--layout-margin-medium);
 }
