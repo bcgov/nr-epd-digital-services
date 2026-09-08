@@ -542,6 +542,7 @@ export type Mutation = {
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
   updateApplicationServiceType: BaseHttpResponse;
+  updateApplicationStatus: BaseHttpResponse;
   updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
@@ -657,6 +658,12 @@ export type MutationUpdateApplicationNoteArgs = {
 export type MutationUpdateApplicationServiceTypeArgs = {
   applicationId: Scalars['Int']['input'];
   serviceTypeId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationUpdateApplicationStatusArgs = {
+  applicationId: Scalars['Int']['input'];
+  statusTypeId: Scalars['Int']['input'];
 };
 
 
