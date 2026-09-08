@@ -2,8 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDateUTC, getUser } from '../../../../../helpers/utility';
 import './Application.css';
-import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
+import {
+  useGetApplicationByIdQuery,
+  useGetApplicationStatusTypesQuery,
+  useGetSubmissionByApplicationIdQuery,
+  useUpdateApplicationStatusMutation,
+} from './Application.generated';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
+import { DropdownInput } from '../../../../../components/input-controls/InputControls';
+import { FormFieldType } from '../../../../../components/input-controls/IFormField';
+import '../../../../../components/form/Form.css';
 import { Form } from '@formio/react';
 import 'formiojs/dist/formio.full.min.css';
 import '../../../../../../../common-hosted-form-service/components/lib/use';
@@ -32,6 +40,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [formJson, setFormJson] = useState<FormJson>({ components: [] });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [statusTypeId, setStatusTypeId] = useState('');
 
   const applicationId = parseInt(id ?? '', 10);
 
@@ -42,9 +51,41 @@ export const Application: React.FC<ApplicationProps> = () => {
       skip: !applicationId,
     });
 
+  const { data: applicationData } = useGetApplicationByIdQuery({
+    variables: { applicationId },
+    skip: !applicationId,
+  });
+
+  const { data: statusTypesData, loading: statusTypesLoading } =
+    useGetApplicationStatusTypesQuery();
+
+  const [updateApplicationStatus, { loading: updatingStatus }] =
+    useUpdateApplicationStatusMutation();
+
+  const currentStatusId =
+    applicationData?.getApplicationDetailsById?.data?.currentStatus?.id;
+
+  useEffect(() => {
+    setStatusTypeId(currentStatusId ? String(currentStatusId) : '');
+  }, [currentStatusId]);
+
   const submission = submissionData?.getSubmissionByApplicationId?.data;
   const submissionFormData = submission?.formData;
   const submissionFormSchema = submission?.formSchema;
+  const chefsSubmissionId = submission?.chefsSubmissionId?.trim() || '';
+
+  const chefsAppBaseUrl = (
+    import.meta.env.VITE_CHEFS_APP_URL ||
+    window?._env_?.VITE_CHEFS_APP_URL ||
+    'https://submit.digital.gov.bc.ca'
+  ).replace(/\/$/, '');
+
+  const originalSubmissionUrl = chefsSubmissionId
+    ? `${chefsAppBaseUrl}/app/form/view?s=${encodeURIComponent(chefsSubmissionId)}`
+    : null;
+  const originalSubmissionLinkLabel = originalSubmissionUrl
+    ? originalSubmissionUrl.replace(/^https?:\/\//, '')
+    : null;
 
   const receivedAt =
     submission?.receivedAt ?? formData?.data?.form?.submittedAt ?? null;
@@ -76,32 +117,103 @@ export const Application: React.FC<ApplicationProps> = () => {
     setIsLoading(false);
   }, [submissionLoading, submissionFormData, submissionFormSchema]);
 
+  const handleStatusChange = async (value: string) => {
+    const nextStatusTypeId = String(value ?? '').trim();
+    if (!applicationId || nextStatusTypeId === statusTypeId) {
+      return;
+    }
+
+    const previousStatusTypeId = statusTypeId;
+    setStatusTypeId(nextStatusTypeId);
+
+    // Empty value is a valid choice, same as the All Applications filter.
+    if (!nextStatusTypeId) {
+      return;
+    }
+
+    try {
+      const result = await updateApplicationStatus({
+        variables: {
+          applicationId,
+          statusTypeId: Number(nextStatusTypeId),
+        },
+        refetchQueries: ['getApplicationById', 'getApplicationDetailsById'],
+      });
+
+      if (!result.data?.updateApplicationStatus?.success) {
+        setStatusTypeId(previousStatusTypeId);
+      }
+    } catch {
+      setStatusTypeId(previousStatusTypeId);
+    }
+  };
+
+  const statusOptions =
+    statusTypesData?.getAllStatusTypes?.map((status) => ({
+      key: String(status.id),
+      value: status.description,
+    })) ?? [];
+
   if (isLoading) {
     return <LoadingOverlay loading={isLoading} />;
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-message">
-          <p className="error-details">
-            Application was not submitted through the platform. Please check
-            your file records for reference.
-          </p>
-        </div>
-      </div>
-    );
   }
 
   return (
     <div className="application-container" id="main">
       <div className="application-form-content">
-        {formattedReceivedDate && (
-          <p className="application-received-label">
-            Application Received: {formattedReceivedDate}
+        <div
+          className="application-status-bar"
+          data-testid="application-status-bar"
+        >
+          {formattedReceivedDate && (
+            <p className="application-received-label">
+              Application Received: {formattedReceivedDate}
+            </p>
+          )}
+          <div className="application-status-bar__status">
+            <span className="application-status-bar__status-label">
+              Status:
+            </span>
+            <DropdownInput
+              type={FormFieldType.DropDown}
+              label=""
+              placeholder="Select Status"
+              value={statusTypeId}
+              isEditing
+              isDisabled={statusTypesLoading || updatingStatus}
+              options={statusOptions}
+              onChange={(value) => handleStatusChange(String(value ?? ''))}
+            />
+          </div>
+        </div>
+        {originalSubmissionUrl && originalSubmissionLinkLabel && (
+          <p
+            className="application-original-submission"
+            data-testid="original-submission-link"
+          >
+            <span className="application-original-submission__label">
+              Original Submission Link:
+            </span>{' '}
+            <a
+              href={originalSubmissionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="application-original-submission__link"
+            >
+              {originalSubmissionLinkLabel}
+            </a>
           </p>
         )}
-        {formJson?.components?.length > 0 ? (
+        {error ? (
+          <div className="error-container">
+            <div className="error-message">
+              <p className="error-details">
+                Application was not submitted through the platform. Please check
+                your file records for reference.
+              </p>
+            </div>
+          </div>
+        ) : formJson?.components?.length > 0 ? (
           <Form
             src={formJson as any}
             submission={formData}

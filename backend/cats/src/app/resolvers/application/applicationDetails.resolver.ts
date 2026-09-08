@@ -72,6 +72,48 @@ export class ApplicationDetailsResolver {
   }
 
   @Mutation(() => BaseHttpResponse, {
+    name: 'updateApplicationStatus',
+  })
+  async updateApplicationStatus(
+    @Args('applicationId', { type: () => Int }) applicationId: number,
+    @Args('statusTypeId', { type: () => Int }) statusTypeId: number,
+    @AuthenticatedUser() user: any,
+  ): Promise<BaseHttpResponse> {
+    this.loggerService.log(
+      'ApplicationDetailsResolver.updateApplicationStatus() start',
+    );
+
+    try {
+      await this.applicationService.updateApplicationStatus(
+        applicationId,
+        statusTypeId,
+        user,
+      );
+
+      this.loggerService.log(
+        'ApplicationDetailsResolver.updateApplicationStatus() RES:200 end',
+      );
+
+      return new BaseHttpResponse(
+        'Application status updated successfully',
+        HttpStatus.OK,
+        true,
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'ApplicationDetailsResolver.updateApplicationStatus() error',
+        error,
+      );
+
+      return new BaseHttpResponse(
+        error.message || 'Failed to update application status',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        false,
+      );
+    }
+  }
+
+  @Mutation(() => BaseHttpResponse, {
     name: 'updateApplicationServiceType',
   })
   async updateApplicationServiceType(

@@ -32,7 +32,7 @@ const mockApplicationData = {
           endDate: null,
           outcome: { description: 'Pending' },
           appType: { description: 'Contaminated Site Request' },
-          currentStatus: { description: 'In Review' },
+          currentStatus: { id: 2, description: 'In Review' },
           siteType: { description: 'Residential' },
           reviewProcess: { description: 'Standard' },
           serviceTypeId: 5,

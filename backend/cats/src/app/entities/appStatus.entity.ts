@@ -4,7 +4,6 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Application } from './application.entity';
@@ -65,7 +64,7 @@ export class AppStatus {
   @Column('bytea', { name: 'ts' })
   ts: Buffer;
 
-  @OneToOne(() => Application, (application) => application.appStatus, {
+  @ManyToOne(() => Application, (application) => application.appStatuses, {
     onDelete: 'CASCADE',
   })
   @JoinColumn([{ name: 'application_id', referencedColumnName: 'id' }])

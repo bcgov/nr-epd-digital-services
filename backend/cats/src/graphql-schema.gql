@@ -853,6 +853,7 @@ type Mutation {
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
+  updateApplicationStatus(applicationId: Int!, statusTypeId: Int!): BaseHttpResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!
