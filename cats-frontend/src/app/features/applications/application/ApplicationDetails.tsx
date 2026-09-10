@@ -1,14 +1,21 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { useLocation, useNavigate, useParams, Outlet } from 'react-router-dom';
 import PageContainer from '../../../components/simple/PageContainer';
 import NavigationPills from '../../../components/navigation/navigationpills/NavigationPills';
 import CustomLabel from '../../../components/simple/CustomLabel';
 import NavigationBar from '../../../components/navigation-bar/NavigationBar';
+import Actions from '../../../components/action/Actions';
 import { useGetHeaderDetailsByApplicationIdQuery } from './ApplicationDetails.generated';
 import styles from './ApplicationDetails.module.css';
 import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
 import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
+import {
+  applicationActionItems,
+  buildSiteRegistryEditTabUrl,
+  getSiteRegistryTabForAction,
+} from './ApplicationActionsConfig';
+import { notifyError } from '../../../components/alert/Alert';
 
 const ApplicationDetails = () => {
   const location = useLocation();
@@ -36,6 +43,38 @@ const ApplicationDetails = () => {
   const onClickBackButton = () => {
     navigate(`/${fromScreenRef.current.replace(/\s+/g, '').toLowerCase()}`);
   };
+
+  const handleActionClick = useCallback(
+    (value: string) => {
+      const tab = getSiteRegistryTabForAction(value);
+      if (!tab) {
+        return;
+      }
+
+      const linkedSiteId = application?.siteId;
+      if (linkedSiteId == null) {
+        notifyError(
+          'This application has no Site ID. Create or link a site in Site Registry first, then try again.',
+        );
+        return;
+      }
+
+      const url = buildSiteRegistryEditTabUrl({
+        siteId: linkedSiteId,
+        tab,
+        applicationId: application?.id ?? applicationId,
+      });
+      if (!url) {
+        notifyError(
+          'Site Registry URL is not configured. Contact support or check VITE_SITE_REGISTRY_URL.',
+        );
+        return;
+      }
+
+      window.open(url, '_blank', 'noopener,noreferrer');
+    },
+    [application?.id, application?.siteId, applicationId],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -166,7 +205,16 @@ const ApplicationDetails = () => {
             )}
           </div>
         )}
-        <NavigationPills items={tabItems} />
+        <NavigationPills
+          items={tabItems}
+          actions={
+            <Actions
+              label="Actions"
+              items={applicationActionItems}
+              onItemClick={handleActionClick}
+            />
+          }
+        />
         <div className="mt-4">
           <Outlet />
         </div>
