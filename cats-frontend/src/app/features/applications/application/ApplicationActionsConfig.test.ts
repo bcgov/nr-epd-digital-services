@@ -19,9 +19,9 @@ describe('ApplicationActionsConfig', () => {
     });
 
     it('detects SDS by description', () => {
-      expect(
-        isSdsAppType({ description: 'Site Disclosure Statement' }),
-      ).toBe(true);
+      expect(isSdsAppType({ description: 'Site Disclosure Statement' })).toBe(
+        true,
+      );
     });
 
     it('returns false for other app types', () => {
