@@ -2,12 +2,59 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   ApplicationAction,
   buildSiteRegistryEditTabUrl,
+  getApplicationActionItems,
   getSiteRegistryTabForAction,
+  isSdsAppType,
 } from './ApplicationActionsConfig';
 
 describe('ApplicationActionsConfig', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
+  });
+
+  describe('isSdsAppType', () => {
+    it('detects SDS by abbrev', () => {
+      expect(isSdsAppType({ abbrev: 'SDS' })).toBe(true);
+      expect(isSdsAppType({ abbrev: 'sds' })).toBe(true);
+    });
+
+    it('detects SDS by description', () => {
+      expect(
+        isSdsAppType({ description: 'Site Disclosure Statement' }),
+      ).toBe(true);
+    });
+
+    it('returns false for other app types', () => {
+      expect(isSdsAppType({ abbrev: 'NOM' })).toBe(false);
+      expect(isSdsAppType({ abbrev: 'CSSA' })).toBe(false);
+      expect(isSdsAppType(null)).toBe(false);
+    });
+  });
+
+  describe('getApplicationActionItems', () => {
+    it('returns only disclosure action for SDS', () => {
+      expect(getApplicationActionItems({ abbrev: 'SDS' })).toEqual([
+        {
+          label: 'Add Disclosures to Site Registry',
+          value: ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
+        },
+      ]);
+    });
+
+    it('returns only notation action for non-SDS forms', () => {
+      expect(getApplicationActionItems({ abbrev: 'NOM' })).toEqual([
+        {
+          label: 'Add Notation to Site Registry',
+          value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+      ]);
+      expect(getApplicationActionItems(undefined)).toEqual([
+        {
+          label: 'Add Notation to Site Registry',
+          value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+      ]);
+    });
   });
 
   describe('getSiteRegistryTabForAction', () => {
