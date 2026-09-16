@@ -15,10 +15,12 @@ jest.mock('graphql-request', () => {
 });
 
 const mockFindSiteBySiteIdLoggedInUser = jest.fn();
+const mockFindSiteBySiteIdForService = jest.fn();
 
 jest.mock('./graphql/Site.generated', () => ({
   getSdk: jest.fn(() => ({
     findSiteBySiteIdLoggedInUser: mockFindSiteBySiteIdLoggedInUser,
+    findSiteBySiteIdForService: mockFindSiteBySiteIdForService,
   })),
 }));
 
@@ -109,6 +111,55 @@ describe('SiteService', () => {
       mockFindSiteBySiteIdLoggedInUser.mockRejectedValue(mockError);
 
       await expect(service.getSiteById(mockSiteId)).rejects.toThrow(mockError);
+    });
+  });
+
+  describe('getSiteByIdForService', () => {
+    it('should fetch site data through the service-guarded query', async () => {
+      const mockSiteId = '12345';
+      const mockToken = 'fake-jwt-token';
+
+      (axios.post as jest.Mock).mockResolvedValue({
+        data: {
+          access_token: mockToken,
+          expires_in: 3600,
+        },
+      });
+
+      const mockResponse = {
+        findSiteBySiteIdForService: {
+          data: {
+            id: mockSiteId,
+            addrLine_1: '123 Test St',
+            city: 'Victoria',
+          },
+        },
+      };
+
+      mockFindSiteBySiteIdForService.mockResolvedValue(mockResponse);
+
+      const result = await service.getSiteByIdForService(mockSiteId);
+
+      expect(mockFindSiteBySiteIdForService).toHaveBeenCalledWith({
+        siteId: mockSiteId,
+      });
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should propagate errors from the service-guarded query', async () => {
+      (axios.post as jest.Mock).mockResolvedValue({
+        data: {
+          access_token: 'fake-jwt-token',
+          expires_in: 3600,
+        },
+      });
+
+      const mockError = new Error('SITE unavailable');
+      mockFindSiteBySiteIdForService.mockRejectedValue(mockError);
+
+      await expect(service.getSiteByIdForService('12345')).rejects.toThrow(
+        mockError,
+      );
     });
   });
 });

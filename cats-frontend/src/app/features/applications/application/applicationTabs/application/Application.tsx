@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import { formatDateUTC, getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
+import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
+import { isSdsAppType } from '../../../../navigation/NavigationPillsConfig';
+import { LinkToSiteId } from './LinkToSiteId';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import 'formiojs/dist/formio.full.min.css';
@@ -44,6 +47,14 @@ export const Application: React.FC<ApplicationProps> = () => {
       fetchPolicy: 'network-only',
       skip: !applicationId,
     });
+
+  const { data: headerData } = useGetHeaderDetailsByApplicationIdQuery({
+    variables: { applicationId },
+    skip: !applicationId,
+  });
+
+  const application = headerData?.getApplicationDetailsById?.data;
+  const showLinkPanel = applicationId > 0 && isSdsAppType(application?.appType);
 
   const submission = submissionData?.getSubmissionByApplicationId?.data;
   const submissionFormData = submission?.formData;
@@ -102,46 +113,64 @@ export const Application: React.FC<ApplicationProps> = () => {
     return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-message">
-          <p className="error-details">
-            Application was not submitted through the platform. Please check
-            your file records for reference.
-          </p>
+  return (
+    <>
+      {showLinkPanel && (
+        <div className="application-link-area">
+          {formattedReceivedDate && (
+            <p className="application-received-label">
+              Application Received: {formattedReceivedDate}
+            </p>
+          )}
+          <LinkToSiteId
+            key={applicationId}
+            applicationId={applicationId}
+            linkedSiteId={application?.siteId ?? null}
+            linkedSiteAddress={application?.siteAddress ?? null}
+            linkedSiteCity={application?.siteCity ?? null}
+          />
+        </div>
+      )}
+      <div className="application-container" id="main">
+        <div className="application-form-content">
+          {!showLinkPanel && formattedReceivedDate && (
+            <p className="application-received-label">
+              Application Received: {formattedReceivedDate}
+            </p>
+          )}
+          {error ? (
+            <div className="error-container">
+              <div className="error-message">
+                <p className="error-details">
+                  Application was not submitted through the platform. Please
+                  check your file records for reference.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {formJson?.components?.length > 0 ? (
+                <Form
+                  src={formJson as any}
+                  submission={formData}
+                  options={
+                    {
+                      hide: { submit: true },
+                      noAlerts: false,
+                      readOnly: true,
+                      viewAsHtml: true,
+                    } as any
+                  }
+                />
+              ) : (
+                <pre className="submission-data">
+                  {JSON.stringify(formData?.data, null, 2)}
+                </pre>
+              )}
+            </>
+          )}
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="application-container" id="main">
-      <div className="application-form-content">
-        {formattedReceivedDate && (
-          <p className="application-received-label">
-            Application Received: {formattedReceivedDate}
-          </p>
-        )}
-        {formJson?.components?.length > 0 ? (
-          <Form
-            src={formJson as any}
-            submission={formData}
-            options={
-              {
-                hide: { submit: true },
-                noAlerts: false,
-                readOnly: true,
-                viewAsHtml: true,
-              } as any
-            }
-          />
-        ) : (
-          <pre className="submission-data">
-            {JSON.stringify(formData?.data, null, 2)}
-          </pre>
-        )}
-      </div>
-    </div>
+    </>
   );
 };

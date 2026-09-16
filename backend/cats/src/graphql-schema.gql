@@ -340,6 +340,20 @@ type ApplicationStatusResponse {
   data: [ViewApplicationStatus!]
 }
 
+type LinkedApplicationSiteDto {
+  siteId: Int
+  siteAddress: String
+  siteCity: String
+}
+
+type LinkApplicationSiteIdResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: LinkedApplicationSiteDto
+}
+
 type ApplicationSubmissionDto {
   id: String!
   applicationId: Int
@@ -853,6 +867,7 @@ type Mutation {
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
+  linkApplicationSiteId(applicationId: Int!, siteId: String): LinkApplicationSiteIdResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!

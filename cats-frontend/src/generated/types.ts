@@ -490,6 +490,22 @@ export type InvoicesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type LinkApplicationSiteIdResponse = {
+  __typename?: 'LinkApplicationSiteIdResponse';
+  data?: Maybe<LinkedApplicationSiteDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type LinkedApplicationSiteDto = {
+  __typename?: 'LinkedApplicationSiteDto';
+  siteAddress?: Maybe<Scalars['String']['output']>;
+  siteCity?: Maybe<Scalars['String']['output']>;
+  siteId?: Maybe<Scalars['Int']['output']>;
+};
+
 export type ManualIntakeFormDto = {
   __typename?: 'ManualIntakeFormDto';
   appTypeAbbrev: Scalars['String']['output'];
@@ -536,6 +552,7 @@ export type Mutation = {
   deleteInvoice: InvoiceResponse;
   deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
+  linkApplicationSiteId: LinkApplicationSiteIdResponse;
   processChefsSubmissionManually: ManualIntakeResponse;
   saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
@@ -623,6 +640,12 @@ export type MutationDeleteObjectArgs = {
 
 export type MutationDeletePersonNoteArgs = {
   notes: Array<DeletePersonNote>;
+};
+
+
+export type MutationLinkApplicationSiteIdArgs = {
+  applicationId: Scalars['Int']['input'];
+  siteId?: InputMaybe<Scalars['String']['input']>;
 };
 
 

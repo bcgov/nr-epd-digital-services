@@ -107,4 +107,26 @@ export class SiteService implements OnModuleInit {
       throw error;
     }
   }
+
+  async getSiteByIdForService(siteId: string) {
+    this.loggerService.log('SiteService.getSiteByIdForService() start');
+
+    try {
+      this.siteSdk = await this.getSiteSdk();
+      const siteData = await this.siteSdk.findSiteBySiteIdForService({
+        siteId,
+      });
+
+      this.loggerService.log('SiteService.getSiteByIdForService() end');
+      return siteData;
+    } catch (error: unknown) {
+      this.loggerService.error(
+        `Error in getSiteByIdForService: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        error.toString(),
+      );
+      throw error;
+    }
+  }
 }

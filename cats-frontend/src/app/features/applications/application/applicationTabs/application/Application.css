@@ -50,6 +50,18 @@
     var(--layout-padding-xlarge) var(--layout-margin-xxlarge);
 }
 
+.application-link-area {
+  padding: var(--layout-padding-medium) var(--layout-margin-xxlarge);
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow:
+    0 3px 3px -2px rgba(0, 0, 0, 0.2),
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  margin-bottom: var(--layout-margin-large);
+}
+
 .bg-default {
   background-color: #38598a;
   border: #38598a;
