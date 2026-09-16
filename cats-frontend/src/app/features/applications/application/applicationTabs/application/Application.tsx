@@ -6,6 +6,7 @@ import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
 import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
 import { isSdsAppType } from '../../../../navigation/NavigationPillsConfig';
 import { LinkToSiteId } from './LinkToSiteId';
+import { SdsDisclosurePreview } from './SdsDisclosurePreview';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import 'formiojs/dist/formio.full.min.css';
@@ -116,20 +117,25 @@ export const Application: React.FC<ApplicationProps> = () => {
   return (
     <>
       {showLinkPanel && (
-        <div className="application-link-area">
-          {formattedReceivedDate && (
-            <p className="application-received-label">
-              Application Received: {formattedReceivedDate}
-            </p>
-          )}
-          <LinkToSiteId
-            key={applicationId}
-            applicationId={applicationId}
-            linkedSiteId={application?.siteId ?? null}
-            linkedSiteAddress={application?.siteAddress ?? null}
-            linkedSiteCity={application?.siteCity ?? null}
-          />
-        </div>
+        <>
+          <div className="application-link-area">
+            {formattedReceivedDate && (
+              <p className="application-received-label">
+                Application Received: {formattedReceivedDate}
+              </p>
+            )}
+            <LinkToSiteId
+              key={applicationId}
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId ?? null}
+              linkedSiteAddress={application?.siteAddress ?? null}
+              linkedSiteCity={application?.siteCity ?? null}
+            />
+          </div>
+          <div className="application-disclosure-area">
+            <SdsDisclosurePreview applicationId={applicationId} />
+          </div>
+        </>
       )}
       <div className="application-container" id="main">
         <div className="application-form-content">

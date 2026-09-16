@@ -354,6 +354,31 @@ type LinkApplicationSiteIdResponse {
   data: LinkedApplicationSiteDto
 }
 
+type Schedule2ReferenceDto {
+  code: String!
+  description: String
+}
+
+type SdsDisclosureDto {
+  siteRegDateRecd: String
+  dateCompleted: String
+  localAuthDateRecd: String
+  rwmDateDecision: String
+  siteRegDateEntered: String
+  schedule2References: [Schedule2ReferenceDto!]!
+  plannedActivityComment: String
+  siteDisclosureComment: String
+  govDocumentsComment: String
+}
+
+type SdsDisclosurePreviewResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: SdsDisclosureDto
+}
+
 type ApplicationSubmissionDto {
   id: String!
   applicationId: Int
@@ -784,6 +809,7 @@ type Query {
   getPersonNotesByPersonId(id: Float!): PersonNoteResponse!
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
+  getSdsDisclosurePreview(applicationId: Int!): SdsDisclosurePreviewResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
   getSubmissionByApplicationId(applicationId: Int!): ApplicationSubmissionResponse!
   getAllStatusTypes: [StatusType!]!

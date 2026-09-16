@@ -50,7 +50,8 @@
     var(--layout-padding-xlarge) var(--layout-margin-xxlarge);
 }
 
-.application-link-area {
+.application-link-area,
+.application-disclosure-area {
   padding: var(--layout-padding-medium) var(--layout-margin-xxlarge);
   background-color: #fff;
   border: 1px solid #dee2e6;

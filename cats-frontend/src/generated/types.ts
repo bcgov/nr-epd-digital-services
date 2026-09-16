@@ -820,6 +820,7 @@ export type Query = {
   getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   getRecentViewedApplications: DashboardResponse;
+  getSdsDisclosurePreview: SdsDisclosurePreviewResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
@@ -913,6 +914,11 @@ export type QueryGetParticipantNamesArgs = {
 
 export type QueryGetPersonNotesByPersonIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetSdsDisclosurePreviewArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
@@ -1017,6 +1023,34 @@ export type RoleWithPermissions = {
 export type SaveColumnPreferencesDto = {
   columns: Array<ColumnConfigInput>;
   page: Scalars['String']['input'];
+};
+
+export type Schedule2ReferenceDto = {
+  __typename?: 'Schedule2ReferenceDto';
+  code: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+};
+
+export type SdsDisclosureDto = {
+  __typename?: 'SdsDisclosureDto';
+  dateCompleted?: Maybe<Scalars['String']['output']>;
+  govDocumentsComment?: Maybe<Scalars['String']['output']>;
+  localAuthDateRecd?: Maybe<Scalars['String']['output']>;
+  plannedActivityComment?: Maybe<Scalars['String']['output']>;
+  rwmDateDecision?: Maybe<Scalars['String']['output']>;
+  schedule2References: Array<Schedule2ReferenceDto>;
+  siteDisclosureComment?: Maybe<Scalars['String']['output']>;
+  siteRegDateEntered?: Maybe<Scalars['String']['output']>;
+  siteRegDateRecd?: Maybe<Scalars['String']['output']>;
+};
+
+export type SdsDisclosurePreviewResponse = {
+  __typename?: 'SdsDisclosurePreviewResponse';
+  data?: Maybe<SdsDisclosureDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type SearchPersonResponse = {
