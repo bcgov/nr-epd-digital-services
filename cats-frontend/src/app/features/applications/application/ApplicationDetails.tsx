@@ -11,8 +11,8 @@ import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
 import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
 import {
-  applicationActionItems,
   buildSiteRegistryEditTabUrl,
+  getApplicationActionItems,
   getSiteRegistryTabForAction,
 } from './ApplicationActionsConfig';
 import { notifyError } from '../../../components/alert/Alert';
@@ -37,6 +37,11 @@ const ApplicationDetails = () => {
 
   const tabItems = useMemo(
     () => getApplicationNavigationItems(application?.appType),
+    [application?.appType],
+  );
+
+  const actionItems = useMemo(
+    () => getApplicationActionItems(application?.appType),
     [application?.appType],
   );
 
@@ -210,7 +215,7 @@ const ApplicationDetails = () => {
           actions={
             <Actions
               label="Actions"
-              items={applicationActionItems}
+              items={actionItems}
               onItemClick={handleActionClick}
             />
           }
