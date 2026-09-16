@@ -16,6 +16,14 @@
 }
 
 .applicationIdLbl {
+  color: #313132;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.applicationIdValue {
   font-weight: 400;
 }
 

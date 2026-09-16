@@ -13,6 +13,7 @@ import {
 const NavigationPills: React.FC<INavigationPills> = ({
   disabled = false,
   items,
+  actions,
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -100,70 +101,78 @@ const NavigationPills: React.FC<INavigationPills> = ({
 
   return (
     <div>
-      <div className="d-flex d-xxl-flex d-xl-flex gap-2 d-none">
-        {navigationItems.map((item) => (
-          <Button
-            key={item.value}
-            size="small"
-            disabled={disabled && item.path !== currentPath}
-            variant={item.path === currentPath ? 'primary' : 'tertiary'}
-            onClick={() => handlePillClick(item.value)}
-          >
-            {item.label}
-          </Button>
-        ))}
+      <div className="d-none d-xl-flex justify-content-between align-items-center w-100 gap-2">
+        <div className="d-flex gap-2 flex-wrap">
+          {navigationItems.map((item) => (
+            <Button
+              key={item.value}
+              size="small"
+              disabled={disabled && item.path !== currentPath}
+              variant={item.path === currentPath ? 'primary' : 'tertiary'}
+              onClick={() => handlePillClick(item.value)}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </div>
+        {actions}
       </div>
-      <div className="d-flex d-xl-none justify-content-between align-items-center w-100">
-        <div className="d-flex justify-content-between w-100 flex-column flex-sm-row">
-          <div>
-            <Actions
-              label="Select Page"
-              items={navigationItems}
-              onItemClick={(value) => handlePillClick(value)}
-              customCssToggleBtn={'custom-nav-btn'}
-              customCssMenu={'custom-nav-action-menu'}
-              disable={disabled}
-              toggleButtonVariant={'secondary'}
-              // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
-            />
-          </div>
-          <div>
-            <div className="d-flex align-items-center">
-              <div className="m-0">
-                <span
-                  className={`custom-nav-carousel-left-icon ${isActiveTabFirstPosition() ? 'd-none' : ''}`}
-                  aria-hidden="true"
-                  onClick={() =>
-                    !disabled &&
-                    !isActiveTabFirstPosition() &&
-                    handlePillClick(getPreviousElement())
-                  }
-                ></span>
-              </div>
-              <div className="ps-3 pe-2 m-0 p-0 w-100 text-center">
-                {navigationItems.map(
-                  (tab) =>
-                    tab.path === currentPath && (
-                      <Button
-                        key={tab.value}
-                        // size={isMobileScreen ? 'medium' : 'small'}
-                        className="custom-nav-pill"
-                      >
-                        {tab.label}
-                      </Button>
-                    ),
-                )}
-              </div>
-              <div className="m-0">
-                <span
-                  className={`custom-nav-carousel-right-icon m-0 ${isActiveTabLastPosition() ? 'd-none' : ''}`}
-                  aria-hidden="true"
-                  onClick={() =>
-                    !disabled &&
-                    !isActiveTabLastPosition() &&
-                    handlePillClick(getNextElement())
-                  }
-                ></span>
+      <div className="d-flex d-xl-none flex-column gap-2 w-100">
+        {actions && (
+          <div className="d-flex justify-content-end w-100">{actions}</div>
+        )}
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <div className="d-flex justify-content-between w-100 flex-column flex-sm-row">
+            <div>
+              <Actions
+                label="Select Page"
+                items={navigationItems}
+                onItemClick={(value) => handlePillClick(value)}
+                customCssToggleBtn={'custom-nav-btn'}
+                customCssMenu={'custom-nav-action-menu'}
+                disable={disabled}
+                toggleButtonVariant={'secondary'}
+                // toggleButtonSize={isMobileScreen ? 'medium' : 'small'}
+              />
+            </div>
+            <div>
+              <div className="d-flex align-items-center">
+                <div className="m-0">
+                  <span
+                    className={`custom-nav-carousel-left-icon ${isActiveTabFirstPosition() ? 'd-none' : ''}`}
+                    aria-hidden="true"
+                    onClick={() =>
+                      !disabled &&
+                      !isActiveTabFirstPosition() &&
+                      handlePillClick(getPreviousElement())
+                    }
+                  ></span>
+                </div>
+                <div className="ps-3 pe-2 m-0 p-0 w-100 text-center">
+                  {navigationItems.map(
+                    (tab) =>
+                      tab.path === currentPath && (
+                        <Button
+                          key={tab.value}
+                          // size={isMobileScreen ? 'medium' : 'small'}
+                          className="custom-nav-pill"
+                        >
+                          {tab.label}
+                        </Button>
+                      ),
+                  )}
+                </div>
+                <div className="m-0">
+                  <span
+                    className={`custom-nav-carousel-right-icon m-0 ${isActiveTabLastPosition() ? 'd-none' : ''}`}
+                    aria-hidden="true"
+                    onClick={() =>
+                      !disabled &&
+                      !isActiveTabLastPosition() &&
+                      handlePillClick(getNextElement())
+                    }
+                  ></span>
+                </div>
               </div>
             </div>
           </div>
