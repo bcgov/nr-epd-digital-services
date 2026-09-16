@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ResponseDto } from '../response/response.dto';
 
 @ObjectType()
@@ -41,7 +41,22 @@ export class SdsDisclosureDto {
 }
 
 @ObjectType()
-export class SdsDisclosurePreviewResponse extends ResponseDto {
+export class SdsDisclosurePreviewDto {
   @Field(() => SdsDisclosureDto, { nullable: true })
-  data: SdsDisclosureDto | null;
+  disclosure: SdsDisclosureDto | null;
+
+  @Field(() => Int, { nullable: true })
+  siteId: number | null;
+
+  @Field(() => Int, { nullable: true })
+  lastPushedSiteId: number | null;
+
+  @Field({ nullable: true })
+  lastPushedAt: string | null;
+}
+
+@ObjectType()
+export class SdsDisclosurePreviewResponse extends ResponseDto {
+  @Field(() => SdsDisclosurePreviewDto, { nullable: true })
+  data: SdsDisclosurePreviewDto | null;
 }

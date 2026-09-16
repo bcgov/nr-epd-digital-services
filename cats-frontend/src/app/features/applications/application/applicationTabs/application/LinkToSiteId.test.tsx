@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { LinkToSiteId } from './LinkToSiteId';
 import { LinkApplicationSiteIdDocument } from './LinkToSiteId.generated';
@@ -182,5 +182,88 @@ describe('LinkToSiteId', () => {
       'Linked to Site ID 12345 — 123 Test St, Victoria',
     );
     expect(screen.queryByText(UNLINKED_MESSAGE)).not.toBeInTheDocument();
+  });
+
+  it('asks for confirmation before changing the Site ID after a push', async () => {
+    const mutationMock = {
+      request: {
+        query: LinkApplicationSiteIdDocument,
+        variables: { applicationId: 1, siteId: '54321' },
+      },
+      result: {
+        data: {
+          linkApplicationSiteId: {
+            message: 'Site ID linked successfully',
+            httpStatusCode: 200,
+            success: true,
+            data: {
+              siteId: 54321,
+              siteAddress: '500 New St',
+              siteCity: 'Vancouver',
+            },
+          },
+        },
+      },
+    };
+
+    renderPanel([mutationMock, headerMock], {
+      linkedSiteId: 12345,
+      hasBeenPushed: true,
+    });
+
+    fireEvent.change(screen.getByLabelText('Link to Site ID'), {
+      target: { value: '54321' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(
+      await screen.findByTestId('change-site-confirmation'),
+    ).toHaveTextContent('stay on the previously linked site');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('site-id-current')).toHaveTextContent(
+        'Linked to Site ID 54321',
+      ),
+    );
+  });
+
+  it('does not change the Site ID when the change confirmation is cancelled', async () => {
+    const mutationMock = {
+      request: {
+        query: LinkApplicationSiteIdDocument,
+        variables: { applicationId: 1, siteId: '54321' },
+      },
+      result: {
+        data: {
+          linkApplicationSiteId: {
+            message: 'Site ID linked successfully',
+            httpStatusCode: 200,
+            success: true,
+            data: {
+              siteId: 54321,
+              siteAddress: '500 New St',
+              siteCity: 'Vancouver',
+            },
+          },
+        },
+      },
+    };
+
+    renderPanel([mutationMock, headerMock], {
+      linkedSiteId: 12345,
+      hasBeenPushed: true,
+    });
+
+    fireEvent.change(screen.getByLabelText('Link to Site ID'), {
+      target: { value: '54321' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel' }));
+
+    expect(screen.getByTestId('site-id-current')).toHaveTextContent(
+      'Linked to Site ID 12345',
+    );
   });
 });

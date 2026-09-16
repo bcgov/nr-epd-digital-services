@@ -17,6 +17,14 @@ export type FindSiteBySiteIdForServiceQueryVariables = Types.Exact<{
 
 export type FindSiteBySiteIdForServiceQuery = { __typename?: 'Query', findSiteBySiteIdForService: { __typename?: 'FetchSiteDetail', data?: { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null } | null } };
 
+export type SaveSiteDisclosureForServiceMutationVariables = Types.Exact<{
+  siteId: Types.Scalars['String']['input'];
+  input: Types.SiteDisclosureServiceInputDto;
+}>;
+
+
+export type SaveSiteDisclosureForServiceMutation = { __typename?: 'Mutation', saveSiteDisclosureForService: { __typename?: 'SaveSiteDisclosureForServiceResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, errorCode?: string | null, data?: { __typename?: 'SiteProfilesDTO', id: string } | null } };
+
 export type SiteDetailsFragment = { __typename?: 'Sites', id: string, longdeg?: number | null, latdeg?: number | null, addrLine_1: string, addrLine_2?: string | null, addrLine_3?: string | null, addrLine_4?: string | null, city: string, commonName: string, siteRiskCode: string, whenCreated: any, whenUpdated?: any | null };
 
 export const SiteDetailsFragmentDoc = gql`
@@ -58,6 +66,19 @@ export const FindSiteBySiteIdForServiceDocument = gql`
   }
 }
     ${SiteDetailsFragmentDoc}`;
+export const SaveSiteDisclosureForServiceDocument = gql`
+    mutation saveSiteDisclosureForService($siteId: String!, $input: SiteDisclosureServiceInputDTO!) {
+  saveSiteDisclosureForService(siteId: $siteId, input: $input) {
+    message
+    httpStatusCode
+    success
+    errorCode
+    data {
+      id
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -71,6 +92,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     findSiteBySiteIdForService(variables: FindSiteBySiteIdForServiceQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FindSiteBySiteIdForServiceQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindSiteBySiteIdForServiceQuery>({ document: FindSiteBySiteIdForServiceDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'findSiteBySiteIdForService', 'query', variables);
+    },
+    saveSiteDisclosureForService(variables: SaveSiteDisclosureForServiceMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SaveSiteDisclosureForServiceMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SaveSiteDisclosureForServiceMutation>({ document: SaveSiteDisclosureForServiceDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'saveSiteDisclosureForService', 'mutation', variables);
     }
   };
 }

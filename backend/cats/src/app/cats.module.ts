@@ -67,6 +67,8 @@ import { ApplicationSiteLinkResolver } from './resolvers/application/application
 import { ApplicationSiteLinkService } from './services/application/applicationSiteLink.service';
 import { SdsDisclosurePreviewResolver } from './resolvers/application/sdsDisclosurePreview.resolver';
 import { SdsDisclosurePreviewService } from './services/application/sdsDisclosurePreview.service';
+import { SdsDisclosurePushResolver } from './resolvers/application/sdsDisclosurePush.resolver';
+import { SdsDisclosurePushService } from './services/application/sdsDisclosurePush.service';
 import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
 import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
@@ -207,6 +209,8 @@ import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
     ApplicationSiteLinkService,
     SdsDisclosurePreviewResolver,
     SdsDisclosurePreviewService,
+    SdsDisclosurePushResolver,
+    SdsDisclosurePushService,
     ApplicationDetailsResolver,
     AppTypeService,
     StatusTypeService,

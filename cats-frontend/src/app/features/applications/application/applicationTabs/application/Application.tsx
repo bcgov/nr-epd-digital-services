@@ -39,6 +39,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [componentsReady, setComponentsReady] = useState(false);
+  const [hasPushed, setHasPushed] = useState(false);
 
   const applicationId = parseInt(id ?? '', 10);
 
@@ -130,10 +131,15 @@ export const Application: React.FC<ApplicationProps> = () => {
               linkedSiteId={application?.siteId ?? null}
               linkedSiteAddress={application?.siteAddress ?? null}
               linkedSiteCity={application?.siteCity ?? null}
+              hasBeenPushed={hasPushed}
             />
           </div>
           <div className="application-disclosure-area">
-            <SdsDisclosurePreview applicationId={applicationId} />
+            <SdsDisclosurePreview
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId}
+              onPushStatusChange={setHasPushed}
+            />
           </div>
         </>
       )}

@@ -8,7 +8,7 @@ export type GetSdsDisclosurePreviewQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetSdsDisclosurePreviewQuery = { __typename?: 'Query', getSdsDisclosurePreview: { __typename?: 'SdsDisclosurePreviewResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, data?: { __typename?: 'SdsDisclosureDto', siteRegDateRecd?: string | null, dateCompleted?: string | null, localAuthDateRecd?: string | null, rwmDateDecision?: string | null, siteRegDateEntered?: string | null, plannedActivityComment?: string | null, siteDisclosureComment?: string | null, govDocumentsComment?: string | null, schedule2References: Array<{ __typename?: 'Schedule2ReferenceDto', code: string, description?: string | null }> } | null } };
+export type GetSdsDisclosurePreviewQuery = { __typename?: 'Query', getSdsDisclosurePreview: { __typename?: 'SdsDisclosurePreviewResponse', message?: string | null, httpStatusCode?: number | null, success?: boolean | null, data?: { __typename?: 'SdsDisclosurePreviewDto', siteId?: number | null, lastPushedSiteId?: number | null, lastPushedAt?: string | null, disclosure?: { __typename?: 'SdsDisclosureDto', siteRegDateRecd?: string | null, dateCompleted?: string | null, localAuthDateRecd?: string | null, rwmDateDecision?: string | null, siteRegDateEntered?: string | null, plannedActivityComment?: string | null, siteDisclosureComment?: string | null, govDocumentsComment?: string | null, schedule2References: Array<{ __typename?: 'Schedule2ReferenceDto', code: string, description?: string | null }> } | null } | null } };
 
 
 export const GetSdsDisclosurePreviewDocument = gql`
@@ -18,18 +18,23 @@ export const GetSdsDisclosurePreviewDocument = gql`
     httpStatusCode
     success
     data {
-      siteRegDateRecd
-      dateCompleted
-      localAuthDateRecd
-      rwmDateDecision
-      siteRegDateEntered
-      schedule2References {
-        code
-        description
+      siteId
+      lastPushedSiteId
+      lastPushedAt
+      disclosure {
+        siteRegDateRecd
+        dateCompleted
+        localAuthDateRecd
+        rwmDateDecision
+        siteRegDateEntered
+        schedule2References {
+          code
+          description
+        }
+        plannedActivityComment
+        siteDisclosureComment
+        govDocumentsComment
       }
-      plannedActivityComment
-      siteDisclosureComment
-      govDocumentsComment
     }
   }
 }

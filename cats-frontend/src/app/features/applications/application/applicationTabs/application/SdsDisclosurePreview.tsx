@@ -1,17 +1,34 @@
-import { useGetSdsDisclosurePreviewQuery } from './SdsDisclosurePreview.generated';
+import { useEffect, useState } from 'react';
+import { Button } from '../../../../../components/button/Button';
 import { formatDateUTC } from '../../../../../helpers/utility';
+import { buildSiteRegistryDisclosureTabUrl } from '../../ApplicationActionsConfig';
+import { SdsDisclosureDetails } from './SdsDisclosureDetails';
+import { PushSiteDisclosureModal } from './PushSiteDisclosureModal';
+import { useGetSdsDisclosurePreviewQuery } from './SdsDisclosurePreview.generated';
 import styles from './SdsDisclosurePreview.module.css';
 
 type SdsDisclosurePreviewProps = {
   applicationId: number;
+  linkedSiteId?: number | null;
+  onPushStatusChange?: (hasBeenPushed: boolean) => void;
 };
 
-const formatDisclosureDate = (value?: string | null): string =>
-  value ? formatDateUTC(value, 'yyyy/MM/dd') : '';
+type LastPush = {
+  siteId: number;
+  lastPushedAt: string;
+};
+
+const formatPushedAt = (value: string): string =>
+  formatDateUTC(value, 'yyyy/MM/dd HH:mm');
 
 export const SdsDisclosurePreview: React.FC<SdsDisclosurePreviewProps> = ({
   applicationId,
+  linkedSiteId: linkedSiteIdProp,
+  onPushStatusChange,
 }) => {
+  const [lastPush, setLastPush] = useState<LastPush | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { data, loading, error } = useGetSdsDisclosurePreviewQuery({
     variables: { applicationId },
     fetchPolicy: 'network-only',
@@ -19,8 +36,20 @@ export const SdsDisclosurePreview: React.FC<SdsDisclosurePreviewProps> = ({
   });
 
   const response = data?.getSdsDisclosurePreview;
-  const disclosure = response?.data;
-  const schedule2References = disclosure?.schedule2References ?? [];
+  const preview = response?.data;
+  const disclosure = preview?.disclosure;
+
+  const linkedSiteId =
+    linkedSiteIdProp !== undefined
+      ? linkedSiteIdProp
+      : (preview?.siteId ?? null);
+  const lastPushedSiteId =
+    lastPush?.siteId ?? preview?.lastPushedSiteId ?? null;
+  const lastPushedAt = lastPush?.lastPushedAt ?? preview?.lastPushedAt ?? null;
+
+  useEffect(() => {
+    onPushStatusChange?.(lastPushedAt != null);
+  }, [lastPushedAt, onPushStatusChange]);
 
   const errorMessage = error
     ? 'Site disclosure preview could not be loaded.'
@@ -28,31 +57,7 @@ export const SdsDisclosurePreview: React.FC<SdsDisclosurePreviewProps> = ({
       ? response?.message || 'Site disclosure preview could not be loaded.'
       : null;
 
-  const dateFields = [
-    { label: 'Date Received', value: disclosure?.siteRegDateRecd },
-    { label: 'Date Completed', value: disclosure?.dateCompleted },
-    { label: 'Local Authority Received', value: disclosure?.localAuthDateRecd },
-    { label: 'Date Registrar Received', value: disclosure?.rwmDateDecision },
-    { label: 'Date Entered', value: disclosure?.siteRegDateEntered },
-  ];
-
-  const commentFields = [
-    {
-      label:
-        'Provide a brief summary of the planned activity and proposed land use at the site.',
-      value: disclosure?.plannedActivityComment,
-    },
-    {
-      label:
-        'Indicate the information used to complete this site disclosure statement including a list of record searches completed.',
-      value: disclosure?.siteDisclosureComment,
-    },
-    {
-      label:
-        'List any past or present government orders, permits, approvals, certificates or notifications pertaining to the environmental condition of the site.',
-      value: disclosure?.govDocumentsComment,
-    },
-  ];
+  const siteDisclosureUrl = buildSiteRegistryDisclosureTabUrl(linkedSiteId);
 
   return (
     <section className={styles.section} data-testid="sds-disclosure-preview">
@@ -68,68 +73,62 @@ export const SdsDisclosurePreview: React.FC<SdsDisclosurePreviewProps> = ({
         </p>
       ) : (
         <>
-          <dl className={styles.dates}>
-            {dateFields.map((field) => (
-              <div className={styles.dateField} key={field.label}>
-                <dt className={styles.fieldLabel}>{field.label}</dt>
-                <dd
-                  className={styles.fieldValue}
-                  data-testid={`sds-date-${field.label}`}
-                >
-                  {formatDisclosureDate(field.value)}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <SdsDisclosureDetails disclosure={disclosure} />
 
-          <div className={styles.block}>
-            <h3 className={styles.blockHeading}>
-              III Commercial and Industrial Purposes or Activities on Site
-            </h3>
-            {schedule2References.length ? (
-              <table
-                className={styles.scheduleTable}
-                data-testid="sds-schedule2"
+          <div className={styles.pushArea}>
+            <div className={styles.pushRow}>
+              <Button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                disabled={linkedSiteId == null}
+                data-testid="push-button"
               >
-                <thead>
-                  <tr>
-                    <th scope="col">Schedule 2 Reference</th>
-                    <th scope="col">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {schedule2References.map((reference) => (
-                    <tr key={reference.code}>
-                      <td>{reference.code}</td>
-                      <td>{reference.description ?? ''}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p className={styles.empty} data-testid="sds-schedule2-empty">
-                No Schedule 2 references.
-              </p>
+                Push to Site Registry
+              </Button>
+              {linkedSiteId == null && (
+                <span
+                  className={styles.disabledReason}
+                  data-testid="push-disabled-reason"
+                >
+                  Link a Site ID before pushing this disclosure.
+                </span>
+              )}
+            </div>
+
+            {lastPushedAt != null && (
+              <div className={styles.lastPushed} data-testid="last-pushed">
+                <p className={styles.lastPushedText}>
+                  Last pushed to Site ID {lastPushedSiteId} on{' '}
+                  {formatPushedAt(lastPushedAt)}
+                </p>
+                {siteDisclosureUrl && (
+                  <a
+                    className={styles.lastPushedLink}
+                    href={siteDisclosureUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-testid="site-disclosure-link"
+                  >
+                    View disclosures in Site Registry
+                  </a>
+                )}
+              </div>
             )}
           </div>
-
-          <div className={styles.block}>
-            <h3 className={styles.blockHeading}>
-              IV Additional Comments and Explanations
-            </h3>
-            {commentFields.map((field) => (
-              <div className={styles.commentField} key={field.label}>
-                <p className={styles.fieldLabel}>{field.label}</p>
-                <p
-                  className={styles.commentValue}
-                  data-testid={`sds-comment-${field.label}`}
-                >
-                  {field.value ?? ''}
-                </p>
-              </div>
-            ))}
-          </div>
         </>
+      )}
+
+      {modalOpen && linkedSiteId != null && (
+        <PushSiteDisclosureModal
+          applicationId={applicationId}
+          siteId={linkedSiteId}
+          disclosure={disclosure}
+          onClose={() => setModalOpen(false)}
+          onPushed={(result) => {
+            setLastPush(result);
+            setModalOpen(false);
+          }}
+        />
       )}
     </section>
   );

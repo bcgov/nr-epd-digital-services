@@ -16,11 +16,13 @@ jest.mock('graphql-request', () => {
 
 const mockFindSiteBySiteIdLoggedInUser = jest.fn();
 const mockFindSiteBySiteIdForService = jest.fn();
+const mockSaveSiteDisclosureForService = jest.fn();
 
 jest.mock('./graphql/Site.generated', () => ({
   getSdk: jest.fn(() => ({
     findSiteBySiteIdLoggedInUser: mockFindSiteBySiteIdLoggedInUser,
     findSiteBySiteIdForService: mockFindSiteBySiteIdForService,
+    saveSiteDisclosureForService: mockSaveSiteDisclosureForService,
   })),
 }));
 
@@ -160,6 +162,60 @@ describe('SiteService', () => {
       await expect(service.getSiteByIdForService('12345')).rejects.toThrow(
         mockError,
       );
+    });
+  });
+
+  describe('saveSiteDisclosureForService', () => {
+    it('should send the mapped disclosure to the service mutation', async () => {
+      (axios.post as jest.Mock).mockResolvedValue({
+        data: {
+          access_token: 'fake-jwt-token',
+          expires_in: 3600,
+        },
+      });
+
+      const input = {
+        dateCompleted: '2024-05-01',
+        siteRegDateRecd: '2024-04-15',
+        schedule2ReferenceCodes: ['A1'],
+        plannedActivityComment: 'Planned activity comment',
+      };
+      const mockResponse = {
+        saveSiteDisclosureForService: {
+          message: 'Site disclosure added successfully',
+          httpStatusCode: 200,
+          success: true,
+          data: { id: 'profile-1' },
+        },
+      };
+
+      mockSaveSiteDisclosureForService.mockResolvedValue(mockResponse);
+
+      const result = await service.saveSiteDisclosureForService('12345', input);
+
+      expect(mockSaveSiteDisclosureForService).toHaveBeenCalledWith({
+        siteId: '12345',
+        input,
+      });
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should propagate errors from the service mutation', async () => {
+      (axios.post as jest.Mock).mockResolvedValue({
+        data: {
+          access_token: 'fake-jwt-token',
+          expires_in: 3600,
+        },
+      });
+
+      const mockError = new Error('SITE unavailable');
+      mockSaveSiteDisclosureForService.mockRejectedValue(mockError);
+
+      await expect(
+        service.saveSiteDisclosureForService('12345', {
+          dateCompleted: '2024-05-01',
+        }),
+      ).rejects.toThrow(mockError);
     });
   });
 });

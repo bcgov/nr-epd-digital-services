@@ -25,6 +25,13 @@ describe('SdsDisclosurePreviewService', () => {
 
   const sdsApplication = {
     id: 10,
+    siteId: 12345,
+    applicationSpecificData: {
+      sdsDisclosureLastPush: {
+        siteId: 12345,
+        lastPushedAt: '2024-06-01T18:30:00.000Z',
+      },
+    },
     appType: { id: 1, abbrev: 'SDS', description: 'Site Disclosure Statement' },
   } as unknown as Application;
 
@@ -66,15 +73,18 @@ describe('SdsDisclosurePreviewService', () => {
 
     const result = await service.getSdsDisclosurePreview(10);
 
-    expect(result.plannedActivityComment).toBe(
+    expect(result.disclosure?.plannedActivityComment).toBe(
       'Redevelop the site for a mixed-use residential and commercial building.',
     );
-    expect(result.schedule2References).toEqual([
+    expect(result.disclosure?.schedule2References).toEqual([
       { code: 'A1', description: 'Adhesives manufacturing or bulk storage' },
       { code: 'C3', description: 'Metal plating or finishing' },
     ]);
-    expect(result.dateCompleted).toBe('2024-05-01');
-    expect(result.siteRegDateEntered).toBeNull();
+    expect(result.disclosure?.dateCompleted).toBe('2024-05-01');
+    expect(result.disclosure?.siteRegDateEntered).toBeNull();
+    expect(result.siteId).toBe(12345);
+    expect(result.lastPushedSiteId).toBe(12345);
+    expect(result.lastPushedAt).toBe('2024-06-01T18:30:00.000Z');
     expect(submissionRepositoryMock.findOne).toHaveBeenCalledWith({
       where: { applicationId: 10 },
     });
@@ -107,15 +117,37 @@ describe('SdsDisclosurePreviewService', () => {
     const result = await service.getSdsDisclosurePreview(10);
 
     expect(result).toEqual({
-      siteRegDateRecd: null,
-      dateCompleted: null,
-      localAuthDateRecd: null,
-      rwmDateDecision: null,
-      siteRegDateEntered: null,
-      schedule2References: [],
-      plannedActivityComment: null,
-      siteDisclosureComment: null,
-      govDocumentsComment: null,
+      disclosure: {
+        siteRegDateRecd: null,
+        dateCompleted: null,
+        localAuthDateRecd: null,
+        rwmDateDecision: null,
+        siteRegDateEntered: null,
+        schedule2References: [],
+        plannedActivityComment: null,
+        siteDisclosureComment: null,
+        govDocumentsComment: null,
+      },
+      siteId: 12345,
+      lastPushedSiteId: 12345,
+      lastPushedAt: '2024-06-01T18:30:00.000Z',
     });
+  });
+
+  it('returns no last push before the application has been pushed', async () => {
+    applicationRepositoryMock.findOne.mockResolvedValue({
+      ...sdsApplication,
+      siteId: null,
+      applicationSpecificData: { siteRiskClassification: 'high' },
+    });
+    submissionRepositoryMock.findOne.mockResolvedValue({
+      formData: sdsSubmissionFixture,
+    });
+
+    const result = await service.getSdsDisclosurePreview(10);
+
+    expect(result.siteId).toBeNull();
+    expect(result.lastPushedSiteId).toBeNull();
+    expect(result.lastPushedAt).toBeNull();
   });
 });

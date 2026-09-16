@@ -8,8 +8,9 @@ import { Repository } from 'typeorm';
 import { Application } from '../../entities/application.entity';
 import { ApplicationSubmission } from '../../entities/applicationSubmission.entity';
 import { LoggerService } from '../../logger/logger.service';
-import { SdsDisclosureDto } from '../../dto/application/sdsDisclosurePreview.dto';
+import { SdsDisclosurePreviewDto } from '../../dto/application/sdsDisclosurePreview.dto';
 import { SdsDisclosure, mapSdsToSiteDisclosure } from './sdsDisclosure.mapper';
+import { readSdsDisclosureLastPush } from './sdsDisclosureLastPush';
 
 const SDS_APP_TYPE_ABBREV = 'SDS';
 const SDS_APP_TYPE_DESCRIPTION = 'Site Disclosure Statement';
@@ -43,7 +44,7 @@ export class SdsDisclosurePreviewService {
 
   async getSdsDisclosurePreview(
     applicationId: number,
-  ): Promise<SdsDisclosureDto> {
+  ): Promise<SdsDisclosurePreviewDto> {
     this.loggerService.log(
       'SdsDisclosurePreviewService.getSdsDisclosurePreview() start',
     );
@@ -63,6 +64,10 @@ export class SdsDisclosurePreviewService {
       );
     }
 
+    const lastPush = readSdsDisclosureLastPush(
+      application.applicationSpecificData,
+    );
+
     const submission = await this.submissionRepository.findOne({
       where: { applicationId },
     });
@@ -71,7 +76,12 @@ export class SdsDisclosurePreviewService {
       this.loggerService.log(
         'SdsDisclosurePreviewService.getSdsDisclosurePreview() no submission',
       );
-      return { ...EMPTY_DISCLOSURE };
+      return {
+        disclosure: { ...EMPTY_DISCLOSURE },
+        siteId: application.siteId ?? null,
+        lastPushedSiteId: lastPush?.siteId ?? null,
+        lastPushedAt: lastPush?.lastPushedAt ?? null,
+      };
     }
 
     const mapped = mapSdsToSiteDisclosure(submission.formData);
@@ -80,7 +90,12 @@ export class SdsDisclosurePreviewService {
       'SdsDisclosurePreviewService.getSdsDisclosurePreview() end',
     );
 
-    return mapped;
+    return {
+      disclosure: mapped,
+      siteId: application.siteId ?? null,
+      lastPushedSiteId: lastPush?.siteId ?? null,
+      lastPushedAt: lastPush?.lastPushedAt ?? null,
+    };
   }
 
   private isSdsApplication(application: Application): boolean {

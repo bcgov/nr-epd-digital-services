@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 import { LoggerService } from '../../logger/logger.service';
 import { SdsDisclosurePreviewService } from '../../services/application/sdsDisclosurePreview.service';
 import {
-  SdsDisclosureDto,
+  SdsDisclosurePreviewDto,
   SdsDisclosurePreviewResponse,
 } from '../../dto/application/sdsDisclosurePreview.dto';
 import { GenericResponseProvider } from '../../dto/response/genericResponseProvider';
@@ -13,7 +13,7 @@ export class SdsDisclosurePreviewResolver {
   constructor(
     private readonly sdsDisclosurePreviewService: SdsDisclosurePreviewService,
     private readonly loggerService: LoggerService,
-    private readonly responseProvider: GenericResponseProvider<SdsDisclosureDto>,
+    private readonly responseProvider: GenericResponseProvider<SdsDisclosurePreviewDto>,
   ) {}
 
   @Query(() => SdsDisclosurePreviewResponse, {

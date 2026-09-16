@@ -58,17 +58,24 @@ describe('SdsDisclosurePreviewResolver', () => {
 
   it('returns the mapped disclosure on success', async () => {
     const disclosure = {
-      siteRegDateRecd: '2024-04-15',
-      dateCompleted: '2024-05-01',
-      localAuthDateRecd: '2024-04-15',
-      rwmDateDecision: '2024-04-20',
-      siteRegDateEntered: null,
-      schedule2References: [
-        { code: 'A1', description: 'Adhesives manufacturing or bulk storage' },
-      ],
-      plannedActivityComment: 'Planned activity',
-      siteDisclosureComment: 'Information used',
-      govDocumentsComment: 'Government orders',
+      disclosure: {
+        siteRegDateRecd: '2024-04-15',
+        dateCompleted: '2024-05-01',
+        localAuthDateRecd: '2024-04-15',
+        rwmDateDecision: '2024-04-20',
+        siteRegDateEntered: null,
+        schedule2References: [
+          {
+            code: 'A1',
+            description: 'Adhesives manufacturing or bulk storage',
+          },
+        ],
+        plannedActivityComment: 'Planned activity',
+        siteDisclosureComment: 'Information used',
+        govDocumentsComment: 'Government orders',
+      },
+      siteId: 12345,
+      lastPushedAt: null,
     };
     serviceMock.getSdsDisclosurePreview.mockResolvedValue(disclosure);
 

@@ -70,3 +70,18 @@ export const buildSiteRegistryEditTabUrl = ({
 
   return `${baseUrl}/site/details/${siteId}/${tab}?${query}`;
 };
+
+/**
+ * Builds a read-only (non-edit) deep link to a site's disclosure tab so staff
+ * can inspect a pushed record in Site Registry.
+ */
+export const buildSiteRegistryDisclosureTabUrl = (
+  siteId: string | number | null | undefined,
+): string | null => {
+  const baseUrl = getSiteRegistryBaseUrl()?.replace(/\/$/, '');
+  if (!baseUrl || siteId === null || siteId === undefined || siteId === '') {
+    return null;
+  }
+
+  return `${baseUrl}/site/details/${siteId}/disclosure`;
+};

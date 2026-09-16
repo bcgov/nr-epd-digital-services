@@ -371,12 +371,33 @@ type SdsDisclosureDto {
   govDocumentsComment: String
 }
 
+type SdsDisclosurePreviewDto {
+  disclosure: SdsDisclosureDto
+  siteId: Int
+  lastPushedSiteId: Int
+  lastPushedAt: String
+}
+
 type SdsDisclosurePreviewResponse {
   message: String
   httpStatusCode: Int
   success: Boolean
   timestamp: String
-  data: SdsDisclosureDto
+  data: SdsDisclosurePreviewDto
+}
+
+type PushedSiteDisclosureDto {
+  siteId: Int
+  lastPushedAt: String
+}
+
+type PushSiteDisclosureResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: PushedSiteDisclosureDto
+  errorCode: String
 }
 
 type ApplicationSubmissionDto {
@@ -894,6 +915,7 @@ type Mutation {
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
   linkApplicationSiteId(applicationId: Int!, siteId: String): LinkApplicationSiteIdResponse!
+  pushSiteDisclosure(applicationId: Int!): PushSiteDisclosureResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!

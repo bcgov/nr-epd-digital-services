@@ -4,18 +4,23 @@ query getSdsDisclosurePreview($applicationId: Int!) {
     httpStatusCode
     success
     data {
-      siteRegDateRecd
-      dateCompleted
-      localAuthDateRecd
-      rwmDateDecision
-      siteRegDateEntered
-      schedule2References {
-        code
-        description
+      siteId
+      lastPushedSiteId
+      lastPushedAt
+      disclosure {
+        siteRegDateRecd
+        dateCompleted
+        localAuthDateRecd
+        rwmDateDecision
+        siteRegDateEntered
+        schedule2References {
+          code
+          description
+        }
+        plannedActivityComment
+        siteDisclosureComment
+        govDocumentsComment
       }
-      plannedActivityComment
-      siteDisclosureComment
-      govDocumentsComment
     }
   }
 }

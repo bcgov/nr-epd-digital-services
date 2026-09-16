@@ -554,6 +554,7 @@ export type Mutation = {
   deletePersonNote: PersonNoteResponse;
   linkApplicationSiteId: LinkApplicationSiteIdResponse;
   processChefsSubmissionManually: ManualIntakeResponse;
+  pushSiteDisclosure: PushSiteDisclosureResponse;
   saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
@@ -652,6 +653,11 @@ export type MutationLinkApplicationSiteIdArgs = {
 export type MutationProcessChefsSubmissionManuallyArgs = {
   appTypeAbbrev: Scalars['String']['input'];
   chefsSubmissionId: Scalars['String']['input'];
+};
+
+
+export type MutationPushSiteDisclosureArgs = {
+  applicationId: Scalars['Int']['input'];
 };
 
 
@@ -790,6 +796,22 @@ export type PreviousStaffInformation = {
   hasPermission: Scalars['Boolean']['output'];
   personFullName: Scalars['String']['output'];
   personId: Scalars['Float']['output'];
+};
+
+export type PushSiteDisclosureResponse = {
+  __typename?: 'PushSiteDisclosureResponse';
+  data?: Maybe<PushedSiteDisclosureDto>;
+  errorCode?: Maybe<Scalars['String']['output']>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type PushedSiteDisclosureDto = {
+  __typename?: 'PushedSiteDisclosureDto';
+  lastPushedAt?: Maybe<Scalars['String']['output']>;
+  siteId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Query = {
@@ -1044,9 +1066,17 @@ export type SdsDisclosureDto = {
   siteRegDateRecd?: Maybe<Scalars['String']['output']>;
 };
 
+export type SdsDisclosurePreviewDto = {
+  __typename?: 'SdsDisclosurePreviewDto';
+  disclosure?: Maybe<SdsDisclosureDto>;
+  lastPushedAt?: Maybe<Scalars['String']['output']>;
+  lastPushedSiteId?: Maybe<Scalars['Int']['output']>;
+  siteId?: Maybe<Scalars['Int']['output']>;
+};
+
 export type SdsDisclosurePreviewResponse = {
   __typename?: 'SdsDisclosurePreviewResponse';
-  data?: Maybe<SdsDisclosureDto>;
+  data?: Maybe<SdsDisclosurePreviewDto>;
   httpStatusCode?: Maybe<Scalars['Int']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;

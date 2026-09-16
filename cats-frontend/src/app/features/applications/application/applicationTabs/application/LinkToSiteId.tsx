@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../../../../components/button/Button';
+import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import { GetHeaderDetailsByApplicationIdDocument } from '../../ApplicationDetails.generated';
 import { useLinkApplicationSiteIdMutation } from './LinkToSiteId.generated';
 import styles from './LinkToSiteId.module.css';
@@ -14,6 +15,7 @@ type LinkToSiteIdProps = {
   linkedSiteId?: number | null;
   linkedSiteAddress?: string | null;
   linkedSiteCity?: string | null;
+  hasBeenPushed?: boolean;
 };
 
 const formatLocation = (
@@ -31,6 +33,7 @@ export const LinkToSiteId: React.FC<LinkToSiteIdProps> = ({
   linkedSiteId = null,
   linkedSiteAddress = null,
   linkedSiteCity = null,
+  hasBeenPushed = false,
 }) => {
   const [siteIdInput, setSiteIdInput] = useState(
     linkedSiteId != null ? String(linkedSiteId) : '',
@@ -43,6 +46,7 @@ export const LinkToSiteId: React.FC<LinkToSiteIdProps> = ({
   );
   const [noticeDismissed, setNoticeDismissed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingChange, setPendingChange] = useState<string | null>(null);
 
   const [linkSiteId, { loading }] = useLinkApplicationSiteIdMutation();
 
@@ -65,19 +69,10 @@ export const LinkToSiteId: React.FC<LinkToSiteIdProps> = ({
     return null;
   };
 
-  const handleSave = async () => {
-    const trimmed = siteIdInput.trim();
-    setError(null);
-
-    const validationError = validate(trimmed);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
+  const performLink = async (value: string) => {
     try {
       const response = await linkSiteId({
-        variables: { applicationId, siteId: trimmed },
+        variables: { applicationId, siteId: value },
         refetchQueries: [
           {
             query: GetHeaderDetailsByApplicationIdDocument,
@@ -101,6 +96,25 @@ export const LinkToSiteId: React.FC<LinkToSiteIdProps> = ({
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Unable to link Site ID');
     }
+  };
+
+  const handleSave = () => {
+    const trimmed = siteIdInput.trim();
+    setError(null);
+
+    const validationError = validate(trimmed);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    const currentValue = savedSiteId != null ? String(savedSiteId) : '';
+    if (hasBeenPushed && trimmed !== currentValue) {
+      setPendingChange(trimmed);
+      return;
+    }
+
+    performLink(trimmed);
   };
 
   const showUnlinkedNotice = savedSiteId == null && !noticeDismissed;
@@ -172,6 +186,27 @@ export const LinkToSiteId: React.FC<LinkToSiteIdProps> = ({
         <p className={styles.error} role="alert" data-testid="site-id-error">
           {error}
         </p>
+      )}
+
+      {pendingChange !== null && (
+        <ModalDialog
+          headerLabel="Change linked Site ID?"
+          cancelBtnLabel="Cancel"
+          saveBtnLabel="Confirm"
+          closeHandler={(save: any) => {
+            const value = pendingChange;
+            setPendingChange(null);
+            if (save === true && value !== null) {
+              performLink(value);
+            }
+          }}
+        >
+          <p data-testid="change-site-confirmation">
+            Disclosures already pushed stay on the previously linked site.
+            Changing or unlinking the Site ID does not move, update, or delete
+            any Site Registry records.
+          </p>
+        </ModalDialog>
       )}
     </section>
   );

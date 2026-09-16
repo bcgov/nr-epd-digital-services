@@ -129,4 +129,39 @@ export class SiteService implements OnModuleInit {
       throw error;
     }
   }
+
+  async saveSiteDisclosureForService(
+    siteId: string,
+    input: {
+      dateCompleted: string;
+      siteRegDateRecd?: string | null;
+      localAuthDateRecd?: string | null;
+      rwmDateDecision?: string | null;
+      schedule2ReferenceCodes?: string[] | null;
+      plannedActivityComment?: string | null;
+      siteDisclosureComment?: string | null;
+      govDocumentsComment?: string | null;
+    },
+  ) {
+    this.loggerService.log('SiteService.saveSiteDisclosureForService() start');
+
+    try {
+      this.siteSdk = await this.getSiteSdk();
+      const result = await this.siteSdk.saveSiteDisclosureForService({
+        siteId,
+        input,
+      });
+
+      this.loggerService.log('SiteService.saveSiteDisclosureForService() end');
+      return result;
+    } catch (error: unknown) {
+      this.loggerService.error(
+        `Error in saveSiteDisclosureForService: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        error.toString(),
+      );
+      throw error;
+    }
+  }
 }
