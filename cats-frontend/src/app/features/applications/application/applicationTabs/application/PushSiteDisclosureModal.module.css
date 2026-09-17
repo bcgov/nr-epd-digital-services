@@ -1,0 +1,20 @@
+.modal {
+  align-items: flex-start;
+  padding: var(--layout-padding-xlarge) 0;
+}
+
+.modalContent {
+  width: min(760px, 92vw);
+}
+
+.confirmation {
+  font: var(--typography-regular-body);
+  color: var(--typography-color-primary);
+  margin: 0;
+}
+
+.error {
+  font: var(--typography-regular-body);
+  color: var(--support-border-color-danger, #ce3e39);
+  margin: 0;
+}

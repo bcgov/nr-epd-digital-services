@@ -1,0 +1,26 @@
+query getSdsDisclosurePreview($applicationId: Int!) {
+  getSdsDisclosurePreview(applicationId: $applicationId) {
+    message
+    httpStatusCode
+    success
+    data {
+      siteId
+      lastPushedSiteId
+      lastPushedAt
+      disclosure {
+        siteRegDateRecd
+        dateCompleted
+        localAuthDateRecd
+        rwmDateDecision
+        siteRegDateEntered
+        schedule2References {
+          code
+          description
+        }
+        plannedActivityComment
+        siteDisclosureComment
+        govDocumentsComment
+      }
+    }
+  }
+}

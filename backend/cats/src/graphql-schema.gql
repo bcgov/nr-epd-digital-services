@@ -340,6 +340,66 @@ type ApplicationStatusResponse {
   data: [ViewApplicationStatus!]
 }
 
+type LinkedApplicationSiteDto {
+  siteId: Int
+  siteAddress: String
+  siteCity: String
+}
+
+type LinkApplicationSiteIdResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: LinkedApplicationSiteDto
+}
+
+type Schedule2ReferenceDto {
+  code: String!
+  description: String
+}
+
+type SdsDisclosureDto {
+  siteRegDateRecd: String
+  dateCompleted: String
+  localAuthDateRecd: String
+  rwmDateDecision: String
+  siteRegDateEntered: String
+  schedule2References: [Schedule2ReferenceDto!]!
+  plannedActivityComment: String
+  siteDisclosureComment: String
+  govDocumentsComment: String
+}
+
+type SdsDisclosurePreviewDto {
+  disclosure: SdsDisclosureDto
+  siteId: Int
+  lastPushedSiteId: Int
+  lastPushedAt: String
+}
+
+type SdsDisclosurePreviewResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: SdsDisclosurePreviewDto
+}
+
+type PushedSiteDisclosureDto {
+  siteId: Int
+  lastPushedAt: String
+}
+
+type PushSiteDisclosureResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: PushedSiteDisclosureDto
+  errorCode: String
+}
+
 type ApplicationSubmissionDto {
   id: String!
   applicationId: Int
@@ -770,6 +830,7 @@ type Query {
   getPersonNotesByPersonId(id: Float!): PersonNoteResponse!
   getApplicationHousingByApplicationId(applicationId: Int!): ApplicationHousingResponse!
   getHousingTypes: HousingTypeResponse!
+  getSdsDisclosurePreview(applicationId: Int!): SdsDisclosurePreviewResponse!
   getApplicationDetailsById(id: Int!): ApplicationDetailsResponse!
   getSubmissionByApplicationId(applicationId: Int!): ApplicationSubmissionResponse!
   getAllStatusTypes: [StatusType!]!
@@ -853,6 +914,8 @@ type Mutation {
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
+  linkApplicationSiteId(applicationId: Int!, siteId: String): LinkApplicationSiteIdResponse!
+  pushSiteDisclosure(applicationId: Int!): PushSiteDisclosureResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!

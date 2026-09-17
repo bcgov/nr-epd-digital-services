@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUser } from '../../../../../helpers/utility';
+import { formatDateUTC, getUser } from '../../../../../helpers/utility';
 import './Application.css';
 import { useGetSubmissionByApplicationIdQuery } from './Application.generated';
+import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
+import { isSdsAppType } from '../../../../navigation/NavigationPillsConfig';
+import { LinkToSiteId } from './LinkToSiteId';
+import { SdsDisclosurePreview } from './SdsDisclosurePreview';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { Form } from '@formio/react';
 import 'formiojs/dist/formio.full.min.css';
@@ -35,6 +39,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [componentsReady, setComponentsReady] = useState(false);
+  const [hasPushed, setHasPushed] = useState(false);
 
   const applicationId = parseInt(id ?? '', 10);
 
@@ -45,10 +50,23 @@ export const Application: React.FC<ApplicationProps> = () => {
       skip: !applicationId,
     });
 
-  const submissionFormData =
-    submissionData?.getSubmissionByApplicationId?.data?.formData;
-  const submissionFormSchema =
-    submissionData?.getSubmissionByApplicationId?.data?.formSchema;
+  const { data: headerData } = useGetHeaderDetailsByApplicationIdQuery({
+    variables: { applicationId },
+    skip: !applicationId,
+  });
+
+  const application = headerData?.getApplicationDetailsById?.data;
+  const showLinkPanel = applicationId > 0 && isSdsAppType(application?.appType);
+
+  const submission = submissionData?.getSubmissionByApplicationId?.data;
+  const submissionFormData = submission?.formData;
+  const submissionFormSchema = submission?.formSchema;
+
+  const receivedAt =
+    submission?.receivedAt ?? formData?.data?.form?.submittedAt ?? null;
+  const formattedReceivedDate = receivedAt
+    ? formatDateUTC(receivedAt, 'yyyy/MM/dd')
+    : null;
 
   useEffect(() => {
     let cancelled = false;
@@ -97,49 +115,74 @@ export const Application: React.FC<ApplicationProps> = () => {
     return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-message">
-          <p className="error-details">
-            Application was not submitted through the platform. Please check
-            your file records for reference.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="application-container" id="main">
-      <div>
-        <h3
-          className="ml-3 task-head text-truncate fw-bold"
-          style={{ height: '45px' }}
-        >
-          {formJson?.title || 'Application Submission'}
-        </h3>
-        <div className="px-3 py-2">
-          {formJson?.components?.length > 0 ? (
-            <Form
-              src={formJson as any}
-              submission={formData}
-              options={
-                {
-                  hide: { submit: true },
-                  noAlerts: false,
-                  readOnly: true,
-                  viewAsHtml: true,
-                } as any
-              }
+    <>
+      {showLinkPanel && (
+        <>
+          <div className="application-link-area">
+            {formattedReceivedDate && (
+              <p className="application-received-label">
+                Application Received: {formattedReceivedDate}
+              </p>
+            )}
+            <LinkToSiteId
+              key={applicationId}
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId ?? null}
+              linkedSiteAddress={application?.siteAddress ?? null}
+              linkedSiteCity={application?.siteCity ?? null}
+              hasBeenPushed={hasPushed}
             />
+          </div>
+          <div className="application-disclosure-area">
+            <SdsDisclosurePreview
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId}
+              onPushStatusChange={setHasPushed}
+            />
+          </div>
+        </>
+      )}
+      <div className="application-container" id="main">
+        <div className="application-form-content">
+          {!showLinkPanel && formattedReceivedDate && (
+            <p className="application-received-label">
+              Application Received: {formattedReceivedDate}
+            </p>
+          )}
+          {error ? (
+            <div className="error-container">
+              <div className="error-message">
+                <p className="error-details">
+                  Application was not submitted through the platform. Please
+                  check your file records for reference.
+                </p>
+              </div>
+            </div>
           ) : (
-            <pre className="submission-data">
-              {JSON.stringify(formData?.data, null, 2)}
-            </pre>
+            <>
+              {formJson?.components?.length > 0 ? (
+                <Form
+                  src={formJson as any}
+                  submission={formData}
+                  options={
+                    {
+                      hide: { submit: true },
+                      noAlerts: false,
+                      readOnly: true,
+                      viewAsHtml: true,
+                    } as any
+                  }
+                />
+              ) : (
+                <pre className="submission-data">
+                  {JSON.stringify(formData?.data, null, 2)}
+                </pre>
+              )}
+            </>
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -63,6 +63,12 @@ import { ApplicationHousingService } from './services/application/applicationHou
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
 import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
+import { ApplicationSiteLinkResolver } from './resolvers/application/applicationSiteLink.resolver';
+import { ApplicationSiteLinkService } from './services/application/applicationSiteLink.service';
+import { SdsDisclosurePreviewResolver } from './resolvers/application/sdsDisclosurePreview.resolver';
+import { SdsDisclosurePreviewService } from './services/application/sdsDisclosurePreview.service';
+import { SdsDisclosurePushResolver } from './resolvers/application/sdsDisclosurePush.resolver';
+import { SdsDisclosurePushService } from './services/application/sdsDisclosurePush.service';
 import { ApplicationDetailsResolver } from './resolvers/application/applicationDetails.resolver';
 import { AppTypeService } from './services/appType/appType.service';
 import { SiteResolver } from './resolvers/site/site.resolver';
@@ -199,6 +205,12 @@ import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
     ApplicationHousingService,
     ApplicationResolver,
     ApplicationService,
+    ApplicationSiteLinkResolver,
+    ApplicationSiteLinkService,
+    SdsDisclosurePreviewResolver,
+    SdsDisclosurePreviewService,
+    SdsDisclosurePushResolver,
+    SdsDisclosurePushService,
     ApplicationDetailsResolver,
     AppTypeService,
     StatusTypeService,

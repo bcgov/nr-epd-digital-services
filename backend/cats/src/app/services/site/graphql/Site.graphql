@@ -11,6 +11,29 @@ query findSiteBySiteIdLoggedInUser($siteId: String!) {
   }
 }
 
+query findSiteBySiteIdForService($siteId: String!) {
+  findSiteBySiteIdForService(siteId: $siteId) {
+    data {
+      ...SiteDetails
+    }
+  }
+}
+
+mutation saveSiteDisclosureForService(
+  $siteId: String!
+  $input: SiteDisclosureServiceInputDTO!
+) {
+  saveSiteDisclosureForService(siteId: $siteId, input: $input) {
+    message
+    httpStatusCode
+    success
+    errorCode
+    data {
+      id
+    }
+  }
+}
+
 fragment SiteDetails on Sites {
   id
   longdeg

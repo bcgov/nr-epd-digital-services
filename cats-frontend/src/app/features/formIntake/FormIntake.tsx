@@ -5,6 +5,22 @@ import {
   useProcessChefsSubmissionManuallyMutation,
 } from './graphql/formIntake.generated';
 
+// Keep in sync with backend FORM_REGISTRY. Used when the GraphQL query
+// fails (common locally if the JWT is missing/expired).
+export const FALLBACK_INTAKE_FORMS = [
+  {
+    appTypeAbbrev: 'CSR',
+    displayName: 'Contaminated Site Services Application',
+  },
+  { appTypeAbbrev: 'NIR', displayName: 'Notice of Independent Remediation' },
+  {
+    appTypeAbbrev: 'NOM',
+    displayName: 'Notice of Likely or Actual Migration',
+  },
+  { appTypeAbbrev: 'SDS', displayName: 'Site Disclosure Statement' },
+  { appTypeAbbrev: 'IR', displayName: 'Site Information Request' },
+];
+
 const FormIntake: React.FC = () => {
   const [appTypeAbbrev, setAppTypeAbbrev] = useState('');
   const [chefsSubmissionId, setChefsSubmissionId] = useState('');
@@ -13,12 +29,14 @@ const FormIntake: React.FC = () => {
     message: string;
   } | null>(null);
 
-  const { data: formsData, loading: formsLoading } =
+  const { data: formsData, error: formsError } =
     useGetManualIntakeFormsQuery();
   const [processSubmission, { loading: processing }] =
     useProcessChefsSubmissionManuallyMutation();
 
-  const forms = formsData?.getManualIntakeForms?.data ?? [];
+  const queriedForms = formsData?.getManualIntakeForms?.data ?? [];
+  const forms =
+    queriedForms.length > 0 ? queriedForms : FALLBACK_INTAKE_FORMS;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -58,6 +76,13 @@ const FormIntake: React.FC = () => {
         process.
       </p>
 
+      {formsError && (
+        <div className="alert alert-warning" role="alert">
+          Could not load forms from CATS ({formsError.message}). Using the
+          built-in form list.
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label" htmlFor="form-intake-form">
@@ -68,7 +93,6 @@ const FormIntake: React.FC = () => {
             className="form-select"
             value={appTypeAbbrev}
             onChange={(e) => setAppTypeAbbrev(e.target.value)}
-            disabled={formsLoading}
             required
           >
             <option value="">Select a form</option>
