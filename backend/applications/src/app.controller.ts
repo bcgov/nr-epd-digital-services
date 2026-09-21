@@ -14,16 +14,16 @@ import { Request } from 'express';
  */
 @ApiTags('general')
 @Controller()
-@Resource('cats-service')
+@Resource('site-service')
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   /**
    * Health check endpoint
    * Returns a simple hello world message
-   * 
+   *
    * @returns {string} Hello World message
-   * 
+   *
    * @ApiOperation - Provides summary and description in Swagger
    * @ApiResponse - Documents the response structure and status codes
    * @Unprotected - Bypasses Keycloak authentication for this endpoint
@@ -32,15 +32,15 @@ export class AppController {
   @Unprotected()
   @ApiOperation({
     summary: 'Get hello message',
-    description: 'Returns a simple hello world message'
+    description: 'Returns a simple hello world message',
   })
   @ApiResponse({
     status: 200,
     description: 'Hello message returned successfully',
     schema: {
       type: 'string',
-      example: 'Hello World!'
-    }
+      example: 'Hello World!',
+    },
   })
   getHello(): string {
     return this.appService.getHello();

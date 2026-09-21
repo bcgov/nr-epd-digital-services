@@ -26,7 +26,7 @@ data:
       window["_env_"] =  {
      "VITE_BACKEND_API": "https://nr-epd-digital-services-prod-backend.apps.silver.devops.gov.bc.ca",
      "VITE_AUTH_AUTHORITY": "https://epd-keycloak-prod.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/",
-     "VITE_AUTH_CLIENT_ID": "cats-service",
+     "VITE_AUTH_CLIENT_ID": "site-service",
      "VITE_AUTH_REDIRECT_URI": "https://nr-epd-digital-services-prod-frontend.apps.silver.devops.gov.bc.ca",
      "VITE_AUTH_LOGOUT_REDIRECT_URI": "https://logontest7.gov.bc.ca/clp-cgi/logoff.cgi?retnow=1&returl=https://epd-keycloak-prod.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/protocol/openid-connect/logout?post_logout_redirect_uri=https://nr-epd-digital-services-prod-frontend.apps.silver.devops.gov.bc.ca/",
      "VITE_AUTH_RESPONSE_TYPE": "code",
