@@ -2,20 +2,17 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { RoleMatchingMode } from 'nest-keycloak-connect';
-import {
-  REGISTRY_ROLES_KEY,
-  RegistryRolesOptions,
-} from './registry-roles.decorator';
+import { SITE_ROLES_KEY, SiteRolesOptions } from './site-roles.decorator';
 
 @Injectable()
-export class RegistryRoleGuard implements CanActivate {
+export class SiteRoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = this.getRequest(context);
     const tokenData = this.getTokenData(request);
-    const options = this.reflector.getAllAndOverride<RegistryRolesOptions>(
-      REGISTRY_ROLES_KEY,
+    const options = this.reflector.getAllAndOverride<SiteRolesOptions>(
+      SITE_ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
 

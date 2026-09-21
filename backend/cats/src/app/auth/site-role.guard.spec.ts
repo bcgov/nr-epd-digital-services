@@ -1,9 +1,9 @@
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RoleMatchingMode } from 'nest-keycloak-connect';
-import { RegistryRoleGuard } from './registry-role.guard';
+import { SiteRoleGuard } from './site-role.guard';
 
-describe('RegistryRoleGuard', () => {
+describe('SiteRoleGuard', () => {
   const createContext = (request: any = {}): ExecutionContext =>
     ({
       getType: jest.fn(() => 'http'),
@@ -12,17 +12,17 @@ describe('RegistryRoleGuard', () => {
       switchToHttp: jest.fn(() => ({
         getRequest: jest.fn(() => request),
       })),
-    } as any);
+    }) as any;
 
   const createGuard = (rolesOptions: any) => {
     const reflector = {
       getAllAndOverride: jest.fn(() => rolesOptions),
     } as unknown as Reflector;
 
-    return new RegistryRoleGuard(reflector);
+    return new SiteRoleGuard(reflector);
   };
 
-  it('allows requests without registry role metadata', () => {
+  it('allows requests without site role metadata', () => {
     const guard = createGuard(undefined);
 
     expect(guard.canActivate(createContext())).toBe(true);

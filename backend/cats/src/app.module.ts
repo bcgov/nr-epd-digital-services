@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
 import { MockAuthGuard } from './app/guards/mock-auth.guard';
 import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filter';
-import { RegistryRoleGuard } from './app/auth/registry-role.guard';
+import { SiteRoleGuard } from './app/auth/site-role.guard';
 
 /**
  * Application Module Wrapping All Functionality For User Micro Service
@@ -74,7 +74,7 @@ import { RegistryRoleGuard } from './app/auth/registry-role.guard';
     },
     {
       provide: APP_GUARD,
-      useClass: RegistryRoleGuard,
+      useClass: SiteRoleGuard,
     },
     {
       provide: APP_FILTER,

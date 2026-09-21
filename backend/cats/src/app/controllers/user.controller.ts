@@ -11,7 +11,7 @@ import { Key } from 'readline';
 import { KeycloakService } from '../services/keycloak.service';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
-import { RegistryRoles } from '../auth/registry-roles.decorator';
+import { SiteRoles } from '../auth/site-roles.decorator';
 // import { KeycloakService } from 'src/app/services/keycloak.service';
 // import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
@@ -31,7 +31,7 @@ export class UserController {
    * @returns Object indicating success status and message.
    */
   @Post('/addGroup')
-  @RegistryRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to formsflow-client group',
     description:
@@ -96,7 +96,7 @@ export class UserController {
    * @returns Object indicating success status and message.
    */
   @Post('/addUserToGroupForMuncipalUsers')
-  @RegistryRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to approving authority group',
     description:
@@ -161,7 +161,7 @@ export class UserController {
   }
 
   @Post('/addUserToGroupForSiteOwners')
-  @RegistryRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to site owners group',
     description:
