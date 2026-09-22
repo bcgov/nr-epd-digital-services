@@ -14,21 +14,18 @@ export class EmailController {
   constructor(
     private readonly invoiceService: InvoiceService,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
 
   @Post('/sendEmail')
   @UseInterceptors(FileInterceptor('file'))
-  @UsePipes(
-    new ValidationPipe({
+  @UsePipes(new ValidationPipe({
       transform: true,
       transformOptions: { enableImplicitConversion: true },
       whitelist: true,
-    }),
-  )
+    }))
   @ApiOperation({
     summary: 'Send invoice email',
-    description:
-      'Sends an invoice email with optional PDF attachment. The PDF can be uploaded as a file.',
+    description: 'Sends an invoice email with optional PDF attachment. The PDF can be uploaded as a file.'
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -74,13 +71,12 @@ export class EmailController {
         message: {
           type: 'string',
           example: 'Email sent successfully with attachments',
-          description:
-            'Success message - varies based on whether attachments were included',
+          description: 'Success message - varies based on whether attachments were included'
         },
         statusCode: { type: 'number', example: 200 },
-        success: { type: 'boolean', example: true },
-      },
-    },
+        success: { type: 'boolean', example: true }
+      }
+    }
   })
   @ApiResponse({
     status: 400,
@@ -90,15 +86,15 @@ export class EmailController {
       properties: {
         message: {
           type: 'string',
-          example: 'Validation failed',
+          example: 'Validation failed'
         },
-        statusCode: { type: 'number', example: 400 },
-      },
-    },
+        statusCode: { type: 'number', example: 400 }
+      }
+    }
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized - Invalid or missing JWT token',
+    description: 'Unauthorized - Invalid or missing JWT token'
   })
   @ApiResponse({
     status: 500,
@@ -108,73 +104,58 @@ export class EmailController {
       properties: {
         message: { type: 'string', example: 'Failed to send email' },
         statusCode: { type: 'number', example: 500 },
-        success: { type: 'boolean', example: false },
-      },
-    },
+        success: { type: 'boolean', example: false }
+      }
+    }
   })
-  async sendEmail(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() invoiceEmail: InvoiceEmail,
-  ) {
+  async sendEmail(@UploadedFile() file: Express.Multer.File, @Body() invoiceEmail: InvoiceEmail) {
     try {
       let attachments = null;
       this.loggerService.log('Email controller: sendEmail() start');
-      this.loggerService.log(
-        'Email controller: sendEmail() generateInvoicePdf start',
-      );
+      this.loggerService.log('Email controller: sendEmail() generateInvoicePdf start');
       if (file) {
         // Handle the uploaded file directly
-        this.loggerService.log(
-          'Email controller: using uploaded file as attachment',
-        );
+        this.loggerService.log('Email controller: using uploaded file as attachment');
         attachments = [
           {
             filename: `Invoice-${invoiceEmail.invoiceId}.pdf`,
             content: file.buffer.toString('base64'),
             encoding: 'base64',
-          },
+          }
         ];
       }
-      this.loggerService.log(
-        'Email controller: sendEmail() generateInvoicePdf end',
-      );
+      this.loggerService.log('Email controller: sendEmail() generateInvoicePdf end');
 
       if (!attachments) {
-        this.loggerService.log(
-          'Email controller: sendEmail() chesEmailService.sendEmail() no attachments start',
-        );
+        this.loggerService.log('Email controller: sendEmail() chesEmailService.sendEmail() no attachments start');
         await this.invoiceService.sendInvoice(invoiceEmail);
-        this.loggerService.log(
-          'Email controller: sendEmail() chesEmailService.sendEmail() no attachments end',
-        );
+        this.loggerService.log('Email controller: sendEmail() chesEmailService.sendEmail() no attachments end');
         this.loggerService.log('Email controller: sendEmail() end');
         return {
           message: 'Email sent successfully without attachments',
           statusCode: HttpStatus.OK,
-          success: true,
+          success: true
         };
-      } else {
-        this.loggerService.log(
-          'Email controller: sendEmail() chesEmailService.sendEmail() with attachments start',
-        );
+      }
+      else {
+        this.loggerService.log('Email controller: sendEmail() chesEmailService.sendEmail() with attachments start');
         await this.invoiceService.sendInvoice(invoiceEmail, attachments);
-        this.loggerService.log(
-          'Email controller: sendEmail() chesEmailService.sendEmail() with attachments end',
-        );
+        this.loggerService.log('Email controller: sendEmail() chesEmailService.sendEmail() with attachments end');
         this.loggerService.log('Email controller: sendEmail() end');
         return {
           message: 'Email sent successfully with attachments',
           statusCode: HttpStatus.OK,
-          success: true,
+          success: true
         };
       }
-    } catch (error) {
+    }
+    catch (error) {
       this.loggerService.error('Email controller: sendEmail() error', error);
       return {
         message: 'Failed to send email',
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        success: false,
-      };
+        success: false
+      }
     }
   }
 }

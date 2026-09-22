@@ -58,7 +58,9 @@ import { SiteRoleGuard } from './app/auth/site-role.guard';
         path: 'src/graphql-schema.gql',
         federation: 2,
       },
-      context: ({ req }) => ({ req }),
+      context: () => {
+        //console.log('req at user '+ new Date(),req)
+      },
     }),
   ],
   controllers: [AppController],

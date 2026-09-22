@@ -16,7 +16,7 @@ import { Request } from 'express';
 @Controller()
 @Resource('site-service')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   /**
    * Health check endpoint
@@ -32,15 +32,15 @@ export class AppController {
   @Unprotected()
   @ApiOperation({
     summary: 'Get hello message',
-    description: 'Returns a simple hello world message',
+    description: 'Returns a simple hello world message'
   })
   @ApiResponse({
     status: 200,
     description: 'Hello message returned successfully',
     schema: {
       type: 'string',
-      example: 'Hello World!',
-    },
+      example: 'Hello World!'
+    }
   })
   getHello(): string {
     return this.appService.getHello();

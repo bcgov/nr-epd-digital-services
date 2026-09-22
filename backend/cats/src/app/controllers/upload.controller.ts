@@ -18,11 +18,13 @@ export class UploadController {
   constructor(
     private readonly comsService: ComsService,
     private readonly loggerService: LoggerService,
-  ) {}
+  ) { }
+
 
   @Post('/uploadFiles')
   @UseInterceptors(
-    FilesInterceptor('files', 20, {
+    FilesInterceptor('files', 20,
+      {
       storage: diskStorage({
         destination: (req, file, cb) => {
           const tempDir = path.join(
@@ -37,12 +39,12 @@ export class UploadController {
           cb(null, file.originalname);
         },
       }),
-    }),
+    }
+  ),
   )
   @ApiOperation({
     summary: 'Upload multiple files',
-    description:
-      'Uploads multiple files (up to 20) to COMS (Common Object Management Service) and associates them with an invoice. Files are temporarily stored and then uploaded to the specified bucket.',
+    description: 'Uploads multiple files (up to 20) to COMS (Common Object Management Service) and associates them with an invoice. Files are temporarily stored and then uploaded to the specified bucket.'
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -64,8 +66,7 @@ export class UploadController {
         },
         invoiceId: {
           type: 'number',
-          description:
-            'The ID of the invoice to associate with the uploaded files',
+          description: 'The ID of the invoice to associate with the uploaded files',
           example: 12345,
         },
       },
@@ -78,10 +79,7 @@ export class UploadController {
     schema: {
       type: 'object',
       properties: {
-        message: {
-          type: 'string',
-          example: 'All 3 file(s) uploaded successfully.',
-        },
+        message: { type: 'string', example: 'All 3 file(s) uploaded successfully.' },
         statusCode: { type: 'number', example: 200 },
         success: { type: 'boolean', example: true },
         summary: {
@@ -91,27 +89,22 @@ export class UploadController {
             uploaded: { type: 'number', example: 3 },
             conflicts: { type: 'number', example: 0 },
             errors: { type: 'number', example: 0 },
-          },
+          }
         },
         data: {
           type: 'array',
-          items: { type: 'object' },
-        },
-      },
-    },
+          items: { type: 'object' }
+        }
+      }
+    }
   })
   @ApiResponse({
     status: 207,
-    description:
-      'Multi-Status - Some files uploaded, some failed or conflicted',
+    description: 'Multi-Status - Some files uploaded, some failed or conflicted',
     schema: {
       type: 'object',
       properties: {
-        message: {
-          type: 'string',
-          example:
-            '2 file(s) uploaded successfully, 1 file(s) already existed. Total: 3 file(s) processed.',
-        },
+        message: { type: 'string', example: '2 file(s) uploaded successfully, 1 file(s) already existed. Total: 3 file(s) processed.' },
         statusCode: { type: 'number', example: 207 },
         success: { type: 'boolean', example: false },
         summary: {
@@ -121,11 +114,11 @@ export class UploadController {
             uploaded: { type: 'number' },
             conflicts: { type: 'number' },
             errors: { type: 'number' },
-          },
+          }
         },
-        data: { type: 'array' },
-      },
-    },
+        data: { type: 'array' }
+      }
+    }
   })
   @ApiResponse({
     status: 400,
@@ -135,13 +128,13 @@ export class UploadController {
       properties: {
         message: { type: 'string', example: 'No files uploaded' },
         statusCode: { type: 'number', example: 400 },
-        success: { type: 'boolean', example: false },
-      },
-    },
+        success: { type: 'boolean', example: false }
+      }
+    }
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized - Invalid or missing JWT token',
+    description: 'Unauthorized - Invalid or missing JWT token'
   })
   @ApiResponse({
     status: 409,
@@ -156,9 +149,9 @@ export class UploadController {
         message: { type: 'string', example: 'Error uploading files' },
         statusCode: { type: 'number', example: 500 },
         success: { type: 'boolean', example: false },
-        error: { type: 'string' },
-      },
-    },
+        error: { type: 'string' }
+      }
+    }
   })
   async uploadFiles(
     @UploadedFiles() files: Express.Multer.File[],
@@ -167,9 +160,7 @@ export class UploadController {
   ) {
     // Type check to prevent type confusion attacks
     if (!Array.isArray(files)) {
-      this.loggerService.warn(
-        'Upload controller: uploadFiles() received non-array files parameter',
-      );
+      this.loggerService.warn('Upload controller: uploadFiles() received non-array files parameter');
       return {
         message: 'Invalid files parameter',
         statusCode: HttpStatusCode.BadRequest,
@@ -188,11 +179,7 @@ export class UploadController {
       this.loggerService.log('Upload controller: uploadFiles() start');
 
       if (!files || files?.length === 0) {
-        return {
-          message: 'No files uploaded',
-          statusCode: HttpStatusCode.BadRequest,
-          success: false,
-        };
+        return { message: 'No files uploaded', statusCode: HttpStatusCode.BadRequest, success: false };
       }
 
       this.loggerService.log(`Extracting token from request headers...`);
@@ -201,25 +188,14 @@ export class UploadController {
 
       this.loggerService.log(`Extracted token: ${authHeader}`);
 
-      const accessTokenJWT = authHeader.startsWith('Bearer ')
-        ? authHeader.slice(7)
-        : authHeader;
+      const accessTokenJWT = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
 
       this.loggerService.log(`Extracted token: ${accessTokenJWT}`);
-      this.loggerService.log(
-        'Upload controller: uploadFiles() calling comsService.uploadFilesToComs() start',
-      );
+      this.loggerService.log('Upload controller: uploadFiles() calling comsService.uploadFilesToComs() start');
 
-      const { results, summary } = await this.comsService.uploadFilesToComs(
-        files,
-        fileUpload.bucketId,
-        fileUpload.invoiceId,
-        accessTokenJWT,
-      );
+      const { results, summary } = await this.comsService.uploadFilesToComs(files, fileUpload.bucketId, fileUpload.invoiceId, accessTokenJWT);
 
-      this.loggerService.log(
-        'Upload controller: uploadFiles() called comsService.uploadFilesToComs() end',
-      );
+      this.loggerService.log('Upload controller: uploadFiles() called comsService.uploadFilesToComs() end');
       this.loggerService.log('Upload controller: uploadFiles() end');
 
       const { totalFiles, uploaded, conflicts, errors } = summary;
@@ -228,13 +204,17 @@ export class UploadController {
       let statusCode: number;
       if (errors === 0 && conflicts === 0) {
         statusCode = HttpStatusCode.Ok; // 200
-      } else if (errors === totalFiles) {
+      }
+      else if (errors === totalFiles) {
         statusCode = HttpStatusCode.InternalServerError; // 500
-      } else if (uploaded > 0 && (errors > 0 || conflicts > 0)) {
+      }
+      else if (uploaded > 0 && (errors > 0 || conflicts > 0)) {
         statusCode = HttpStatusCode.MultiStatus; // 207
-      } else if (uploaded === 0 && conflicts > 0 && errors === 0) {
+      }
+      else if (uploaded === 0 && conflicts > 0 && errors === 0) {
         statusCode = HttpStatusCode.Conflict; // 409
-      } else {
+      }
+      else {
         statusCode = HttpStatusCode.Ok; // fallback 200
       }
 
@@ -258,7 +238,8 @@ export class UploadController {
         summary,
         data: results,
       };
-    } catch (error) {
+    }
+    catch (error) {
       this.loggerService.error('Upload controller: uploadFiles() error', error);
       return {
         message: 'Error uploading files',
@@ -273,14 +254,13 @@ export class UploadController {
         data: [],
         error: error.message || 'Unexpected error',
       };
-    } finally {
+    }
+    finally {
       this.loggerService.log('Upload controller: uploadFiles() end');
       const baseTempUploadsDir = path.join(__dirname, '../../temp_uploads');
       fs.readdir(baseTempUploadsDir, (err, files) => {
         if (err) {
-          this.loggerService.warn(
-            `Failed to read temp_uploads directory: ${err.message}`,
-          );
+          this.loggerService.warn(`Failed to read temp_uploads directory: ${err.message}`);
           return;
         }
 
@@ -288,9 +268,7 @@ export class UploadController {
           const folderPath = path.join(baseTempUploadsDir, folder);
           fs.rm(folderPath, { recursive: true, force: true }, (rmErr) => {
             if (rmErr) {
-              this.loggerService.warn(
-                `Failed to delete temp folder ${folderPath}: ${rmErr.message}`,
-              );
+              this.loggerService.warn(`Failed to delete temp folder ${folderPath}: ${rmErr.message}`);
             } else {
               this.loggerService.log(`Deleted temp folder ${folderPath}`);
             }
