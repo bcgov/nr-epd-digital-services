@@ -14,16 +14,16 @@ import { Request } from 'express';
  */
 @ApiTags('general')
 @Controller()
-@Resource('site-service')
+@Resource('cats-service')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
   /**
    * Health check endpoint
    * Returns a simple hello world message
-   *
+   * 
    * @returns {string} Hello World message
-   *
+   * 
    * @ApiOperation - Provides summary and description in Swagger
    * @ApiResponse - Documents the response structure and status codes
    * @Unprotected - Bypasses Keycloak authentication for this endpoint
