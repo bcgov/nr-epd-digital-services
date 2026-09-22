@@ -12,13 +12,13 @@ import {
   AuthGuard,
   KeycloakConnectModule,
   ResourceGuard,
-  RoleGuard,
 } from 'nest-keycloak-connect';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CustomExceptionFilter } from './app/filters/customExceptionFilters';
 import { MockAuthGuard } from './app/guards/mock-auth.guard';
 import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filter';
+import { SiteRoleGuard } from './app/auth/site-role.guard';
 
 /**
  * Application Module Wrapping All Functionality For User Micro Service
@@ -76,7 +76,7 @@ import { GraphQLAuthExceptionFilter } from './app/filters/graphql-exception.filt
     },
     {
       provide: APP_GUARD,
-      useClass: RoleGuard,
+      useClass: SiteRoleGuard,
     },
     {
       provide: APP_FILTER,

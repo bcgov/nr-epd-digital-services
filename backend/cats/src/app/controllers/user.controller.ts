@@ -5,24 +5,20 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  Resource,
-  RoleMatchingMode,
-  Roles,
-  Unprotected,
-} from 'nest-keycloak-connect';
+import { Resource, RoleMatchingMode } from 'nest-keycloak-connect';
 import { AddUserToGroupDto } from '../dto/addUserToGroup';
 import { Key } from 'readline';
 import { KeycloakService } from '../services/keycloak.service';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { SiteRoles } from '../auth/site-roles.decorator';
 // import { KeycloakService } from 'src/app/services/keycloak.service';
 // import { AddUserToGroupDto } from 'src/app/dto/addUserToGroup';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT-auth')
 @Controller('users')
-@Resource('cats-service')
+@Resource('site-service')
 export class UserController {
   constructor(
     private readonly keyCloakService: KeycloakService,
@@ -35,7 +31,7 @@ export class UserController {
    * @returns Object indicating success status and message.
    */
   @Post('/addGroup')
-  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to formsflow-client group',
     description: 'Adds a user to the formsflow-client group in Keycloak. Requires user-admin role.'
@@ -90,7 +86,7 @@ export class UserController {
    * @returns Object indicating success status and message.
    */
   @Post('/addUserToGroupForMuncipalUsers')
-  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to approving authority group',
     description: 'Adds a user to the LRS approving authority group in Keycloak and removes them from camunda-admin group. Requires user-admin role.'
@@ -145,7 +141,7 @@ export class UserController {
   }
 
   @Post('/addUserToGroupForSiteOwners')
-  @Roles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
+  @SiteRoles({ roles: ['user-admin'], mode: RoleMatchingMode.ANY })
   @ApiOperation({
     summary: 'Add user to site owners group',
     description: 'Adds a user to the site owners group in Keycloak and removes them from camunda-admin group. Requires user-admin role.'

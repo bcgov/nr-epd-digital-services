@@ -12,7 +12,7 @@ import { UpdatePersonNote } from '../../dto/note/updatePersonNote.dto';
 import { DeletePersonNote } from '../../dto/note/deletePersonNote.dto';
 
 @Resolver(() => ViewPersonNote)
-@Resource('cats-service')
+@Resource('site-service')
 export class PersonNoteResolver {
     constructor(
         private readonly personNoteService: PersonNoteService,

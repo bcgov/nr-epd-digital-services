@@ -31,7 +31,7 @@ import {
 } from '../../dto/assignment/viewStaffWithCapacity';
 
 @Resolver()
-@Resource('cats-service')
+@Resource('site-service')
 export class StaffAssignmentResolver {
   constructor(
     private readonly service: StaffAssignmentService,

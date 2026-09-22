@@ -13,7 +13,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody
 @ApiTags('cats')
 @ApiBearerAuth('JWT-auth')
 @Controller('cats')
-@Resource('cats-service')
+@Resource('site-service')
 export class UploadController {
     constructor(
         private readonly comsService: ComsService,
