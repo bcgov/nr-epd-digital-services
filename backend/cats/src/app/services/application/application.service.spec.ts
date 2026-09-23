@@ -6,6 +6,7 @@ import { Application } from '../../entities/application.entity';
 import { AppTypeService } from '../appType/appType.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { UserTypeEum } from '../../utilities/enums/userType';
 import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
@@ -13,6 +14,9 @@ import { StatusTypeService } from '../statusType/statusType.service';
 import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 import { ApplicationSite } from '../../entities/applicationSite.entity';
 import { ApplicationSecondaryServiceType } from '../../entities/applicationSecondaryServiceType.entity';
+import { ChesEmailService } from '../email/chesEmail.service';
+import { ChefsService } from '../chefs/chefs.service';
+import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
 
 describe('ApplicationService', () => {
   let applicationService: ApplicationService;
@@ -27,13 +31,42 @@ describe('ApplicationService', () => {
   const executeMock = jest.fn().mockResolvedValue({ affected: 1 });
   const statusTypeServiceMock = {
     getStatusTypeByAbbrev: jest.fn(),
+    getStatusTypeById: jest.fn(),
+    getStatusTypeByIdAny: jest.fn(),
+    getAllStatusTypes: jest.fn(),
+    getExternalStatusTrackerSteps: jest.fn(),
   } as Partial<jest.Mocked<StatusTypeService>>;
+  const emailServiceMock = {
+    sendEmail: jest.fn().mockResolvedValue(undefined),
+  };
+  const chefsServiceMock = {
+    getOriginalSubmitterEmail: jest
+      .fn()
+      .mockResolvedValue('submitter@example.com'),
+  };
+  const applicationSubmissionServiceMock = {
+    getSubmissionByApplicationId: jest.fn().mockResolvedValue({
+      chefsFormId: 'form-uuid',
+      chefsSubmissionId: 'sub-uuid',
+      chefsConfirmationId: 'CONF123',
+      application: { appType: { abbrev: 'NOM' } },
+    }),
+  };
+  const configServiceMock = {
+    get: jest.fn((key: string) => {
+      if (key === 'CATS_EMAIL_TEST_MODE') return 'true';
+      if (key === 'CATS_TEST_EMAIL_ADDRESS') return 'tester@example.com';
+      if (key === 'CHEFS_APP_URL') return 'https://submit.digital.gov.bc.ca';
+      return undefined;
+    }),
+  };
 
   // Manual mocks for repository methods with jest.fn()
   let appStatusRepositoryMock: {
     create: jest.Mock;
     save: jest.Mock;
     findOne: jest.Mock;
+    find: jest.Mock;
     createQueryBuilder: jest.Mock;
   };
 
@@ -63,6 +96,7 @@ describe('ApplicationService', () => {
       create: jest.fn(),
       save: jest.fn(),
       findOne: jest.fn(),
+      find: jest.fn().mockResolvedValue([]),
       createQueryBuilder: jest.fn().mockReturnValue({
         update: jest.fn().mockReturnThis(),
         set: jest.fn().mockReturnThis(),
@@ -92,6 +126,22 @@ describe('ApplicationService', () => {
       },
     };
 
+    emailServiceMock.sendEmail.mockClear();
+    emailServiceMock.sendEmail.mockResolvedValue(undefined);
+    chefsServiceMock.getOriginalSubmitterEmail.mockClear();
+    chefsServiceMock.getOriginalSubmitterEmail.mockResolvedValue(
+      'submitter@example.com',
+    );
+    applicationSubmissionServiceMock.getSubmissionByApplicationId.mockClear();
+    applicationSubmissionServiceMock.getSubmissionByApplicationId.mockResolvedValue(
+      {
+        chefsFormId: 'form-uuid',
+        chefsSubmissionId: 'sub-uuid',
+        chefsConfirmationId: 'CONF123',
+        application: { appType: { abbrev: 'NOM' } },
+      },
+    );
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ApplicationService,
@@ -114,6 +164,22 @@ describe('ApplicationService', () => {
         {
           provide: StatusTypeService,
           useValue: statusTypeServiceMock,
+        },
+        {
+          provide: ChesEmailService,
+          useValue: emailServiceMock,
+        },
+        {
+          provide: ChefsService,
+          useValue: chefsServiceMock,
+        },
+        {
+          provide: ApplicationSubmissionService,
+          useValue: applicationSubmissionServiceMock,
+        },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock,
         },
         {
           provide: LoggerService,
@@ -145,6 +211,73 @@ describe('ApplicationService', () => {
     (
       statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock
     ).mockResolvedValue({ id: 1 });
+    (statusTypeServiceMock.getStatusTypeById as jest.Mock).mockResolvedValue({
+      id: 4,
+      description: 'To be Assigned',
+      displayOrder: 6,
+      abbrev: 'TBA',
+      externalDescription: 'Accepted',
+      externalDisplayOrder: 2,
+    });
+    (statusTypeServiceMock.getStatusTypeByIdAny as jest.Mock).mockImplementation(
+      async (id: number) => {
+        if (id === 2) {
+          return {
+            id: 2,
+            description: 'Queued',
+            displayOrder: 2,
+            externalDescription: 'Accepted',
+            externalDisplayOrder: 2,
+          };
+        }
+        if (id === 8) {
+          return {
+            id: 8,
+            description: 'Review in Progress: SDM',
+            displayOrder: 8,
+            externalDescription: 'Review',
+            externalDisplayOrder: 5,
+          };
+        }
+        return {
+          id,
+          description: 'Received',
+          displayOrder: 1,
+          externalDescription: 'Submitted',
+          externalDisplayOrder: 1,
+        };
+      },
+    );
+    (statusTypeServiceMock.getAllStatusTypes as jest.Mock).mockResolvedValue([
+      {
+        id: 1,
+        description: 'Received',
+        displayOrder: 1,
+        externalDescription: 'Submitted',
+        externalDisplayOrder: 1,
+      },
+      {
+        id: 2,
+        description: 'Queued',
+        displayOrder: 2,
+        externalDescription: 'Accepted',
+        externalDisplayOrder: 2,
+      },
+      {
+        id: 4,
+        description: 'To be Assigned',
+        displayOrder: 6,
+        externalDescription: 'Accepted',
+        externalDisplayOrder: 2,
+      },
+    ]);
+    (
+      statusTypeServiceMock.getExternalStatusTrackerSteps as jest.Mock
+    ).mockResolvedValue([
+      { id: 1, description: 'Submitted', displayOrder: 1 },
+      { id: 2, description: 'Accepted', displayOrder: 2 },
+      { id: 3, description: 'Review', displayOrder: 5 },
+    ]);
     applicationRepository = module.get<Repository<Application>>(
       getRepositoryToken(Application),
     );
@@ -810,6 +943,191 @@ describe('ApplicationService', () => {
             createdBy: 'undefined undefined',
           }),
         ]),
+      );
+    });
+  });
+
+  describe('updateApplicationStatus', () => {
+    const user = { given_name: 'John', family_name: 'Doe' };
+
+    it('should close the current status and insert a new history row', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 1, // Received / Submitted — different external than TBA / Accepted
+        isCurrent: true,
+        formId: 'form-1',
+        submissionId: 'sub-1',
+        formsflowAppId: 99,
+        updatedBy: 'SYSTEM',
+        rowVersionCount: 1,
+      });
+      appStatusRepositoryMock.create.mockImplementation((value) => value);
+      appStatusRepositoryMock.save.mockResolvedValue({});
+      appStatusRepositoryMock.find.mockResolvedValue([
+        {
+          statusTypeId: 1,
+          statusType: {
+            externalDescription: 'Submitted',
+            externalDisplayOrder: 1,
+          },
+        },
+        {
+          statusTypeId: 4,
+          statusType: {
+            externalDescription: 'Accepted',
+            externalDisplayOrder: 2,
+          },
+        },
+      ]);
+
+      await applicationService.updateApplicationStatus(1, 4, user);
+
+      expect(statusTypeService.getStatusTypeById).toHaveBeenCalledWith(4);
+      expect(appStatusRepositoryMock.save).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          id: 10,
+          statusTypeId: 1,
+          isCurrent: false,
+          updatedBy: 'John Doe',
+          rowVersionCount: 2,
+        }),
+      );
+      expect(appStatusRepositoryMock.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          applicationId: 1,
+          statusTypeId: 4,
+          isCurrent: true,
+          formId: 'form-1',
+          submissionId: 'sub-1',
+          formsflowAppId: 99,
+          createdBy: 'John Doe',
+          updatedBy: 'John Doe',
+        }),
+      );
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledTimes(2);
+
+      // Allow fire-and-forget email promise to settle
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(
+        statusTypeService.getExternalStatusTrackerSteps,
+      ).toHaveBeenCalled();
+      expect(emailServiceMock.sendEmail).toHaveBeenCalledWith(
+        ['tester@example.com'],
+        expect.stringContaining('Application #1 status update: Accepted'),
+        expect.stringMatching(
+          /Current status[\s\S]*Accepted[\s\S]*Progress[\s\S]*Submitted[\s\S]*Accepted[\s\S]*\(current\)/,
+        ),
+      );
+      const html = emailServiceMock.sendEmail.mock.calls[0][2] as string;
+      expect(html).toMatch(/border:\s*1px solid #e1e4e8/);
+      expect(html).not.toMatch(/Previous status/);
+      // Tracker shows only assigned externals (plus current), not the full catalog
+      expect(html).not.toMatch(/Review/);
+    });
+
+    it('should create an app status when none exists', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue(null);
+      appStatusRepositoryMock.create.mockImplementation((value) => value);
+      appStatusRepositoryMock.save.mockResolvedValue({});
+
+      await applicationService.updateApplicationStatus(1, 4, user);
+
+      expect(appStatusRepositoryMock.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          applicationId: 1,
+          statusTypeId: 4,
+          isCurrent: true,
+          createdBy: 'John Doe',
+          updatedBy: 'John Doe',
+        }),
+      );
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledTimes(1);
+
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(emailServiceMock.sendEmail).toHaveBeenCalled();
+    });
+
+    it('should skip insert when status is already current', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 4,
+        isCurrent: true,
+      });
+
+      await applicationService.updateApplicationStatus(1, 4, user);
+
+      expect(appStatusRepositoryMock.save).not.toHaveBeenCalled();
+      expect(appStatusRepositoryMock.create).not.toHaveBeenCalled();
+      expect(emailServiceMock.sendEmail).not.toHaveBeenCalled();
+    });
+
+    it('should save internal change but skip email when external status is unchanged', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 8, // IP-SDM / Review
+        isCurrent: true,
+        formId: 'form-1',
+        submissionId: 'sub-1',
+        formsflowAppId: 99,
+        rowVersionCount: 1,
+      });
+      (statusTypeService.getStatusTypeById as jest.Mock).mockResolvedValue({
+        id: 9,
+        description: 'Reassignment Required',
+        displayOrder: 9,
+        abbrev: 'REASSIGN',
+        externalDescription: 'Review',
+        externalDisplayOrder: 5,
+      });
+      appStatusRepositoryMock.create.mockImplementation((value) => value);
+      appStatusRepositoryMock.save.mockResolvedValue({});
+
+      await applicationService.updateApplicationStatus(1, 9, user);
+
+      expect(appStatusRepositoryMock.save).toHaveBeenCalledTimes(2);
+      expect(appStatusRepositoryMock.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          applicationId: 1,
+          statusTypeId: 9,
+          isCurrent: true,
+        }),
+      );
+
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(emailServiceMock.sendEmail).not.toHaveBeenCalled();
+    });
+
+    it('should throw not found when application does not exist', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue(null);
+
+      await expect(
+        applicationService.updateApplicationStatus(999, 4, user),
+      ).rejects.toThrow(
+        new HttpException('Application not found', HttpStatus.NOT_FOUND),
+      );
+    });
+
+    it('should throw bad request when status type does not exist', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      (statusTypeService.getStatusTypeById as jest.Mock).mockResolvedValue(
+        null,
+      );
+
+      await expect(
+        applicationService.updateApplicationStatus(1, 99, user),
+      ).rejects.toThrow(
+        new HttpException(
+          'Status type not found or inactive',
+          HttpStatus.BAD_REQUEST,
+        ),
       );
     });
   });

@@ -120,7 +120,11 @@ export class ApplicationSearchService {
       .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
       .leftJoinAndSelect('application.site', 'site')
       .leftJoinAndSelect('application.appType', 'appType')
-      .leftJoinAndSelect('application.appStatus', 'appStatus')
+      .leftJoinAndSelect(
+        'application.appStatuses',
+        'appStatus',
+        'appStatus.is_current = true',
+      )
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
       .leftJoinAndSelect('appPriority.priority', 'priority');
@@ -355,7 +359,7 @@ export class ApplicationSearchService {
       siteAddress: app.site?.address || '',
       applicationType: app.appType?.description || '',
       lastUpdated: app.updatedDateTime.toISOString(),
-      status: app.appStatus?.statusType?.description || '',
+      status: app.appStatuses?.find((s) => s.isCurrent)?.statusType?.description || '',
       staffAssigned: app.appParticipants
         .filter(
           (participant) =>
@@ -411,7 +415,11 @@ export class ApplicationSearchService {
       .leftJoinAndSelect('appParticipant.participantRole', 'participantRole')
       .leftJoinAndSelect('application.site', 'site')
       .leftJoinAndSelect('application.appType', 'appType')
-      .leftJoinAndSelect('application.appStatus', 'appStatus')
+      .leftJoinAndSelect(
+        'application.appStatuses',
+        'appStatus',
+        'appStatus.is_current = true',
+      )
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
       .leftJoinAndSelect('appPriority.priority', 'priority');
@@ -429,7 +437,7 @@ export class ApplicationSearchService {
       siteAddress: app.site?.address || '',
       applicationType: app.appType?.description || '',
       lastUpdated: app.updatedDateTime.toISOString(),
-      status: app.appStatus?.statusType?.abbrev || '',
+      status: app.appStatuses?.find((s) => s.isCurrent)?.statusType?.abbrev || '',
       staffAssigned: app.appParticipants
         .filter(
           (participant) =>

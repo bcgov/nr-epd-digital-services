@@ -5,7 +5,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AppExpense } from './appExpense.entity';
@@ -130,9 +129,6 @@ export class Application {
 
   @OneToMany(() => AppService, (appService) => appService.application)
   appServices: AppService[];
-
-  @OneToOne(() => AppStatus, (appStatus) => appStatus.application)
-  appStatus: AppStatus;
 
   @OneToMany(() => AppStatus, (appStatus) => appStatus.application)
   appStatuses: AppStatus[];
