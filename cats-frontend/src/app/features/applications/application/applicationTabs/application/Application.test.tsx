@@ -91,7 +91,10 @@ const renderApplication = (mocks: unknown[]) =>
     <MockedProvider mocks={mocks} addTypename={false}>
       <MemoryRouter initialEntries={['/applications/1/application']}>
         <Routes>
-          <Route path="/applications/:id/application" element={<Application />} />
+          <Route
+            path="/applications/:id/application"
+            element={<Application />}
+          />
         </Routes>
       </MemoryRouter>
     </MockedProvider>,
@@ -99,11 +102,7 @@ const renderApplication = (mocks: unknown[]) =>
 
 describe('Application tab status', () => {
   it('renders received date and current status above the form', async () => {
-    renderApplication([
-      submissionMock,
-      applicationStatusMock,
-      statusTypesMock,
-    ]);
+    renderApplication([submissionMock, applicationStatusMock, statusTypesMock]);
 
     await waitFor(() => {
       expect(
