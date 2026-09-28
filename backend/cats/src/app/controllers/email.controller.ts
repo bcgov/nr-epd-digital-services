@@ -9,7 +9,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody
 @ApiTags('cats')
 @ApiBearerAuth('JWT-auth')
 @Controller('cats')
-@Resource('cats-service')
+@Resource('site-service')
 export class EmailController {
     constructor(
         private readonly invoiceService: InvoiceService,
