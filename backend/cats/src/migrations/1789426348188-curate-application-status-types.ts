@@ -105,10 +105,10 @@ export class CurateApplicationStatusTypes1789426348188
           ts
         )
         SELECT
-          $1,
-          $2,
+          $1::character varying,
+          $2::character varying,
           true,
-          $3,
+          $3::integer,
           1,
           'migration',
           NOW(),
@@ -116,7 +116,7 @@ export class CurateApplicationStatusTypes1789426348188
           NOW(),
           decode('00', 'hex')
         WHERE NOT EXISTS (
-          SELECT 1 FROM cats.status_type st WHERE st.abbrev = $1
+          SELECT 1 FROM cats.status_type st WHERE st.abbrev = $1::character varying
         )
         `,
         [status.abbrev, status.description, status.displayOrder],
@@ -126,12 +126,12 @@ export class CurateApplicationStatusTypes1789426348188
         `
         UPDATE cats.status_type
         SET
-          description = $2,
+          description = $2::character varying,
           is_active = true,
-          display_order = $3,
+          display_order = $3::integer,
           updated_by = 'migration',
           updated_date_time = NOW()
-        WHERE abbrev = $1
+        WHERE abbrev = $1::character varying
         `,
         [status.abbrev, status.description, status.displayOrder],
       );
@@ -146,7 +146,9 @@ export class CurateApplicationStatusTypes1789426348188
         updated_by = 'migration',
         updated_date_time = NOW()
       WHERE abbrev IS NULL
-         OR abbrev NOT IN (${keeperAbbrevs.map((_, i) => `$${i + 1}`).join(', ')})
+         OR abbrev NOT IN (${keeperAbbrevs
+           .map((_, i) => `$${i + 1}::character varying`)
+           .join(', ')})
       `,
       keeperAbbrevs,
     );
