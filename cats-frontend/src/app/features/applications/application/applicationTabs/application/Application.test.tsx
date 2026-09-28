@@ -15,10 +15,9 @@ vi.mock('@formio/react', () => ({
 
 vi.mock('formiojs/dist/formio.full.min.css', () => ({}));
 
-vi.mock(
-  '../../../../../../../common-hosted-form-service/components/lib/use',
-  () => ({}),
-);
+vi.mock('./registerChefsComponents', () => ({
+  registerChefsComponents: () => Promise.resolve(),
+}));
 
 const submissionMock = {
   request: {
@@ -118,13 +117,18 @@ describe('Application tab status', () => {
       screen.getByRole('option', { name: 'Select Status' }),
     ).toBeInTheDocument();
 
+    const chefsAppBaseUrl = (
+      import.meta.env.VITE_CHEFS_APP_URL ||
+      window?._env_?.VITE_CHEFS_APP_URL ||
+      'https://submit.digital.gov.bc.ca'
+    ).replace(/\/$/, '');
+    const expectedHref = `${chefsAppBaseUrl}/app/form/view?s=1234567654212345665432`;
+    const expectedLabel = expectedHref.replace(/^https?:\/\//, '');
+
     const originalSubmissionLink = screen.getByRole('link', {
-      name: 'submit.digital.gov.bc.ca/app/form/view?s=1234567654212345665432',
+      name: expectedLabel,
     });
-    expect(originalSubmissionLink).toHaveAttribute(
-      'href',
-      'https://submit.digital.gov.bc.ca/app/form/view?s=1234567654212345665432',
-    );
+    expect(originalSubmissionLink).toHaveAttribute('href', expectedHref);
     expect(originalSubmissionLink).toHaveAttribute('target', '_blank');
     expect(screen.getByTestId('readonly-form')).toBeInTheDocument();
   });
