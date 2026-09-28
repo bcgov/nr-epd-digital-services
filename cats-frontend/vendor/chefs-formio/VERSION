@@ -1,0 +1,5 @@
+# Pinned CHEFS Form.io custom-components plugin.
+# Last upstream commit whose components/ matches the tree previously
+# copied into cats-frontend (before Map pin-delete #1943).
+SHA=8fadfb5272c36b7b578936602a4b8d3dab05d45a
+URL=https://github.com/bcgov/common-hosted-form-service/tree/8fadfb5272c36b7b578936602a4b8d3dab05d45a/components
