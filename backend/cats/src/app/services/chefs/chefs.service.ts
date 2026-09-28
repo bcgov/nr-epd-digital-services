@@ -143,4 +143,99 @@ export class ChefsService {
       throw error;
     }
   }
+
+  /**
+   * Resolve the original CHEFS submitter account email from form export.
+   * Matches export row by submissionId (preferred) or confirmationId.
+   * @see GET /forms/{formId}/export?format=json → form.email
+   */
+  async getOriginalSubmitterEmail(params: {
+    chefsFormId: string;
+    chefsSubmissionId: string;
+    chefsConfirmationId?: string | null;
+    appTypeAbbrev?: string | null;
+  }): Promise<string | null> {
+    const {
+      chefsFormId,
+      chefsSubmissionId,
+      chefsConfirmationId,
+      appTypeAbbrev,
+    } = params;
+
+    if (!chefsFormId?.trim() || !chefsSubmissionId?.trim()) {
+      throw new BadRequestException(
+        'CHEFS form id and submission id are required to resolve submitter email.',
+      );
+    }
+
+    const url = `${this.baseUrl}/forms/${chefsFormId}/export`;
+    const config = {
+      ...this.buildBasicAuthConfig(chefsFormId, appTypeAbbrev),
+      params: { format: 'json' },
+    };
+
+    this.logger.log(
+      `CHEFS GET ${url}?format=json auth=basic formId=${chefsFormId}` +
+        ` submissionId=${chefsSubmissionId}` +
+        (chefsConfirmationId ? ` confirmationId=${chefsConfirmationId}` : '') +
+        (appTypeAbbrev ? ` appType=${appTypeAbbrev}` : ''),
+    );
+
+    try {
+      const response = await axios.get(url, config);
+      const rows = Array.isArray(response.data) ? response.data : [];
+
+      const submissionId = chefsSubmissionId.trim().toLowerCase();
+      const confirmationId = chefsConfirmationId?.trim()?.toLowerCase() || '';
+
+      const match =
+        rows.find((row) => {
+          const form = row?.form ?? row;
+          const rowSubmissionId = String(
+            form?.submissionId ?? form?.submission_id ?? '',
+          )
+            .trim()
+            .toLowerCase();
+          return rowSubmissionId === submissionId;
+        }) ??
+        (confirmationId
+          ? rows.find((row) => {
+              const form = row?.form ?? row;
+              const rowConfirmationId = String(
+                form?.confirmationId ?? form?.confirmation_id ?? '',
+              )
+                .trim()
+                .toLowerCase();
+              return rowConfirmationId === confirmationId;
+            })
+          : undefined);
+
+      const email = String(
+        match?.form?.email ?? match?.email ?? '',
+      ).trim();
+
+      if (!email) {
+        this.logger.warn(
+          `No submitter email found in CHEFS export for submission ${chefsSubmissionId}`,
+        );
+        return null;
+      }
+
+      return email;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const detail =
+          (error.response?.data as { detail?: string })?.detail ||
+          error.message;
+        const message = `CHEFS getOriginalSubmitterEmail failed (${status ?? 'network'}). Detail: ${detail}`;
+        this.logger.error(message);
+        if (status === 401 || status === 403) {
+          throw new UnauthorizedException(message);
+        }
+        throw new BadRequestException(message);
+      }
+      throw error;
+    }
+  }
 }

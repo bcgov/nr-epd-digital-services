@@ -36,6 +36,7 @@ declare global {
       VITE_COMS_ACCESS_REGION: string;
       VITE_COMS_ACCESS_KEY: string;
       VITE_SITE_REGISTRY_URL: string;
+      VITE_CHEFS_APP_URL?: string;
     };
   }
 }

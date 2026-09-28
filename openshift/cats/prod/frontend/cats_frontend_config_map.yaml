@@ -48,4 +48,5 @@ data:
   VITE_FORM_API: 'https://forms-flow-api-e38158-prod.apps.silver.devops.gov.bc.ca'
   VITE_SITE_REGISTRAR_USER_ROLE: site-registrar
   VITE_AUTH_RESPONSE_TYPE: code
+  VITE_CHEFS_APP_URL: 'https://submit.digital.gov.bc.ca'
 binaryData: {}
