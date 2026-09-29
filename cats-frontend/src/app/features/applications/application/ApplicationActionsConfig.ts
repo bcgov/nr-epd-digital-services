@@ -3,6 +3,7 @@ import { DropdownItem } from '../../../components/action/IActions';
 export enum ApplicationAction {
   ADD_NOTATION_TO_SITE_REGISTRY = 'ADD_NOTATION_TO_SITE_REGISTRY',
   ADD_DISCLOSURES_TO_SITE_REGISTRY = 'ADD_DISCLOSURES_TO_SITE_REGISTRY',
+  EXPORT_PDF = 'EXPORT_PDF',
 }
 
 /** Site Registry nested tab paths used by deep links. */
@@ -24,6 +25,11 @@ export const applicationActionItems: DropdownItem[] = [
   },
 ];
 
+export const exportPdfActionItem: DropdownItem = {
+  label: 'Export PDF',
+  value: ApplicationAction.EXPORT_PDF,
+};
+
 /** SDS (Site Disclosure Statement) — abbrev SDS from CHEFS / app_type. */
 export function isSdsAppType(appType?: AppTypeFields | null): boolean {
   if (!appType) {
@@ -43,20 +49,27 @@ export function isSdsAppType(appType?: AppTypeFields | null): boolean {
 
 /**
  * SDS apps only get the disclosure action; all other form types get notation.
+ * Export PDF is available for every application type.
  */
 export function getApplicationActionItems(
   appType?: AppTypeFields | null,
 ): DropdownItem[] {
   if (isSdsAppType(appType)) {
-    return applicationActionItems.filter(
-      (item) =>
-        item.value === ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
-    );
+    return [
+      ...applicationActionItems.filter(
+        (item) =>
+          item.value === ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
+      ),
+      exportPdfActionItem,
+    ];
   }
 
-  return applicationActionItems.filter(
-    (item) => item.value === ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
-  );
+  return [
+    ...applicationActionItems.filter(
+      (item) => item.value === ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+    ),
+    exportPdfActionItem,
+  ];
 }
 
 export const getSiteRegistryBaseUrl = (): string | undefined =>

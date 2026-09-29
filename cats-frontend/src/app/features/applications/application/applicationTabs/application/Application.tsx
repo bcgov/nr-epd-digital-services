@@ -182,7 +182,7 @@ export const Application: React.FC<ApplicationProps> = () => {
 
   return (
     <div className="application-container" id="main">
-      <div className="application-form-content">
+      <div className="application-form-content application-print-root">
         <div
           className="application-status-bar"
           data-testid="application-status-bar"
@@ -192,25 +192,27 @@ export const Application: React.FC<ApplicationProps> = () => {
               Application Received: {formattedReceivedDate}
             </p>
           )}
-          <div className="application-status-bar__status">
-            <span className="application-status-bar__status-label">
-              Status:
-            </span>
-            <DropdownInput
-              type={FormFieldType.DropDown}
-              label=""
-              placeholder="Select Status"
-              value={statusTypeId}
-              isEditing
-              isDisabled={statusTypesLoading || updatingStatus}
-              options={statusOptions}
-              onChange={(value) => handleStatusChange(String(value ?? ''))}
-            />
+          <div className="application-status-bar__actions no-print">
+            <div className="application-status-bar__status">
+              <span className="application-status-bar__status-label">
+                Status:
+              </span>
+              <DropdownInput
+                type={FormFieldType.DropDown}
+                label=""
+                placeholder="Select Status"
+                value={statusTypeId}
+                isEditing
+                isDisabled={statusTypesLoading || updatingStatus}
+                options={statusOptions}
+                onChange={(value) => handleStatusChange(String(value ?? ''))}
+              />
+            </div>
           </div>
         </div>
         {originalSubmissionUrl && originalSubmissionLinkLabel && (
           <p
-            className="application-original-submission"
+            className="application-original-submission no-print"
             data-testid="original-submission-link"
           >
             <span className="application-original-submission__label">
