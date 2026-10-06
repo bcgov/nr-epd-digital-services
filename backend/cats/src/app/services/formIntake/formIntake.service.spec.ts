@@ -18,6 +18,7 @@ describe('FormIntakeService', () => {
 
   const mockApplicationService = {
     createApplication: jest.fn(),
+    syncApplicationSites: jest.fn(),
   };
 
   const mockHttpService = {
@@ -113,11 +114,12 @@ describe('FormIntakeService', () => {
       expect(result.applicationId).toBe(42);
     });
 
-    it('should skip application creation if submission already has applicationId', async () => {
+    it('should sync site IDs when submission already has an application', async () => {
       const savedSubmission = { id: 'uuid-1', applicationId: 10 };
       mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
         savedSubmission,
       );
+      mockApplicationService.syncApplicationSites.mockResolvedValue(undefined);
 
       const result = await service.processWebhookSubmission(
         mockFormData,
@@ -126,7 +128,63 @@ describe('FormIntakeService', () => {
       );
 
       expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+      expect(mockApplicationService.syncApplicationSites).toHaveBeenCalledWith(
+        10,
+        [12345],
+        'SYSTEM',
+      );
       expect(result.applicationId).toBe(10);
+    });
+
+    it('should sync NOM site ID from S2-siteIdNumber on resubmit', async () => {
+      const nomFormData = {
+        form: {
+          formName: 'Notice of Likely or Actual Migration',
+          version: 6,
+          confirmationId: '60DE0A37',
+        },
+        'S2-siteIdNumber': '11',
+      };
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-2', applicationId: 20 },
+      );
+      mockApplicationService.syncApplicationSites.mockResolvedValue(undefined);
+
+      await service.processWebhookSubmission(
+        nomFormData,
+        '60de0a37-2a88-4161-85aa-0bcdca0995eb',
+        'nom-form-id',
+      );
+
+      expect(mockApplicationService.syncApplicationSites).toHaveBeenCalledWith(
+        20,
+        [11],
+        'SYSTEM',
+      );
+    });
+
+    it('should not sync sites for forms without a siteIdField (SDS)', async () => {
+      const sdsFormData = {
+        form: {
+          formName: 'Site Disclosure Statement',
+          version: 1,
+          confirmationId: 'SDS-1',
+        },
+      };
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-3', applicationId: 30 },
+      );
+
+      await service.processWebhookSubmission(
+        sdsFormData,
+        'sds-sub-id',
+        'sds-form-id',
+      );
+
+      expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+      expect(
+        mockApplicationService.syncApplicationSites,
+      ).not.toHaveBeenCalled();
     });
 
     it('should throw on failure', async () => {

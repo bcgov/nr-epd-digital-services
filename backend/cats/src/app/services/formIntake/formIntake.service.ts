@@ -167,6 +167,12 @@ export class FormIntakeService {
           );
           submission.applicationId = application.id;
         }
+      } else {
+        await this.syncApplicationSitesFromSubmission(
+          rawFormData,
+          submission.applicationId,
+          user,
+        );
       }
 
       this.loggerService.log(
@@ -218,6 +224,40 @@ export class FormIntakeService {
         },
       ],
     });
+  }
+
+  private async syncApplicationSitesFromSubmission(
+    rawFormData: Record<string, any>,
+    applicationId: number,
+    user: string,
+  ) {
+    const formName = rawFormData?.form?.formName;
+    const formConfig = getFormConfigByFormName(formName);
+
+    if (!formConfig) {
+      this.loggerService.error(
+        `No form configuration found for form name: "${formName}"`,
+        null,
+      );
+      throw new Error(`No form configuration found for form: "${formName}"`);
+    }
+
+    // Forms without a source site field (SDS/IR) skip sync so staff-linked sites are kept
+    if (!formConfig.siteIdField) {
+      return;
+    }
+
+    const siteIds = this.extractSiteIds(rawFormData, formConfig.siteIdField);
+
+    this.loggerService.log(
+      `Syncing site IDs [${siteIds.join(', ')}] onto application ${applicationId} from edited CHEFS submission`,
+    );
+
+    await this.applicationService.syncApplicationSites(
+      applicationId,
+      siteIds,
+      user,
+    );
   }
 
   private extractSiteIds(
