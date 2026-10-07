@@ -162,6 +162,45 @@ export class ApplicationService {
     }
   }
 
+  /**
+   * Sync primary site_id + application_site rows from CHEFS (or FormsFlow) site IDs.
+   * Empty siteIds clears the linked site so All Applications matches the form.
+   */
+  async syncApplicationSites(
+    applicationId: number,
+    siteIds: number[],
+    user: string = 'SYSTEM',
+  ): Promise<void> {
+    const uniqueSiteIds = [...new Set(siteIds.filter((id) => !isNaN(id)))];
+    const primarySiteId = uniqueSiteIds[0] ?? null;
+
+    await this.applicationRepository.update(applicationId, {
+      siteId: primarySiteId,
+      isMultiSite: uniqueSiteIds.length > 1,
+      updatedBy: user.slice(0, 20),
+      updatedDateTime: new Date(),
+    });
+
+    await this.applicationSiteRepository.delete({ applicationId });
+
+    if (uniqueSiteIds.length === 0) {
+      return;
+    }
+
+    const applicationSites = uniqueSiteIds.map((siteId) =>
+      this.applicationSiteRepository.create({
+        applicationId,
+        siteId,
+        createdBy: user.slice(0, 20),
+        updatedBy: user.slice(0, 20),
+        createdDateTime: new Date(),
+        updatedDateTime: new Date(),
+      }),
+    );
+
+    await this.applicationSiteRepository.save(applicationSites);
+  }
+
   // this method will be called from formsflow after an application is submitted to update the formsflow app id
   async updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto) {
     this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
@@ -234,30 +273,9 @@ export class ApplicationService {
         })
         .execute();
 
-      // Update application_site table if siteIds are provided
-      if (siteIds && siteIds.length > 0 && applicationId) {
-        // Update the primary siteId in application table
-        await this.applicationRepository.update(applicationId, {
-          siteId: siteIds[0], // or however you determine which siteId to use
-          updatedBy: 'SYSTEM',
-          updatedDateTime: new Date(),
-        });
-        // Remove existing mappings
-        await this.applicationSiteRepository.delete({ applicationId });
-
-        // Insert new mappings
-        const applicationSites = siteIds.map((siteId) =>
-          this.applicationSiteRepository.create({
-            applicationId,
-            siteId,
-            createdBy: 'SYSTEM',
-            updatedBy: 'SYSTEM',
-            createdDateTime: new Date(),
-            updatedDateTime: new Date(),
-          }),
-        );
-
-        await this.applicationSiteRepository.save(applicationSites);
+      // Preserve FormsFlow behaviour: only sync when site IDs are present
+      if (applicationId && siteIds?.length > 0) {
+        await this.syncApplicationSites(applicationId, siteIds, 'SYSTEM');
       }
 
       // Log success

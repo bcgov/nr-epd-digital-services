@@ -26,7 +26,7 @@ export const FORM_REGISTRY: Record<string, FormConfig> = {
   NOM: {
     appTypeAbbrev: 'NOM',
     displayName: 'Notice of Likely or Actual Migration',
-    siteIdField: 'contact-parcelSiteIdNumber',
+    siteIdField: 'S2-siteIdNumber',
     apiKeyEnvKey: 'NOM_FORM_API_KEY',
     chefsFormIdEnvKey: 'NOM_FORM_ID',
   },
