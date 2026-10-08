@@ -20,7 +20,7 @@ import { UpdateAppParticipantDto } from '../../dto/appParticipants/updateAppPart
 import { BaseHttpResponse } from '../../dto/response/baseHttpResponse';
 
 @Resolver(() => ViewAppParticipantsDto)
-@Resource('cats-service')
+@Resource('site-service')
 export class AppParticipantResolver {
   constructor(
     private readonly appParticipantService: AppParticipantService,
