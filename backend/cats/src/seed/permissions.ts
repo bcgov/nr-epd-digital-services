@@ -36,6 +36,10 @@ export const COMMON_PERMISSIONS = [
       },
       serviceTypeDetail('26-Confirmation of Remediation', 'Non-CSAP'),
       serviceTypeDetail('26-Indemnification', 'Non-CSAP'),
+      serviceTypeDetail(
+        '26-Confirmation of remediation - release request (Table 2.16)',
+        'Non-CSAP',
+      ),
     ],
   },
   {
@@ -63,6 +67,7 @@ export const COMMON_PERMISSIONS = [
         applicationServiceDesc: 'Consultation:',
         serviceType: 'Non-CSAP',
       },
+      serviceTypeDetail('26-Meeting request (Table 2 16.)', 'Non-CSAP'),
     ],
   },
   {
@@ -78,6 +83,25 @@ export const COMMON_PERMISSIONS = [
       serviceTypeDetail('26-Voluntary Remediation Agreement', 'Non-CSAP'),
       serviceTypeDetail(
         '26-Person Requests Designation of an Area as an Environmental Management Area',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Compliance verification activity - reports and other (Table 2.16)',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Additional ministry service  (Table 2 16.)',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail('26-Activities taking 0 to 4 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 4+ to 9 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 9+ to 19 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 19+ to 29 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 29+ to 39 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 39+ to 54 hours', 'Non-CSAP'),
+      serviceTypeDetail('26-Activities taking 54+ to 75 hours', 'Non-CSAP'),
+      serviceTypeDetail(
+        '26-over 75 hour Table 3 Compliance verification or additional ministry activity',
         'Non-CSAP',
       ),
     ],
@@ -155,6 +179,14 @@ export const COMMON_PERMISSIONS = [
         '26-Risk Assessment (Human health or Environmental risk assessment)',
         'Non-CSAP',
       ),
+      serviceTypeDetail(
+        '26-Detailed site investigation - release request (Table 2.16)',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Amendment to  Certificate (Table 3 hourly)',
+        'Non-CSAP',
+      ),
     ],
   },
   {
@@ -200,6 +232,14 @@ export const COMMON_PERMISSIONS = [
       ),
       serviceTypeDetail(
         '26-Determination of a contaminated site - Final - no ministry fees',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Screening level risk assessment (direct to ministry)',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Amendment to  Certificate (Table 3 hourly)',
         'Non-CSAP',
       ),
     ],
@@ -268,6 +308,15 @@ export const COMMON_PERMISSIONS = [
         '26-Request to Director: Review of Background Substance Concentrations for a Site under CSR s. 11, 17 or 18',
         'Non-CSAP',
       ),
+      serviceTypeDetail(
+        '26-Person requests an allocation panel and an allocation panel carries out work and provides an opinion',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail('26-Request to director  (Table 2 16.)', 'Non-CSAP'),
+      serviceTypeDetail(
+        "26-Review of Director's requirement - Order (Table 2.16)",
+        'Non-CSAP',
+      ),
     ],
   },
   {
@@ -294,6 +343,14 @@ export const COMMON_PERMISSIONS = [
       ),
       serviceTypeDetail(
         "26-Review of Interim Report for the Remediation of a Contaminated Site in Accordance with an Applicable Director's Protocol Made under Section 64(1)(d) of the Act",
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Compliance verification P12 reporting (Table 2.16)',
+        'Non-CSAP',
+      ),
+      serviceTypeDetail(
+        '26-Compliance verification P12 other (Table 2.16)',
         'Non-CSAP',
       ),
     ],
