@@ -758,6 +758,20 @@ type ApplicationLinksResponse {
   data: [ApplicationLinkDto!]!
 }
 
+type ApplicationLinkSearchHitDto {
+  applicationId: Int!
+  confirmationId: String
+  fileName: String!
+}
+
+type ApplicationLinkSearchResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ApplicationLinkSearchHitDto!]!
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -809,6 +823,7 @@ type Query {
   getFinancialSummary(applicationId: Int!): FinancialSummaryResponse!
   getManualIntakeForms: ManualIntakeFormsResponse!
   getApplicationLinks(applicationId: Int!): ApplicationLinksResponse!
+  searchApplicationLinkTargets(cssaApplicationId: Int!, query: String!, excludeApplicationIds: [Int!]!): ApplicationLinkSearchResponse!
 }
 
 enum Filter {
@@ -885,6 +900,7 @@ type Mutation {
   deleteObject(objectId: String!, versionId: String): ComsResponse!
   saveUserColumnPreferences(columnPreferences: SaveColumnPreferencesDto!): ColumnPreferencesResponse!
   processChefsSubmissionManually(appTypeAbbrev: String!, chefsSubmissionId: String!): ManualIntakeResponse!
+  saveApplicationLinks(input: SaveApplicationLinksInput!): ApplicationLinksResponse!
 }
 
 input CreatePerson {
@@ -1119,4 +1135,14 @@ input TimesheetDayUpsertInputDto {
 input SaveColumnPreferencesDto {
   page: String!
   columns: [ColumnConfigInput!]!
+}
+
+input SaveApplicationLinksInput {
+  cssaApplicationId: Int!
+  links: [ApplicationLinkInput!]!
+}
+
+input ApplicationLinkInput {
+  targetApplicationId: Int
+  confirmationId: String
 }
