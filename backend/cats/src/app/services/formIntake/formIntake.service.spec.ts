@@ -63,6 +63,7 @@ describe('FormIntakeService', () => {
     mockSubmissionService.updateSubmission.mockReset();
     mockApplicationService.createApplication.mockReset();
     mockApplicationService.syncApplicationSites.mockReset();
+    let nextLinkId = 0;
     const linkRepository = {
       rows: [] as ApplicationLink[],
       manager: {
@@ -78,9 +79,10 @@ describe('FormIntakeService', () => {
           ...entity,
           id:
             entity.id ??
-            `00000000-0000-4000-8000-${String(
-              linkRepository.rows.length + 1,
-            ).padStart(12, '0')}`,
+            `00000000-0000-4000-8000-${String(++nextLinkId).padStart(
+              12,
+              '0',
+            )}`,
         } as ApplicationLink;
         linkRepository.rows.push(saved);
         return saved;
@@ -1419,6 +1421,348 @@ describe('FormIntakeService', () => {
           submittedDate: '2026-03-01',
           applicationId: 77,
         },
+        {
+          confirmationId: 'ALPHA',
+          fileName: 'ALPHA',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('persists removal of an applicant row, an unresolved row, and a reviewer-added row', async () => {
+      matchedSubmissions.push(
+        {
+          applicationId: 5,
+          chefsConfirmationId: 'MATCHED',
+          receivedDate: '2026-01-02',
+          appTypeDescription: 'Site Disclosure Statement',
+        },
+        {
+          applicationId: 77,
+          chefsConfirmationId: 'STAFF-ONLY',
+          receivedDate: '2026-03-01',
+          appTypeDescription: 'Notice of Migration',
+        },
+      );
+      recordIntake([42], {
+        CSR: 'Contaminated Site Services Application',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['MATCHED', 'OPEN'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+      await linkService.saveStaffLinks(
+        42,
+        [
+          { targetApplicationId: 5, confirmationId: 'MATCHED' },
+          { targetApplicationId: null, confirmationId: 'OPEN' },
+          { targetApplicationId: 77, confirmationId: 'STAFF-ONLY' },
+        ],
+        'reviewer',
+      );
+
+      await linkService.saveStaffLinks(42, [], 'reviewer');
+
+      expect(
+        submissionRows.find((row) => row.chefsSubmissionId === 'cssa-sub')
+          ?.linkedConfirmationIds,
+      ).toEqual(['MATCHED', 'OPEN']);
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledTimes(1);
+      expect(await displayRows(42)).toEqual([]);
+    });
+
+    it('recreates a removed applicant row when the same CSSA is processed again and the form still lists the confirmation id', async () => {
+      matchedSubmissions.push({
+        applicationId: 5,
+        chefsConfirmationId: 'MATCHED',
+        receivedDate: '2026-01-02',
+        appTypeDescription: 'Site Disclosure Statement',
+      });
+      recordIntake([42], {
+        CSR: 'Contaminated Site Services Application',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['MATCHED', 'OPEN'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+      await linkService.saveStaffLinks(42, [], 'reviewer');
+      expect(await displayRows(42)).toEqual([]);
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['matched', ' open '],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+
+      expect(
+        submissionRows.find((row) => row.chefsSubmissionId === 'cssa-sub')
+          ?.linkedConfirmationIds,
+      ).toEqual(['MATCHED', 'OPEN']);
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'MATCHED',
+          fileName: 'MATCHED - Site Disclosure Statement',
+          submittedDate: '2026-01-02',
+          applicationId: 5,
+        },
+        {
+          confirmationId: 'OPEN',
+          fileName: 'OPEN',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('recreates a removed row on every CSSA that still lists the code when a matching submission is processed', async () => {
+      recordIntake([42, 43, 44, 11, 8], {
+        CSR: 'Contaminated Site Services Application',
+        NIR: 'Notice of Independent Remediation',
+        NOM: 'Notice of Likely or Actual Migration',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-1' },
+          linkedConfirmationIds: ['SHARED'],
+        },
+        'cssa-1',
+        'form-1',
+      );
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-2' },
+          linkedConfirmationIds: ['SHARED'],
+        },
+        'cssa-2',
+        'form-2',
+      );
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-3' },
+          linkedConfirmationIds: ['OTHER'],
+        },
+        'cssa-3',
+        'form-3',
+      );
+      await service.processWebhookSubmission(
+        {
+          form: {
+            formName: 'Notice of Independent Remediation',
+            confirmationId: 'shared',
+            submittedAt: '2026-01-10T00:00:00.000Z',
+          },
+        },
+        'nir-sub',
+        'nir-form',
+      );
+
+      await linkService.saveStaffLinks(42, [], 'reviewer');
+      expect(await displayRows(42)).toEqual([]);
+
+      await service.processWebhookSubmission(
+        {
+          form: {
+            formName: 'Notice of Likely or Actual Migration',
+            confirmationId: ' SHARED ',
+            submittedAt: '2026-03-02T00:00:00.000Z',
+          },
+        },
+        'nom-sub',
+        'nom-form',
+      );
+
+      const nirRow = {
+        confirmationId: 'SHARED',
+        fileName: 'SHARED - Notice of Independent Remediation',
+        submittedDate: '2026-01-10',
+        applicationId: 11,
+      };
+      const nomRow = {
+        confirmationId: 'SHARED',
+        fileName: 'SHARED - Notice of Likely or Actual Migration',
+        submittedDate: '2026-03-02',
+        applicationId: 8,
+      };
+      expect(await displayRows(42)).toEqual([nirRow, nomRow]);
+      expect(await displayRows(43)).toEqual([nirRow, nomRow]);
+      expect(await displayRows(44)).toEqual([
+        {
+          confirmationId: 'OTHER',
+          fileName: 'OTHER',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('does not recreate a removed row after the applicant drops that confirmation id', async () => {
+      matchedSubmissions.push({
+        applicationId: 5,
+        chefsConfirmationId: 'DROPPED',
+        receivedDate: '2026-01-02',
+        appTypeDescription: 'Site Disclosure Statement',
+      });
+      recordIntake([42, 43, 9], {
+        CSR: 'Contaminated Site Services Application',
+        NIR: 'Notice of Independent Remediation',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-1' },
+          linkedConfirmationIds: ['KEPT', 'DROPPED'],
+        },
+        'cssa-1',
+        'form-1',
+      );
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-2' },
+          linkedConfirmationIds: ['DROPPED'],
+        },
+        'cssa-2',
+        'form-2',
+      );
+      await linkService.saveStaffLinks(
+        42,
+        [{ targetApplicationId: null, confirmationId: 'KEPT' }],
+        'reviewer',
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-1' },
+          linkedConfirmationIds: ['kept'],
+        },
+        'cssa-1',
+        'form-1',
+      );
+
+      const keptRow = {
+        confirmationId: 'KEPT',
+        fileName: 'KEPT',
+        submittedDate: null,
+        applicationId: null,
+      };
+      expect(
+        submissionRows.find((row) => row.chefsSubmissionId === 'cssa-1')
+          ?.linkedConfirmationIds,
+      ).toEqual(['KEPT']);
+      expect(await displayRows(42)).toEqual([keptRow]);
+
+      await service.processWebhookSubmission(
+        {
+          form: {
+            formName: 'Notice of Independent Remediation',
+            confirmationId: ' dropped ',
+            submittedAt: '2026-04-01T00:00:00.000Z',
+          },
+        },
+        'nir-sub',
+        'nir-form',
+      );
+
+      expect(await displayRows(42)).toEqual([keptRow]);
+      expect(await displayRows(43)).toEqual([
+        {
+          confirmationId: 'DROPPED',
+          fileName: 'DROPPED - Site Disclosure Statement',
+          submittedDate: '2026-01-02',
+          applicationId: 5,
+        },
+        {
+          confirmationId: 'DROPPED',
+          fileName: 'DROPPED - Notice of Independent Remediation',
+          submittedDate: '2026-04-01',
+          applicationId: 9,
+        },
+      ]);
+    });
+
+    it('leaves a removed reviewer-added link off after a later ingest when its code is not on the form', async () => {
+      matchedSubmissions.push({
+        applicationId: 77,
+        chefsConfirmationId: 'NOT-ON-FORM',
+        receivedDate: '2026-03-01',
+        appTypeDescription: 'Notice of Migration',
+      });
+      recordIntake([42, 8], {
+        CSR: 'Contaminated Site Services Application',
+        NOM: 'Notice of Likely or Actual Migration',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['ALPHA'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+      await linkService.saveStaffLinks(
+        42,
+        [
+          { targetApplicationId: null, confirmationId: 'ALPHA' },
+          { targetApplicationId: 77, confirmationId: 'NOT-ON-FORM' },
+        ],
+        'reviewer',
+      );
+      await linkService.saveStaffLinks(
+        42,
+        [{ targetApplicationId: null, confirmationId: 'ALPHA' }],
+        'reviewer',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'ALPHA',
+          fileName: 'ALPHA',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['ALPHA'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+      await service.processWebhookSubmission(
+        {
+          form: {
+            formName: 'Notice of Likely or Actual Migration',
+            confirmationId: 'not-on-form',
+            submittedAt: '2026-03-01T00:00:00.000Z',
+          },
+        },
+        'nom-sub',
+        'nom-form',
+      );
+
+      expect(
+        submissionRows.find((row) => row.chefsSubmissionId === 'cssa-sub')
+          ?.linkedConfirmationIds,
+      ).toEqual(['ALPHA']);
+      expect(await displayRows(42)).toEqual([
         {
           confirmationId: 'ALPHA',
           fileName: 'ALPHA',
