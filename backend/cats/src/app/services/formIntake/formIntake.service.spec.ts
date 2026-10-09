@@ -1087,6 +1087,143 @@ describe('FormIntakeService', () => {
       expect(await displayRows(15)).toEqual([]);
       expect(await displayRows(8)).toEqual([]);
     });
+
+    it('adds a confirmation id from a resubmit of the same submission and keeps a code the form no longer lists', async () => {
+      matchedSubmissions.push({
+        applicationId: 5,
+        chefsConfirmationId: 'DROPPED',
+        receivedDate: '2026-01-02',
+        appTypeDescription: 'Site Disclosure Statement',
+      });
+      recordIntake([42], {
+        CSR: 'Contaminated Site Services Application',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['KEPT', 'DROPPED'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'DROPPED',
+          fileName: 'DROPPED - Site Disclosure Statement',
+          submittedDate: '2026-01-02',
+          applicationId: 5,
+        },
+        {
+          confirmationId: 'KEPT',
+          fileName: 'KEPT',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['kept', 'added'],
+        },
+        'cssa-sub',
+        'cssa-form',
+      );
+
+      expect(mockApplicationService.createApplication).toHaveBeenCalledTimes(1);
+      expect(
+        submissionRows.find((row) => row.chefsSubmissionId === 'cssa-sub')
+          ?.linkedConfirmationIds,
+      ).toEqual(['KEPT', 'ADDED']);
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'DROPPED',
+          fileName: 'DROPPED - Site Disclosure Statement',
+          submittedDate: '2026-01-02',
+          applicationId: 5,
+        },
+        {
+          confirmationId: 'ADDED',
+          fileName: 'ADDED',
+          submittedDate: null,
+          applicationId: null,
+        },
+        {
+          confirmationId: 'KEPT',
+          fileName: 'KEPT',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('creates a separate application for a different submission id and leaves the earlier CSSA unchanged', async () => {
+      recordIntake([42, 43], {
+        CSR: 'Contaminated Site Services Application',
+      });
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-1' },
+          linkedConfirmationIds: ['ALPHA'],
+        },
+        'cssa-1',
+        'form-1',
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: 'CSSA-2' },
+          linkedConfirmationIds: ['ALPHA', 'BETA'],
+        },
+        'cssa-2',
+        'form-2',
+      );
+
+      expect(mockApplicationService.createApplication).toHaveBeenCalledTimes(2);
+      expect(
+        submissionRows.map((row) => ({
+          chefsSubmissionId: row.chefsSubmissionId,
+          applicationId: row.applicationId,
+          linkedConfirmationIds: row.linkedConfirmationIds,
+        })),
+      ).toEqual([
+        {
+          chefsSubmissionId: 'cssa-1',
+          applicationId: 42,
+          linkedConfirmationIds: ['ALPHA'],
+        },
+        {
+          chefsSubmissionId: 'cssa-2',
+          applicationId: 43,
+          linkedConfirmationIds: ['ALPHA', 'BETA'],
+        },
+      ]);
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'ALPHA',
+          fileName: 'ALPHA',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+      expect(await displayRows(43)).toEqual([
+        {
+          confirmationId: 'ALPHA',
+          fileName: 'ALPHA',
+          submittedDate: null,
+          applicationId: null,
+        },
+        {
+          confirmationId: 'BETA',
+          fileName: 'BETA',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
   });
 
   describe('fetchAndProcessSubmission', () => {
