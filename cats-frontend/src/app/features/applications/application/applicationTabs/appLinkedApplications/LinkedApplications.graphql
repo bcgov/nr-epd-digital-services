@@ -9,3 +9,33 @@ query getApplicationLinks($applicationId: Int!) {
     }
   }
 }
+
+query searchApplicationLinkTargets(
+  $cssaApplicationId: Int!
+  $query: String!
+  $excludeApplicationIds: [Int!]!
+) {
+  searchApplicationLinkTargets(
+    cssaApplicationId: $cssaApplicationId
+    query: $query
+    excludeApplicationIds: $excludeApplicationIds
+  ) {
+    data {
+      applicationId
+      confirmationId
+      fileName
+    }
+  }
+}
+
+mutation saveApplicationLinks($input: SaveApplicationLinksInput!) {
+  saveApplicationLinks(input: $input) {
+    data {
+      id
+      confirmationId
+      fileName
+      submittedDate
+      applicationId
+    }
+  }
+}
