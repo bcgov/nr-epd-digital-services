@@ -742,6 +742,22 @@ type ManualIntakeResponse {
   data: ManualIntakeResultDto
 }
 
+type ApplicationLinkDto {
+  id: String!
+  confirmationId: String
+  fileName: String
+  submittedDate: String
+  applicationId: Int
+}
+
+type ApplicationLinksResponse {
+  message: String
+  httpStatusCode: Int
+  success: Boolean
+  timestamp: String
+  data: [ApplicationLinkDto!]!
+}
+
 input EmailRecipientInput {
   email: String!
   personId: Int
@@ -792,6 +808,7 @@ type Query {
   getUserColumnPreferences(page: String!): ColumnPreferencesResponse!
   getFinancialSummary(applicationId: Int!): FinancialSummaryResponse!
   getManualIntakeForms: ManualIntakeFormsResponse!
+  getApplicationLinks(applicationId: Int!): ApplicationLinksResponse!
 }
 
 enum Filter {
@@ -853,7 +870,6 @@ type Mutation {
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
   createApplication(application: CreateApplication!): ApplicationResponse!
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
-  updateApplicationStatus(applicationId: Int!, statusTypeId: Int!): BaseHttpResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!
