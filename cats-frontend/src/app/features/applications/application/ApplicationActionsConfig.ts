@@ -8,6 +8,11 @@ export enum ApplicationAction {
 /** Site Registry nested tab paths used by deep links. */
 export type SiteRegistryTabPath = 'notations' | 'disclosure';
 
+type AppTypeFields = {
+  abbrev?: string | null;
+  description?: string | null;
+};
+
 export const applicationActionItems: DropdownItem[] = [
   {
     label: 'Add Notation to Site Registry',
@@ -18,6 +23,41 @@ export const applicationActionItems: DropdownItem[] = [
     value: ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
   },
 ];
+
+/** SDS (Site Disclosure Statement) — abbrev SDS from CHEFS / app_type. */
+export function isSdsAppType(appType?: AppTypeFields | null): boolean {
+  if (!appType) {
+    return false;
+  }
+
+  const abbrev = appType.abbrev?.trim().toUpperCase();
+  if (abbrev === 'SDS') {
+    return true;
+  }
+
+  const description = appType.description?.trim().toUpperCase() ?? '';
+  return (
+    description.includes('SITE DISCLOSURE') || description.startsWith('SDS')
+  );
+}
+
+/**
+ * SDS apps only get the disclosure action; all other form types get notation.
+ */
+export function getApplicationActionItems(
+  appType?: AppTypeFields | null,
+): DropdownItem[] {
+  if (isSdsAppType(appType)) {
+    return applicationActionItems.filter(
+      (item) =>
+        item.value === ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
+    );
+  }
+
+  return applicationActionItems.filter(
+    (item) => item.value === ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+  );
+}
 
 export const getSiteRegistryBaseUrl = (): string | undefined =>
   import.meta.env.VITE_SITE_REGISTRY_URL ||

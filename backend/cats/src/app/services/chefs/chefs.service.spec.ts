@@ -139,4 +139,75 @@ describe('ChefsService', () => {
       ).rejects.toBeInstanceOf(BadRequestException);
     });
   });
+
+  describe('getOriginalSubmitterEmail', () => {
+    it('returns form.email matched by submissionId', async () => {
+      mockedGet.mockResolvedValue({
+        data: [
+          {
+            form: {
+              submissionId: 'other-sub',
+              confirmationId: 'OTHER',
+              email: 'other@example.com',
+            },
+          },
+          {
+            form: {
+              submissionId: '442a000d-816d-45d2-b840-07c02805d46e',
+              confirmationId: '442A000D',
+              email: 'nupur.dixit@gov.bc.ca',
+            },
+          },
+        ],
+      });
+
+      const email = await service.getOriginalSubmitterEmail({
+        chefsFormId: 'cssa-form-id',
+        chefsSubmissionId: '442a000d-816d-45d2-b840-07c02805d46e',
+        chefsConfirmationId: '442A000D',
+      });
+
+      expect(email).toBe('nupur.dixit@gov.bc.ca');
+      expect(mockedGet).toHaveBeenCalledWith(
+        'https://submit.digital.gov.bc.ca/app/api/v1/forms/cssa-form-id/export',
+        expect.objectContaining({
+          auth: { username: 'cssa-form-id', password: 'cssa-api-key' },
+          params: { format: 'json' },
+        }),
+      );
+    });
+
+    it('falls back to confirmationId when submissionId does not match', async () => {
+      mockedGet.mockResolvedValue({
+        data: [
+          {
+            form: {
+              submissionId: 'different-uuid',
+              confirmationId: '442A000D',
+              email: 'by-confirmation@gov.bc.ca',
+            },
+          },
+        ],
+      });
+
+      const email = await service.getOriginalSubmitterEmail({
+        chefsFormId: 'cssa-form-id',
+        chefsSubmissionId: '442a000d-816d-45d2-b840-07c02805d46e',
+        chefsConfirmationId: '442A000D',
+      });
+
+      expect(email).toBe('by-confirmation@gov.bc.ca');
+    });
+
+    it('returns null when no matching export row has an email', async () => {
+      mockedGet.mockResolvedValue({ data: [] });
+
+      await expect(
+        service.getOriginalSubmitterEmail({
+          chefsFormId: 'cssa-form-id',
+          chefsSubmissionId: 'missing-sub',
+        }),
+      ).resolves.toBeNull();
+    });
+  });
 });

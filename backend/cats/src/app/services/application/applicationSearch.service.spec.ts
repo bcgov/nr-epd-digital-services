@@ -69,12 +69,13 @@ describe('ApplicationSearchService', () => {
     mockApplication.appType = {
       description: 'Test Type',
     } as any;
-    mockApplication.appStatus = {
+    mockApplication.appStatuses = [{
+      isCurrent: true,
       statusType: {
         description: 'Active',
         abbrev: 'ACT',
       },
-    } as any;
+    }] as any;
 
     jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -137,12 +138,13 @@ describe('ApplicationSearchService', () => {
     mockApplication.appType = {
       description: 'Test Type',
     } as any;
-    mockApplication.appStatus = {
+    mockApplication.appStatuses = [{
+      isCurrent: true,
       statusType: {
         description: 'Active',
         abbrev: 'ACT',
       },
-    } as any;
+    }] as any;
 
     const queryBuilderMock = {
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -226,9 +228,10 @@ describe('ApplicationSearchService', () => {
       commonName: 'Test Site',
     } as any;
     mockApplication.appType = { description: 'Test Type' } as any;
-    mockApplication.appStatus = {
+    mockApplication.appStatuses = [{
+      isCurrent: true,
       statusType: { description: 'Active', abbrev: 'ACT' },
-    } as any;
+    }] as any;
 
     const queryBuilderMock = {
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -274,9 +277,10 @@ describe('ApplicationSearchService', () => {
       commonName: 'Test Site',
     } as any;
     mockApplication.appType = { description: 'Test Type' } as any;
-    mockApplication.appStatus = {
+    mockApplication.appStatuses = [{
+      isCurrent: true,
       statusType: { description: 'Active', abbrev: 'ACT' },
-    } as any;
+    }] as any;
 
     const queryBuilderMock = {
       leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -330,12 +334,13 @@ describe('ApplicationSearchService', () => {
       mockApplication.appType = {
         description: 'Test Type',
       } as any;
-      mockApplication.appStatus = {
+      mockApplication.appStatuses = [{
+        isCurrent: true,
         statusType: {
           description: 'Active',
           abbrev: 'ACT',
         },
-      } as any;
+      }] as any;
 
       jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
         leftJoinAndSelect: jest.fn().mockReturnThis(),

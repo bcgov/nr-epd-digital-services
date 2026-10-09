@@ -4,6 +4,11 @@ query getApplicationById($applicationId: Int!) {
       id
       formId
       submissionId
+      receivedDate
+      currentStatus {
+        id
+        description
+      }
     }
   }
 }
@@ -24,5 +29,23 @@ query getSubmissionByApplicationId($applicationId: Int!) {
       formSchema
       receivedAt
     }
+  }
+}
+
+query getApplicationStatusTypes {
+  getAllStatusTypes {
+    id
+    description
+  }
+}
+
+mutation updateApplicationStatus($applicationId: Int!, $statusTypeId: Int!) {
+  updateApplicationStatus(
+    applicationId: $applicationId
+    statusTypeId: $statusTypeId
+  ) {
+    message
+    httpStatusCode
+    success
   }
 }

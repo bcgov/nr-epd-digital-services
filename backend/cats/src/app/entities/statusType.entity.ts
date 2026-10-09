@@ -30,6 +30,18 @@ export class StatusType {
   @Column('integer', { name: 'display_order' })
   displayOrder: number;
 
+  /** Client-facing label used in submitter status emails. */
+  @Column('character varying', {
+    name: 'external_description',
+    nullable: true,
+    length: 250,
+  })
+  externalDescription: string | null;
+
+  /** Client-facing tracker order (clubbed internals share the same value). */
+  @Column('integer', { name: 'external_display_order', nullable: true })
+  externalDisplayOrder: number | null;
+
   @Column('integer', { name: 'row_version_count' })
   rowVersionCount: number;
 
