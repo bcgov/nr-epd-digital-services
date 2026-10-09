@@ -1,0 +1,11 @@
+query getApplicationLinks($applicationId: Int!) {
+  getApplicationLinks(applicationId: $applicationId) {
+    data {
+      id
+      confirmationId
+      fileName
+      submittedDate
+      applicationId
+    }
+  }
+}
