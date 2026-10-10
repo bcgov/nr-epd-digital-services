@@ -6,7 +6,14 @@ const mockUser = {
   name: 'devuser',
   givenName: 'devuser',
   email: 'devuser@example.com',
-  roles: ['developer'],
+  roles:['developer'],
+
+  // uncomment and adjust roles as needed for testing different access levels
+  // roles: [
+  //   'formsflow-reviewer',
+  //   'formsflow-reviewer/cssa-manager',
+  //   'site-internal-user',
+  // ],
   identity_provider: 'idir',
 };
 @Injectable()

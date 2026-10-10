@@ -8,6 +8,8 @@ query getTimesheetDaysForAssignedStaff(
     startDate: $startDate
     endDate: $endDate
   ) {
+    isTimesheetLocked
+    canOverrideTimesheetLock
     data {
       personId
       firstName

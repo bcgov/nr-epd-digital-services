@@ -88,15 +88,24 @@ export class TimesheetDayResolver {
           endDate,
           user,
         );
+      const lockStatus = await this.timesheetDayService.getTimesheetLockStatus(
+        applicationId,
+        user,
+      );
       this.loggerService.log(
         `Successfully fetched timesheet days for assigned staff for applicationId=${applicationId}`,
       );
-      return responseProvider.createResponse(
+      const response = responseProvider.createResponse(
         'Fetched timesheet days for assigned staff',
         HttpStatus.OK,
         true,
         data,
       );
+      return {
+        ...response,
+        isTimesheetLocked: lockStatus.isLocked,
+        canOverrideTimesheetLock: lockStatus.canOverride,
+      };
     } catch (error) {
       this.loggerService.error(
         `Error in getTimesheetDaysForAssignedStaff resolver: ${error.message}`,

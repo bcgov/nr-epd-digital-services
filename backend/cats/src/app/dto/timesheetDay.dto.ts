@@ -123,4 +123,10 @@ export class PersonWithTimesheetDaysDto {
 export class PersonWithTimesheetDaysResponse extends ResponseDto {
   @Field(() => [PersonWithTimesheetDaysDto], { nullable: true })
   data?: PersonWithTimesheetDaysDto[];
+
+  @Field(() => Boolean, { nullable: true })
+  isTimesheetLocked?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  canOverrideTimesheetLock?: boolean;
 }

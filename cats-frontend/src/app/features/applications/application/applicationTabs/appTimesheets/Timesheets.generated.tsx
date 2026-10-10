@@ -10,7 +10,7 @@ export type GetTimesheetDaysForAssignedStaffQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetTimesheetDaysForAssignedStaffQuery = { __typename?: 'Query', getTimesheetDaysForAssignedStaff: { __typename?: 'PersonWithTimesheetDaysResponse', data?: Array<{ __typename?: 'PersonWithTimesheetDaysDto', personId: number, firstName: string, lastName: string, roleId?: number | null, roleDescription?: string | null, startDate?: any | null, endDate?: any | null, weekHours: number, allTimeHours: number, timesheetDays: Array<{ __typename?: 'TimesheetDayDto', id: number, date: any, hours?: number | null, comment?: string | null }> }> | null } };
+export type GetTimesheetDaysForAssignedStaffQuery = { __typename?: 'Query', getTimesheetDaysForAssignedStaff: { __typename?: 'PersonWithTimesheetDaysResponse', isTimesheetLocked?: boolean | null, canOverrideTimesheetLock?: boolean | null, data?: Array<{ __typename?: 'PersonWithTimesheetDaysDto', personId: number, firstName: string, lastName: string, roleId?: number | null, roleDescription?: string | null, startDate?: any | null, endDate?: any | null, weekHours: number, allTimeHours: number, timesheetDays: Array<{ __typename?: 'TimesheetDayDto', id: number, date: any, hours?: number | null, comment?: string | null }> }> | null } };
 
 export type UpsertTimesheetDaysMutationVariables = Types.Exact<{
   entries: Array<Types.TimesheetDayUpsertInputDto> | Types.TimesheetDayUpsertInputDto;
@@ -27,6 +27,8 @@ export const GetTimesheetDaysForAssignedStaffDocument = gql`
     startDate: $startDate
     endDate: $endDate
   ) {
+    isTimesheetLocked
+    canOverrideTimesheetLock
     data {
       personId
       firstName
