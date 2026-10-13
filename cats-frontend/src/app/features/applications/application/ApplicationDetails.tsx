@@ -55,9 +55,7 @@ const ApplicationDetails = () => {
       if (value === ApplicationAction.EXPORT_PDF) {
         const printRoot = document.querySelector('.application-print-root');
         if (!printRoot) {
-          notifyError(
-            'Open the Application tab to export the form as PDF.',
-          );
+          notifyError('Open the Application tab to export the form as PDF.');
           return;
         }
         if (printRoot.querySelector('.error-container')) {

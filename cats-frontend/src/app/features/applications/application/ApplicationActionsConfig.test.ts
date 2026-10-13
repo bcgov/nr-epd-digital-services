@@ -91,7 +91,9 @@ describe('ApplicationActionsConfig', () => {
     });
 
     it('returns null for Export PDF', () => {
-      expect(getSiteRegistryTabForAction(ApplicationAction.EXPORT_PDF)).toBeNull();
+      expect(
+        getSiteRegistryTabForAction(ApplicationAction.EXPORT_PDF),
+      ).toBeNull();
     });
   });
 
