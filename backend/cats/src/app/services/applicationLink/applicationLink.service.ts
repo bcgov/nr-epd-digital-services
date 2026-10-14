@@ -12,6 +12,17 @@ export interface ApplicationLinkRow {
   applicationId: number | null;
 }
 
+export interface StaffApplicationLink {
+  targetApplicationId: number | null;
+  confirmationId: string | null;
+}
+
+export interface ApplicationLinkSearchHit {
+  applicationId: number;
+  confirmationId: string | null;
+  fileName: string;
+}
+
 export function normalizeApplicantConfirmationIds(
   raw: unknown,
   ownConfirmationId: string | null | undefined,
@@ -138,6 +149,121 @@ export class ApplicationLinkService {
     }
   }
 
+  async saveStaffLinks(
+    cssaApplicationId: number,
+    links: StaffApplicationLink[],
+    user: string,
+  ) {
+    const actor = (user || 'SYSTEM').slice(0, 20);
+    const now = new Date();
+
+    await this.linkRepository.manager.transaction(async (manager) => {
+      const repo = manager.getRepository(ApplicationLink);
+      const existing = await repo.find({
+        where: { cssaApplicationId },
+      });
+      for (const row of existing) {
+        await repo.delete(row.id);
+      }
+
+      const seenTargets = new Set<number>();
+      const seenUnresolved = new Set<string>();
+      for (const link of links) {
+        if (link.targetApplicationId === cssaApplicationId) {
+          continue;
+        }
+        const confirmationId = normalizeStoredConfirmationId(
+          link.confirmationId,
+        );
+        if (link.targetApplicationId != null) {
+          if (seenTargets.has(link.targetApplicationId)) {
+            continue;
+          }
+          seenTargets.add(link.targetApplicationId);
+        } else if (!confirmationId || seenUnresolved.has(confirmationId)) {
+          continue;
+        } else {
+          seenUnresolved.add(confirmationId);
+        }
+        await repo.save(
+          repo.create({
+            cssaApplicationId,
+            targetApplicationId: link.targetApplicationId,
+            confirmationId,
+            createdBy: actor,
+            updatedBy: actor,
+            createdDateTime: now,
+            updatedDateTime: now,
+          }),
+        );
+      }
+    });
+  }
+
+  async searchLinkTargets(
+    cssaApplicationId: number,
+    query: string,
+    excludeApplicationIds: number[],
+  ): Promise<ApplicationLinkSearchHit[]> {
+    const needle = query.trim();
+    if (!needle) {
+      return [];
+    }
+    const excludeIds = [
+      ...new Set([cssaApplicationId, ...excludeApplicationIds]),
+    ];
+    const schema = this.submissionRepository.metadata?.schema ?? 'cats';
+    const rows: Array<{
+      application_id: number;
+      chefs_confirmation_id: string | null;
+      app_type_description: string;
+    }> = await this.submissionRepository.query(
+      `SELECT DISTINCT ON (a.id)
+          a.id AS application_id,
+          s.chefs_confirmation_id,
+          t.description AS app_type_description
+       FROM "${schema}"."application" a
+       JOIN "${schema}"."app_type" t ON t.id = a.app_type_id
+       LEFT JOIN "${schema}"."application_submission" s
+         ON s.application_id = a.id
+       WHERE NOT (a.id = ANY($2::int[]))
+         AND (
+           CAST(a.id AS text) ILIKE $1 ESCAPE '\\'
+           OR COALESCE(s.chefs_confirmation_id, '') ILIKE $1 ESCAPE '\\'
+           OR t.description ILIKE $1 ESCAPE '\\'
+         )
+       ORDER BY a.id,
+         CASE
+           WHEN COALESCE(s.chefs_confirmation_id, '') ILIKE $1 ESCAPE '\\' THEN 0
+           ELSE 1
+         END,
+         s.chefs_confirmation_id`,
+      [`%${escapeLike(needle)}%`, excludeIds],
+    );
+
+    const hits: ApplicationLinkSearchHit[] = [];
+    const seen = new Set<number>();
+    for (const row of rows) {
+      const applicationId = Number(row.application_id);
+      if (seen.has(applicationId) || excludeIds.includes(applicationId)) {
+        continue;
+      }
+      seen.add(applicationId);
+      const confirmationId = normalizeStoredConfirmationId(
+        row.chefs_confirmation_id,
+      );
+      hits.push({
+        applicationId,
+        confirmationId,
+        fileName: this.fileName(confirmationId, {
+          applicationId,
+          appTypeDescription: row.app_type_description ?? '',
+        }),
+      });
+    }
+    return hits;
+  }
+
   async listForCssa(cssaApplicationId: number): Promise<ApplicationLinkRow[]> {
     const rows = await this.linkRepository.find({
       where: { cssaApplicationId },
@@ -160,7 +286,7 @@ export class ApplicationLinkService {
         return {
           id: row.id,
           confirmationId: row.confirmationId,
-          fileName: this.fileName(row, target),
+          fileName: this.fileName(row.confirmationId, target),
           submittedDate: target ? asDateString(target.receivedDate) : null,
           applicationId: row.targetApplicationId,
         };
@@ -169,14 +295,14 @@ export class ApplicationLinkService {
   }
 
   private fileName(
-    row: ApplicationLink,
+    confirmationId: string | null,
     target: { applicationId: number; appTypeDescription: string } | undefined,
   ) {
     if (!target) {
-      return row.confirmationId;
+      return confirmationId;
     }
-    if (row.confirmationId) {
-      return `${row.confirmationId} - ${target.appTypeDescription}`;
+    if (confirmationId) {
+      return `${confirmationId} - ${target.appTypeDescription}`;
     }
     return `${target.applicationId} - ${target.appTypeDescription}`;
   }
@@ -236,6 +362,15 @@ export class ApplicationLinkService {
       appTypeDescription: row.app_type_description,
     }));
   }
+}
+
+function escapeLike(value: string) {
+  return value.replace(/[\\%_]/g, '\\$&');
+}
+
+function normalizeStoredConfirmationId(value: string | null | undefined) {
+  const code = (value ?? '').trim().toUpperCase();
+  return code || null;
 }
 
 function asDateString(value: Date | string | null) {
