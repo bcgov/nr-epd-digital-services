@@ -11,6 +11,7 @@ import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
 import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
 import {
+  ApplicationAction,
   buildSiteRegistryEditTabUrl,
   getApplicationActionItems,
   getSiteRegistryTabForAction,
@@ -51,6 +52,20 @@ const ApplicationDetails = () => {
 
   const handleActionClick = useCallback(
     (value: string) => {
+      if (value === ApplicationAction.EXPORT_PDF) {
+        const printRoot = document.querySelector('.application-print-root');
+        if (!printRoot) {
+          notifyError('Open the Application tab to export the form as PDF.');
+          return;
+        }
+        if (printRoot.querySelector('.error-container')) {
+          notifyError('Application form is not available to export.');
+          return;
+        }
+        window.print();
+        return;
+      }
+
       const tab = getSiteRegistryTabForAction(value);
       if (!tab) {
         return;

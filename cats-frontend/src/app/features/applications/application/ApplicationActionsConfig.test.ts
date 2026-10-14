@@ -32,26 +32,38 @@ describe('ApplicationActionsConfig', () => {
   });
 
   describe('getApplicationActionItems', () => {
-    it('returns only disclosure action for SDS', () => {
+    it('returns disclosure action and Export PDF for SDS', () => {
       expect(getApplicationActionItems({ abbrev: 'SDS' })).toEqual([
         {
           label: 'Add Disclosures to Site Registry',
           value: ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
         },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
+        },
       ]);
     });
 
-    it('returns only notation action for non-SDS forms', () => {
+    it('returns notation action and Export PDF for non-SDS forms', () => {
       expect(getApplicationActionItems({ abbrev: 'NOM' })).toEqual([
         {
           label: 'Add Notation to Site Registry',
           value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
         },
       ]);
       expect(getApplicationActionItems(undefined)).toEqual([
         {
           label: 'Add Notation to Site Registry',
           value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
         },
       ]);
     });
@@ -76,6 +88,12 @@ describe('ApplicationActionsConfig', () => {
 
     it('returns null for unknown actions', () => {
       expect(getSiteRegistryTabForAction('UNKNOWN')).toBeNull();
+    });
+
+    it('returns null for Export PDF', () => {
+      expect(
+        getSiteRegistryTabForAction(ApplicationAction.EXPORT_PDF),
+      ).toBeNull();
     });
   });
 

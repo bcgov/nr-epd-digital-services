@@ -131,6 +131,9 @@ describe('Application tab status', () => {
     expect(originalSubmissionLink).toHaveAttribute('href', expectedHref);
     expect(originalSubmissionLink).toHaveAttribute('target', '_blank');
     expect(screen.getByTestId('readonly-form')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Export application form to PDF' }),
+    ).not.toBeInTheDocument();
   });
 
   it('updates application status when a new value is selected', async () => {
