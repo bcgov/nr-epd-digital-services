@@ -78,7 +78,7 @@ describe('ApplicationServiceType seed data', () => {
 });
 
 describe('ApplicationServiceTypeSeeder', () => {
-  it('loads all seed records once and is idempotent', async () => {
+  it('loads all seed records once and updates a changed assignment factor', async () => {
     const roles = {
       [StaffRoles.CASE_WORKER]: { id: '1', abbrev: StaffRoles.CASE_WORKER },
       [StaffRoles.SDM]: { id: '2', abbrev: StaffRoles.SDM },
@@ -89,7 +89,7 @@ describe('ApplicationServiceTypeSeeder', () => {
       },
     };
     const serviceTypes = new Map<string, ApplicationServiceType>();
-    const factors = new Set<string>();
+    const factors = new Map<string, { id: string; assignmentFactor: number }>();
     let nextServiceTypeId = 1;
 
     const manager = {
@@ -109,7 +109,7 @@ describe('ApplicationServiceTypeSeeder', () => {
         if (entity === ServiceAssignmentFactor) {
           const serviceTypeId = options.where.applicationServiceType.id;
           const roleId = options.where.role.id;
-          return factors.has(`${serviceTypeId}:${roleId}`) ? { id: '1' } : null;
+          return factors.get(`${serviceTypeId}:${roleId}`) ?? null;
         }
 
         return null;
@@ -124,7 +124,11 @@ describe('ApplicationServiceTypeSeeder', () => {
         }
 
         if (entity instanceof ServiceAssignmentFactor) {
-          factors.add(`${entity.applicationServiceType.id}:${entity.role.id}`);
+          const key = `${entity.applicationServiceType.id}:${entity.role.id}`;
+          factors.set(key, {
+            id: key,
+            assignmentFactor: Number(entity.assignmentFactor),
+          });
         }
 
         return entity;
@@ -133,6 +137,10 @@ describe('ApplicationServiceTypeSeeder', () => {
       delete: jest.fn(),
       count: jest.fn(async () => 0),
     };
+    const factorUpdates = () =>
+      manager.update.mock.calls.filter(
+        ([entity]) => entity === ServiceAssignmentFactor,
+      );
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
 
     await ApplicationServiceTypeSeeder(manager as never);
@@ -141,9 +149,27 @@ describe('ApplicationServiceTypeSeeder', () => {
     expect(factors.size).toBe(306);
 
     manager.save.mockClear();
+    manager.update.mockClear();
     await ApplicationServiceTypeSeeder(manager as never);
 
     expect(manager.save).not.toHaveBeenCalled();
+    expect(factorUpdates()).toHaveLength(0);
+
+    const [factorKey, factor] = factors.entries().next().value;
+    const seededHours = factor.assignmentFactor;
+    factor.assignmentFactor = seededHours + 1;
+    manager.save.mockClear();
+    manager.update.mockClear();
+    await ApplicationServiceTypeSeeder(manager as never);
+
+    expect(manager.save).not.toHaveBeenCalled();
+    expect(factorUpdates()).toEqual([
+      [
+        ServiceAssignmentFactor,
+        { id: factorKey },
+        { assignmentFactor: seededHours },
+      ],
+    ]);
     consoleLogSpy.mockRestore();
   });
 });
