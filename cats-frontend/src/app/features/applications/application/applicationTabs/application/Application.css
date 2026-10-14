@@ -267,6 +267,15 @@
   margin: 0;
 }
 
+.application-status-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-margin-medium);
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
 .application-status-bar__status {
   display: flex;
   align-items: center;
@@ -289,8 +298,9 @@
 }
 
 .application-status-bar__status .mb-3 {
-  margin-top: 0.5rem;
-  margin-bottom: 0;
+  /* Override Bootstrap .mb-3 !important margins for status-bar alignment */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -333,4 +343,58 @@
 .application-original-submission__link:hover,
 .application-original-submission__link:focus {
   color: var(--surface-color-primary-hover, #164a7a);
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .application-print-root,
+  .application-print-root * {
+    visibility: visible !important;
+  }
+
+  .application-print-root .no-print,
+  .application-print-root .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .application-print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+    border: none;
+  }
+
+  #main {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .application-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .application-form-content {
+    padding: 0 !important;
+  }
+
+  .application-status-bar {
+    margin-bottom: var(--layout-margin-medium);
+  }
 }
