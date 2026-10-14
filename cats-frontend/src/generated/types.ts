@@ -93,6 +93,7 @@ export type ApplicationLinkDto = {
   applicationId?: Maybe<Scalars['Int']['output']>;
   confirmationId?: Maybe<Scalars['String']['output']>;
   fileName?: Maybe<Scalars['String']['output']>;
+  fromForm: Scalars['Boolean']['output'];
   id: Scalars['String']['output'];
   submittedDate?: Maybe<Scalars['String']['output']>;
 };

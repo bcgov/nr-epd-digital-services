@@ -748,6 +748,7 @@ type ApplicationLinkDto {
   fileName: String
   submittedDate: String
   applicationId: Int
+  fromForm: Boolean!
 }
 
 type ApplicationLinksResponse {

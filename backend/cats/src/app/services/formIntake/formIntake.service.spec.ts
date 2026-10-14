@@ -191,6 +191,14 @@ describe('FormIntakeService', () => {
                 app_type_description: application.appTypeDescription,
               }));
           }
+          if (sql.includes('applicant_confirmation_ids')) {
+            const applicationId = Number(params[0]);
+            return submissionRows
+              .filter((row) => row.applicationId === applicationId)
+              .map((row) => ({
+                applicant_confirmation_ids: row.linkedConfirmationIds,
+              }));
+          }
           if (sql.includes('linked_confirmation_ids')) {
             const code = String(params[0]);
             const ids = [
@@ -534,6 +542,12 @@ describe('FormIntakeService', () => {
         fileName: row.fileName,
         submittedDate: row.submittedDate,
         applicationId: row.applicationId,
+      }));
+
+    const formOrigins = async (applicationId: number) =>
+      (await linkService.listForCssa(applicationId)).map((row) => ({
+        confirmationId: row.confirmationId,
+        fromForm: row.fromForm,
       }));
 
     it('stores one unresolved row per distinct confirmation id, ordered by confirmation id', async () => {
@@ -1370,6 +1384,10 @@ describe('FormIntakeService', () => {
           applicationId: null,
         },
       ]);
+      expect(await formOrigins(42)).toEqual([
+        { confirmationId: null, fromForm: false },
+        { confirmationId: 'ALPHA', fromForm: true },
+      ]);
     });
 
     it('keeps a staff-added link whose confirmation id is absent from the applicant list after the CSSA is ingested again', async () => {
@@ -1427,6 +1445,10 @@ describe('FormIntakeService', () => {
           submittedDate: null,
           applicationId: null,
         },
+      ]);
+      expect(await formOrigins(42)).toEqual([
+        { confirmationId: 'NOT-ON-FORM', fromForm: false },
+        { confirmationId: 'ALPHA', fromForm: true },
       ]);
     });
 

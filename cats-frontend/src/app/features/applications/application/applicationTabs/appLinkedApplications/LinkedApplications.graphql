@@ -6,6 +6,7 @@ query getApplicationLinks($applicationId: Int!) {
       fileName
       submittedDate
       applicationId
+      fromForm
     }
   }
 }
@@ -36,6 +37,7 @@ mutation saveApplicationLinks($input: SaveApplicationLinksInput!) {
       fileName
       submittedDate
       applicationId
+      fromForm
     }
   }
 }

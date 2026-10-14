@@ -10,6 +10,7 @@ export interface ApplicationLinkRow {
   fileName: string | null;
   submittedDate: string | null;
   applicationId: number | null;
+  fromForm: boolean;
 }
 
 export interface StaffApplicationLink {
@@ -265,9 +266,12 @@ export class ApplicationLinkService {
   }
 
   async listForCssa(cssaApplicationId: number): Promise<ApplicationLinkRow[]> {
-    const rows = await this.linkRepository.find({
-      where: { cssaApplicationId },
-    });
+    const [rows, applicantConfirmationIds] = await Promise.all([
+      this.linkRepository.find({
+        where: { cssaApplicationId },
+      }),
+      this.loadApplicantConfirmationIds(cssaApplicationId),
+    ]);
     const targets = await this.loadTargets(
       rows
         .map((row) => row.targetApplicationId)
@@ -289,6 +293,9 @@ export class ApplicationLinkService {
           fileName: this.fileName(row.confirmationId, target),
           submittedDate: target ? asDateString(target.receivedDate) : null,
           applicationId: row.targetApplicationId,
+          fromForm:
+            row.confirmationId != null &&
+            applicantConfirmationIds.has(row.confirmationId),
         };
       })
       .sort(compareLinkRows);
@@ -337,6 +344,20 @@ export class ApplicationLinkService {
         [confirmationId],
       );
     return [...new Set(rows.map((row) => Number(row.application_id)))];
+  }
+
+  private async loadApplicantConfirmationIds(cssaApplicationId: number) {
+    const schema = this.submissionRepository.metadata?.schema ?? 'cats';
+    const rows: Array<{ applicant_confirmation_ids: string[] | null }> =
+      await this.submissionRepository.query(
+        `SELECT linked_confirmation_ids AS applicant_confirmation_ids
+         FROM "${schema}"."application_submission"
+         WHERE application_id = $1`,
+        [cssaApplicationId],
+      );
+    return new Set(
+      rows.flatMap((row) => row.applicant_confirmation_ids ?? []),
+    );
   }
 
   private async loadTargets(applicationIds: number[]) {
