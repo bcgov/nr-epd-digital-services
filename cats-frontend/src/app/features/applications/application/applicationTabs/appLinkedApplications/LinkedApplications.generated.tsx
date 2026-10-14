@@ -8,7 +8,9 @@ export type GetApplicationLinksQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetApplicationLinksQuery = { __typename?: 'Query', getApplicationLinks: { __typename?: 'ApplicationLinksResponse', data: Array<{ __typename?: 'ApplicationLinkDto', id: string, confirmationId?: string | null, fileName?: string | null, submittedDate?: string | null, applicationId?: number | null }> } };
+export type GetApplicationLinksQuery = { __typename?: 'Query', getApplicationLinks: { __typename?: 'ApplicationLinksResponse', data: Array<{ __typename?: 'ApplicationLinkDto', id: string, confirmationId?: string | null, fileName?: string | null, submittedDate?: string | null, applicationId?: number | null, fromForm: boolean }> } };
+
+export type ApplicationLinkRow = GetApplicationLinksQuery['getApplicationLinks']['data'][number];
 
 export type SearchApplicationLinkTargetsQueryVariables = Types.Exact<{
   cssaApplicationId: Types.Scalars['Int']['input'];
@@ -19,12 +21,14 @@ export type SearchApplicationLinkTargetsQueryVariables = Types.Exact<{
 
 export type SearchApplicationLinkTargetsQuery = { __typename?: 'Query', searchApplicationLinkTargets: { __typename?: 'ApplicationLinkSearchResponse', data: Array<{ __typename?: 'ApplicationLinkSearchHitDto', applicationId: number, confirmationId?: string | null, fileName: string }> } };
 
+export type ApplicationLinkSearchHit = SearchApplicationLinkTargetsQuery['searchApplicationLinkTargets']['data'][number];
+
 export type SaveApplicationLinksMutationVariables = Types.Exact<{
   input: Types.SaveApplicationLinksInput;
 }>;
 
 
-export type SaveApplicationLinksMutation = { __typename?: 'Mutation', saveApplicationLinks: { __typename?: 'ApplicationLinksResponse', data: Array<{ __typename?: 'ApplicationLinkDto', id: string, confirmationId?: string | null, fileName?: string | null, submittedDate?: string | null, applicationId?: number | null }> } };
+export type SaveApplicationLinksMutation = { __typename?: 'Mutation', saveApplicationLinks: { __typename?: 'ApplicationLinksResponse', data: Array<{ __typename?: 'ApplicationLinkDto', id: string, confirmationId?: string | null, fileName?: string | null, submittedDate?: string | null, applicationId?: number | null, fromForm: boolean }> } };
 
 
 export const GetApplicationLinksDocument = gql`
@@ -36,6 +40,7 @@ export const GetApplicationLinksDocument = gql`
       fileName
       submittedDate
       applicationId
+      fromForm
     }
   }
 }
@@ -132,6 +137,7 @@ export const SaveApplicationLinksDocument = gql`
       fileName
       submittedDate
       applicationId
+      fromForm
     }
   }
 }

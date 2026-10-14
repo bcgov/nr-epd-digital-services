@@ -67,6 +67,20 @@
   gap: var(--layout-margin-small);
 }
 
+.removeDisabled {
+  display: inline-flex;
+  cursor: not-allowed;
+  border-radius: var(--layout-border-radius-medium);
+}
+
+.removeDisabled button {
+  pointer-events: none;
+}
+
+.removeTooltip.removeTooltip {
+  z-index: 2100;
+}
+
 .fileName {
   flex: 1;
   margin: 0;

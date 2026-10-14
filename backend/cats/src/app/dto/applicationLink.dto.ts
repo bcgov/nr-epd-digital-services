@@ -25,6 +25,9 @@ export class ApplicationLinkDto {
 
   @Field(() => Int, { nullable: true })
   applicationId: number | null;
+
+  @Field(() => Boolean)
+  fromForm: boolean;
 }
 
 @ObjectType()
