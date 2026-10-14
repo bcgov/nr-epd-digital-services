@@ -124,6 +124,20 @@ export class ApplicationLinkService {
     }
   }
 
+  async ensureListedConfirmation(
+    confirmationId: string | null | undefined,
+    user: string,
+  ) {
+    const [code] = normalizeApplicantConfirmationIds(confirmationId, null);
+    if (!code) {
+      return;
+    }
+    const cssaApplicationIds = await this.findCssasListingConfirmation(code);
+    for (const cssaApplicationId of cssaApplicationIds) {
+      await this.ensureApplicantLinks(cssaApplicationId, [code], user);
+    }
+  }
+
   async listForCssa(cssaApplicationId: number): Promise<ApplicationLinkRow[]> {
     const rows = await this.linkRepository.find({
       where: { cssaApplicationId },
@@ -181,6 +195,20 @@ export class ApplicationLinkService {
            AND chefs_confirmation_id IS NOT NULL
            AND upper(trim(chefs_confirmation_id)) = $2`,
         [cssaApplicationId, confirmationId],
+      );
+    return [...new Set(rows.map((row) => Number(row.application_id)))];
+  }
+
+  private async findCssasListingConfirmation(confirmationId: string) {
+    const schema = this.submissionRepository.metadata?.schema ?? 'cats';
+    const rows: Array<{ application_id: number }> =
+      await this.submissionRepository.query(
+        `SELECT DISTINCT application_id
+         FROM "${schema}"."application_submission"
+         WHERE application_id IS NOT NULL
+           AND linked_confirmation_ids IS NOT NULL
+           AND $1 = ANY(linked_confirmation_ids)`,
+        [confirmationId],
       );
     return [...new Set(rows.map((row) => Number(row.application_id)))];
   }
