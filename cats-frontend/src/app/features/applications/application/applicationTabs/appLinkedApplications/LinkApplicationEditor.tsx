@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useCombobox } from 'downshift';
 import cx from 'classnames';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Button } from '../../../../../components/button/Button';
 import ModalDialog from '../../../../../components/modaldialog/ModalDialog';
 import {
@@ -17,13 +18,18 @@ type EditorLink = {
   applicationId: number | null;
   confirmationId: string | null;
   fileName: string;
+  fromForm: boolean;
 };
+
+const FORM_LINK_REMOVE_REASON =
+  'This link came from the form submission and cannot be removed.';
 
 const toEditorLink = (row: ApplicationLinkRow): EditorLink => ({
   key: row.id,
   applicationId: row.applicationId ?? null,
   confirmationId: row.confirmationId ?? null,
   fileName: row.fileName ?? row.confirmationId ?? '',
+  fromForm: row.fromForm,
 });
 
 export const LinkApplicationEditor = ({
@@ -151,6 +157,7 @@ export const LinkApplicationEditor = ({
         applicationId: selected.applicationId,
         confirmationId: selected.confirmationId ?? null,
         fileName: selected.fileName,
+        fromForm: false,
       },
     ]);
     setSelected(null);
@@ -244,17 +251,43 @@ export const LinkApplicationEditor = ({
         {rows.map((row) => (
           <li key={row.key} className={styles.row}>
             <p className={styles.fileName}>{row.fileName}</p>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() =>
-                setRows((current) =>
-                  current.filter((item) => item.key !== row.key),
-                )
-              }
-            >
-              Remove
-            </Button>
+            {row.fromForm ? (
+              <OverlayTrigger
+                placement="top"
+                container={document.body}
+                popperConfig={{ strategy: 'fixed' }}
+                overlay={
+                  <Tooltip
+                    id={`cannot-remove-${row.key}`}
+                    className={styles.removeTooltip}
+                  >
+                    {FORM_LINK_REMOVE_REASON}
+                  </Tooltip>
+                }
+              >
+                <span
+                  className={styles.removeDisabled}
+                  tabIndex={0}
+                  aria-label={`Remove. ${FORM_LINK_REMOVE_REASON}`}
+                >
+                  <Button type="button" variant="secondary" disabled>
+                    Remove
+                  </Button>
+                </span>
+              </OverlayTrigger>
+            ) : (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() =>
+                  setRows((current) =>
+                    current.filter((item) => item.key !== row.key),
+                  )
+                }
+              >
+                Remove
+              </Button>
+            )}
           </li>
         ))}
       </ul>
