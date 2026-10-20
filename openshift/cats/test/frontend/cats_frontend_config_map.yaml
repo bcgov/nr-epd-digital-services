@@ -15,7 +15,7 @@ data:
   VITE_AUTH_AUTHORITY: >-
     https://epd-keycloak-test.apps.silver.devops.gov.bc.ca/auth/realms/forms-flow-ai/
   VITE_FORM_FLOW_API: 'https://forms-flow-forms-e38158-test.apps.silver.devops.gov.bc.ca'
-  VITE_SITE_REGISTRY_URL: 'https://nr-site-registry-dev-frontend.apps.silver.devops.gov.bc.ca'
+  VITE_SITE_REGISTRY_URL: 'https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca'
   VITE_GEOCODER_API: 'https://geocoder.api.gov.bc.ca'
   VITE_FORM_BACKEND_API: 'https://epd-backend-applications-test.apps.silver.devops.gov.bc.ca'
   VITE_AUTH_CLIENT_ID: cats-web
@@ -37,7 +37,7 @@ data:
      "VITE_AUTH_REVOKE_TOKENS_ON_SIGNOUT": "",
      "VITE_SITE_REGISTRAR_USER_ROLE": "site-registrar",
      "VITE_INTERNAL_USER_ROLE": "site-internal-user",
-     "VITE_SITE_REGISTRY_URL": "https://nr-site-registry-dev-frontend.apps.silver.devops.gov.bc.ca",
+     "VITE_SITE_REGISTRY_URL": "https://nr-site-registry-test-frontend.apps.silver.devops.gov.bc.ca",
      "VITE_FORM_API": "https://forms-flow-api-e38158-test.apps.silver.devops.gov.bc.ca",
      "VITE_FORM_BACKEND_API": "https://epd-backend-applications-test.apps.silver.devops.gov.bc.ca",
      "VITE_FORM_FLOW_API": "https://forms-flow-forms-e38158-test.apps.silver.devops.gov.bc.ca",
