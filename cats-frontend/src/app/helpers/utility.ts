@@ -238,11 +238,16 @@ export enum UserRoleType {
 export const isUserOfType = (roleType: UserRoleType) => {
   const user = getUser();
   if (user !== null) {
-    const userRoles: any = user.profile?.role;
+    const userRoles = Array.isArray(user.profile?.site_roles)
+      ? user.profile.site_roles
+      : [];
+    const identityProvider = String(
+      user.profile?.identity_provider ?? user.profile?.loginSource ?? '',
+    ).toLowerCase();
     switch (roleType) {
       case UserRoleType.INTERNAL:
         const internalUserRole =
-          import.meta.env.VITE_INTERNAL_USER_ROLE || 'cats-internal-user';
+          import.meta.env.VITE_INTERNAL_USER_ROLE || 'site-internal-user';
         if (userRoles.includes(internalUserRole)) {
           return true;
         } else {
@@ -256,7 +261,7 @@ export const isUserOfType = (roleType: UserRoleType) => {
           return false;
         }
       case UserRoleType.EXTERNAL:
-        return user.profile?.identity_provider === 'bceid';
+        return identityProvider === 'bceid';
       default:
         return false;
     }

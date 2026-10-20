@@ -8,7 +8,7 @@ import { HttpStatus } from "@nestjs/common";
 import { ViewDashboard } from "../../dto/dashboard/viewDashboard.dto";
 
 @Resolver()
-@Resource('cats-service')
+@Resource('site-service')
 export class DashboardResolver {
     constructor(
         private readonly dashboardService: DashboardService,

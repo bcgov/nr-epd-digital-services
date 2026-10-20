@@ -12,7 +12,10 @@ const UserAccount = (props: any) => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  if (auth?.user?.profile?.identity_provider === 'bceid') {
+  if (
+    (auth?.user?.profile?.identity_provider ??
+      auth?.user?.profile?.loginSource) === 'bceid'
+  ) {
     navigate('/error');
     auth.signinRedirect({ extraQueryParams: { kc_idp_hint: 'idir' } });
   }

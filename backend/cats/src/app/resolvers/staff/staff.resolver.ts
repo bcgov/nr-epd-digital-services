@@ -12,7 +12,7 @@ import { SortBy } from "../../utilities/enums/staff/sortBy.enum";
 import { ViewApplication } from '../../dto/application/viewApplication.dto';
 
 @Resolver(() => ViewStaff)
-@Resource('cats-service')
+@Resource('site-service')
 export class StaffResolver {
 
     constructor(
