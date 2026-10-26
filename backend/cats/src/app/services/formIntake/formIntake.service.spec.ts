@@ -7,9 +7,18 @@ import { ApplicationSubmissionService } from '../applicationSubmission/applicati
 import { ApplicationService } from '../application/application.service';
 import { LoggerService } from '../../logger/logger.service';
 import { getFormConfigByFormName } from './formIntake.constants';
+import { ApplicationLinkService } from '../applicationLink/applicationLink.service';
+import { ApplicationLink } from '../../entities/applicationLink.entity';
 
 describe('FormIntakeService', () => {
   let service: FormIntakeService;
+  let linkService: ApplicationLinkService;
+  let matchedSubmissions: {
+    applicationId: number;
+    chefsConfirmationId: string;
+    receivedDate?: string | null;
+    appTypeDescription?: string | null;
+  }[];
 
   const mockSubmissionService = {
     upsertSubmissionByChefsSubmissionId: jest.fn(),
@@ -35,6 +44,71 @@ describe('FormIntakeService', () => {
   };
 
   beforeEach(async () => {
+    matchedSubmissions = [];
+    const linkRepository = {
+      rows: [] as ApplicationLink[],
+      create: (entity: Partial<ApplicationLink>) => ({ ...entity }),
+      save: async (entity: ApplicationLink) => {
+        const saved = {
+          ...entity,
+          id:
+            entity.id ??
+            `00000000-0000-4000-8000-${String(
+              linkRepository.rows.length + 1,
+            ).padStart(12, '0')}`,
+        } as ApplicationLink;
+        linkRepository.rows.push(saved);
+        return saved;
+      },
+      find: async ({
+        where,
+      }: {
+        where?: { cssaApplicationId?: number };
+      } = {}) =>
+        linkRepository.rows.filter(
+          (row) =>
+            where?.cssaApplicationId == null ||
+            row.cssaApplicationId === where.cssaApplicationId,
+        ),
+      delete: async (id: string) => {
+        linkRepository.rows = linkRepository.rows.filter(
+          (row) => row.id !== id,
+        );
+      },
+    };
+    linkService = new ApplicationLinkService(
+      linkRepository as never,
+      {
+        metadata: { schema: 'cats' },
+        query: async (sql: string, params: unknown[]) => {
+          if (sql.includes('ANY')) {
+            const ids = params[0] as number[];
+            return matchedSubmissions
+              .filter((submission) => ids.includes(submission.applicationId))
+              .map((submission) => ({
+                application_id: submission.applicationId,
+                received_date: submission.receivedDate ?? null,
+                app_type_description: submission.appTypeDescription ?? null,
+              }));
+          }
+          const [excludeApplicationId, confirmationId] = params as [
+            number,
+            string,
+          ];
+          return matchedSubmissions
+            .filter(
+              (submission) =>
+                submission.applicationId !== excludeApplicationId &&
+                submission.chefsConfirmationId.trim().toUpperCase() ===
+                  confirmationId,
+            )
+            .map((submission) => ({
+              application_id: submission.applicationId,
+            }));
+        },
+      } as never,
+    );
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         FormIntakeService,
@@ -43,6 +117,7 @@ describe('FormIntakeService', () => {
           useValue: mockSubmissionService,
         },
         { provide: ApplicationService, useValue: mockApplicationService },
+        { provide: ApplicationLinkService, useValue: linkService },
         { provide: HttpService, useValue: mockHttpService },
         { provide: ConfigService, useValue: mockConfigService },
         { provide: LoggerService, useValue: mockLogger },
@@ -61,7 +136,7 @@ describe('FormIntakeService', () => {
       version: 2,
       submittedAt: '2026-08-06T19:34:21.833Z',
     },
-    confirmationId: ['LINKED-A', 'LINKED-B'],
+    linkedConfirmationIds: ['LINKED-A', 'LINKED-B'],
     '7-siteIdIncludeAllRelatedNumbers': '12345',
   };
 
@@ -232,6 +307,262 @@ describe('FormIntakeService', () => {
     });
   });
 
+  describe('applicant confirmation ids', () => {
+    const cssaForm = {
+      formName: 'Contaminated Site Services Application',
+      version: 2,
+      confirmationId: 'CONF-001',
+      submittedAt: '2026-08-06T19:34:21.833Z',
+    };
+
+    const displayRows = async (applicationId: number) =>
+      (await linkService.listForCssa(applicationId)).map((row) => ({
+        confirmationId: row.confirmationId,
+        fileName: row.fileName,
+        submittedDate: row.submittedDate,
+        applicationId: row.applicationId,
+      }));
+
+    it('stores one unresolved row per distinct confirmation id, ordered by confirmation id', async () => {
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 42 },
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['MNO', 'ABC'],
+        },
+        'sub-123',
+        'form-id',
+      );
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: ['MNO', 'ABC'],
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'ABC',
+          fileName: 'ABC',
+          submittedDate: null,
+          applicationId: null,
+        },
+        {
+          confirmationId: 'MNO',
+          fileName: 'MNO',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+      expect(await displayRows(99)).toEqual([]);
+    });
+
+    it('accepts a single confirmation id string', async () => {
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 42 },
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: 'only-one',
+        },
+        'sub-123',
+        'form-id',
+      );
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: ['ONLY-ONE'],
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'ONLY-ONE',
+          fileName: 'ONLY-ONE',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('collapses repeats, letter case, and surrounding spaces, and drops blanks and the CSSA confirmation id', async () => {
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 42 },
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: { ...cssaForm, confirmationId: ' mine ' },
+          linkedConfirmationIds: [' abc ', 'ABC', '', '   ', 'MINE', 'def'],
+        },
+        'sub-123',
+        'form-id',
+      );
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: ['ABC', 'DEF'],
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'ABC',
+          fileName: 'ABC',
+          submittedDate: null,
+          applicationId: null,
+        },
+        {
+          confirmationId: 'DEF',
+          fileName: 'DEF',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('links an application that already has that confirmation id and leaves an unmatched code unresolved', async () => {
+      matchedSubmissions.push({
+        applicationId: 5,
+        chefsConfirmationId: ' matched ',
+        receivedDate: '2026-01-02',
+        appTypeDescription: 'Site Disclosure Statement',
+      });
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 42 },
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['MATCHED', 'OPEN'],
+        },
+        'sub-123',
+        'form-id',
+      );
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: ['MATCHED', 'OPEN'],
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'MATCHED',
+          fileName: 'MATCHED - Site Disclosure Statement',
+          submittedDate: '2026-01-02',
+          applicationId: 5,
+        },
+        {
+          confirmationId: 'OPEN',
+          fileName: 'OPEN',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+      expect(await displayRows(5)).toEqual([]);
+    });
+
+    it('adds the rows to the existing application when the same submission is ingested again', async () => {
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 42 },
+      );
+
+      await service.processWebhookSubmission(
+        { form: cssaForm },
+        'sub-123',
+        'form-id',
+      );
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: [],
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(42)).toEqual([]);
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['later'],
+        },
+        'sub-123',
+        'form-id',
+      );
+
+      expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'LATER',
+          fileName: 'LATER',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+
+      await service.processWebhookSubmission(
+        {
+          form: cssaForm,
+          linkedConfirmationIds: ['later'],
+        },
+        'sub-123',
+        'form-id',
+      );
+      expect(await displayRows(42)).toEqual([
+        {
+          confirmationId: 'LATER',
+          fileName: 'LATER',
+          submittedDate: null,
+          applicationId: null,
+        },
+      ]);
+    });
+
+    it('does not create rows for an application that is not a CSSA', async () => {
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 20 },
+      );
+
+      await service.processWebhookSubmission(
+        {
+          form: {
+            formName: 'Notice of Independent Remediation',
+            confirmationId: 'NIR-1',
+          },
+          linkedConfirmationIds: ['OTHER'],
+        },
+        'nir-sub',
+        'nir-form-id',
+      );
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: null,
+        }),
+        'SYSTEM',
+      );
+      expect(await displayRows(20)).toEqual([]);
+    });
+  });
+
   describe('fetchAndProcessSubmission', () => {
     const submissionId = '11111111-2222-3333-4444-555555555555';
     const formId = '99999999-8888-7777-6666-555555555555';
@@ -298,6 +629,47 @@ describe('FormIntakeService', () => {
       expect(result.applicationId).toBe(7);
     });
 
+    it('creates the same unresolved rows from a CHEFS submission fetched for manual intake or the webhook', async () => {
+      withConfig();
+      mockHttpService.get.mockReturnValue(
+        of({
+          data: {
+            ...apiResponse.data,
+            submission: {
+              ...apiResponse.data.submission,
+              submission: {
+                data: {
+                  linkedConfirmationIds: ['  from-chefs  ', 'from-chefs'],
+                },
+              },
+            },
+          },
+        }),
+      );
+      mockSubmissionService.upsertSubmissionByChefsSubmissionId.mockResolvedValue(
+        { id: 'uuid-1', applicationId: 7 },
+      );
+
+      await service.fetchAndProcessSubmission('CSR', submissionId, 'SYSTEM');
+
+      expect(
+        mockSubmissionService.upsertSubmissionByChefsSubmissionId,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          linkedConfirmationIds: ['FROM-CHEFS'],
+        }),
+        'SYSTEM',
+      );
+      expect(await linkService.listForCssa(7)).toEqual([
+        expect.objectContaining({
+          confirmationId: 'FROM-CHEFS',
+          fileName: 'FROM-CHEFS',
+          submittedDate: null,
+          applicationId: null,
+        }),
+      ]);
+    });
+
     it('should skip a draft submission after fetching it from CHEFS', async () => {
       withConfig();
       mockHttpService.get.mockReturnValue(
@@ -316,6 +688,7 @@ describe('FormIntakeService', () => {
         mockSubmissionService.upsertSubmissionByChefsSubmissionId,
       ).not.toHaveBeenCalled();
       expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+      expect(await linkService.listForCssa(7)).toEqual([]);
     });
 
     it('should reject a malformed submission id', async () => {
