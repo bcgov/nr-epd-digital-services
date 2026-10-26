@@ -195,6 +195,13 @@ export class FormIntakeService {
         );
       }
 
+      if (submission.applicationId) {
+        await this.applicationLinkService.ensureListedConfirmation(
+          chefsConfirmationId,
+          user,
+        );
+      }
+
       this.loggerService.log(
         `Webhook submission processed successfully for chefsSubmissionId ${chefsSubmissionId}`,
       );
