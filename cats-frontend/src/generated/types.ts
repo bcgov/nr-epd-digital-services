@@ -88,6 +88,45 @@ export type ApplicationHousingResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ApplicationLinkDto = {
+  __typename?: 'ApplicationLinkDto';
+  applicationId?: Maybe<Scalars['Int']['output']>;
+  confirmationId?: Maybe<Scalars['String']['output']>;
+  fileName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  submittedDate?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationLinkInput = {
+  confirmationId?: InputMaybe<Scalars['String']['input']>;
+  targetApplicationId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ApplicationLinkSearchHitDto = {
+  __typename?: 'ApplicationLinkSearchHitDto';
+  applicationId: Scalars['Int']['output'];
+  confirmationId?: Maybe<Scalars['String']['output']>;
+  fileName: Scalars['String']['output'];
+};
+
+export type ApplicationLinkSearchResponse = {
+  __typename?: 'ApplicationLinkSearchResponse';
+  data: Array<ApplicationLinkSearchHitDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationLinksResponse = {
+  __typename?: 'ApplicationLinksResponse';
+  data: Array<ApplicationLinkDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type ApplicationNotesResponse = {
   __typename?: 'ApplicationNotesResponse';
   data: Array<AppNoteDto>;
@@ -537,6 +576,7 @@ export type Mutation = {
   deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
   processChefsSubmissionManually: ManualIntakeResponse;
+  saveApplicationLinks: ApplicationLinksResponse;
   saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
@@ -630,6 +670,11 @@ export type MutationDeletePersonNoteArgs = {
 export type MutationProcessChefsSubmissionManuallyArgs = {
   appTypeAbbrev: Scalars['String']['input'];
   chefsSubmissionId: Scalars['String']['input'];
+};
+
+
+export type MutationSaveApplicationLinksArgs = {
+  input: SaveApplicationLinksInput;
 };
 
 
@@ -789,6 +834,7 @@ export type Query = {
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getApplicationLinks: ApplicationLinksResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
   getApplications: DashboardResponse;
@@ -811,6 +857,7 @@ export type Query = {
   getSubmissionByApplicationId: ApplicationSubmissionResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   getUserColumnPreferences: ColumnPreferencesResponse;
+  searchApplicationLinkTargets: ApplicationLinkSearchResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -844,6 +891,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationLinksArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -942,6 +994,13 @@ export type QueryGetUserColumnPreferencesArgs = {
 };
 
 
+export type QuerySearchApplicationLinkTargetsArgs = {
+  cssaApplicationId: Scalars['Int']['input'];
+  excludeApplicationIds: Array<Scalars['Int']['input']>;
+  query: Scalars['String']['input'];
+};
+
+
 export type QuerySearchApplicationsArgs = {
   filter: Filter;
   filterApplicationType?: InputMaybe<Scalars['String']['input']>;
@@ -996,6 +1055,11 @@ export type RoleWithPermissions = {
   permissions: Array<ViewPermissions>;
   roleDescription: Scalars['String']['output'];
   roleId: Scalars['Float']['output'];
+};
+
+export type SaveApplicationLinksInput = {
+  cssaApplicationId: Scalars['Int']['input'];
+  links: Array<ApplicationLinkInput>;
 };
 
 export type SaveColumnPreferencesDto = {
