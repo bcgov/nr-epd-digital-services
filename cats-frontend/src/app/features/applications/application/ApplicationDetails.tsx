@@ -12,9 +12,11 @@ import cx from 'classnames';
 import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
 import {
   ApplicationAction,
+  buildApplicationExportPdfTitle,
   buildSiteRegistryEditTabUrl,
   getApplicationActionItems,
   getSiteRegistryTabForAction,
+  printApplicationFormAsPdf,
 } from './ApplicationActionsConfig';
 import { notifyError } from '../../../components/alert/Alert';
 
@@ -62,7 +64,12 @@ const ApplicationDetails = () => {
           notifyError('Application form is not available to export.');
           return;
         }
-        window.print();
+        printApplicationFormAsPdf(
+          buildApplicationExportPdfTitle(
+            application?.id ?? applicationId,
+            application?.appType?.description,
+          ),
+        );
         return;
       }
 
@@ -93,7 +100,12 @@ const ApplicationDetails = () => {
 
       window.open(url, '_blank', 'noopener,noreferrer');
     },
-    [application?.id, application?.siteId, applicationId],
+    [
+      application?.appType?.description,
+      application?.id,
+      application?.siteId,
+      applicationId,
+    ],
   );
 
   useEffect(() => {

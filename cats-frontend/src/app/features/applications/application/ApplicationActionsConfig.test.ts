@@ -1,10 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   ApplicationAction,
+  buildApplicationExportPdfTitle,
   buildSiteRegistryEditTabUrl,
   getApplicationActionItems,
   getSiteRegistryTabForAction,
   isSdsAppType,
+  printApplicationFormAsPdf,
 } from './ApplicationActionsConfig';
 
 describe('ApplicationActionsConfig', () => {
@@ -94,6 +96,48 @@ describe('ApplicationActionsConfig', () => {
       expect(
         getSiteRegistryTabForAction(ApplicationAction.EXPORT_PDF),
       ).toBeNull();
+    });
+  });
+
+  describe('buildApplicationExportPdfTitle', () => {
+    it('uses Application ID and form name', () => {
+      expect(
+        buildApplicationExportPdfTitle(1364, 'Site Risk Classification Report'),
+      ).toBe('Application ID 1364 - Site Risk Classification Report');
+    });
+
+    it('omits the form name when it is missing', () => {
+      expect(buildApplicationExportPdfTitle(1364, null)).toBe(
+        'Application ID 1364',
+      );
+      expect(buildApplicationExportPdfTitle(' 12 ', '   ')).toBe(
+        'Application ID 12',
+      );
+    });
+
+    it('strips characters that cannot appear in a file name', () => {
+      expect(buildApplicationExportPdfTitle(1, 'Site/Risk: "Report"|A')).toBe(
+        'Application ID 1 - Site Risk Report A',
+      );
+    });
+  });
+
+  describe('printApplicationFormAsPdf', () => {
+    it('sets document.title for Save as PDF and restores it after print', () => {
+      const expectedTitle =
+        'Application ID 1364 - Site Risk Classification Report';
+      const previousTitle = document.title;
+      const print = vi.spyOn(window, 'print').mockImplementation(() => {
+        expect(document.title).toBe(expectedTitle);
+        window.dispatchEvent(new Event('afterprint'));
+      });
+
+      printApplicationFormAsPdf(expectedTitle);
+
+      expect(print).toHaveBeenCalledOnce();
+      expect(document.title).toBe(previousTitle);
+
+      print.mockRestore();
     });
   });
 

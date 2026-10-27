@@ -104,6 +104,9 @@ describe('Application tab status', () => {
     renderApplication([submissionMock, applicationStatusMock, statusTypesMock]);
 
     await waitFor(() => {
+      expect(screen.getByTestId('application-form-title')).toHaveTextContent(
+        'Notice of Likely or Actual Migration',
+      );
       expect(
         screen.getByText('Application Received: 2024/01/15'),
       ).toBeInTheDocument();
@@ -208,6 +211,42 @@ describe('Application tab status', () => {
 
     await waitFor(() => {
       expect(screen.getByRole('combobox')).toHaveDisplayValue('Select Status');
+    });
+  });
+
+  it('falls back to form.formName when the schema has no title', async () => {
+    const submissionWithoutSchemaTitle = {
+      ...submissionMock,
+      result: {
+        data: {
+          getSubmissionByApplicationId: {
+            ...submissionMock.result.data.getSubmissionByApplicationId,
+            data: {
+              ...submissionMock.result.data.getSubmissionByApplicationId.data,
+              formData: JSON.stringify({
+                form: { formName: 'Site Disclosure Statement' },
+              }),
+              formSchema: JSON.stringify({
+                schema: {
+                  components: [{ type: 'textfield', key: 'owner' }],
+                },
+              }),
+            },
+          },
+        },
+      },
+    };
+
+    renderApplication([
+      submissionWithoutSchemaTitle,
+      applicationStatusMock,
+      statusTypesMock,
+    ]);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('application-form-title')).toHaveTextContent(
+        'Site Disclosure Statement',
+      );
     });
   });
 

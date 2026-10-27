@@ -180,9 +180,23 @@ export const Application: React.FC<ApplicationProps> = () => {
     return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
+  const formName =
+    formJson.title?.trim() ||
+    (typeof formData?.data?.form?.formName === 'string'
+      ? formData.data.form.formName.trim()
+      : '');
+
   return (
     <div className="application-container" id="main">
       <div className="application-form-content application-print-root">
+        {formName && (
+          <h2
+            className="application-form-title"
+            data-testid="application-form-title"
+          >
+            {formName}
+          </h2>
+        )}
         <div
           className="application-status-bar"
           data-testid="application-status-bar"

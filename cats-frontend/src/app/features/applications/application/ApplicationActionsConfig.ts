@@ -30,6 +30,48 @@ export const exportPdfActionItem: DropdownItem = {
   value: ApplicationAction.EXPORT_PDF,
 };
 
+const INVALID_FILENAME_CHARS = /[\\/:*?"<>|]/g;
+
+/**
+ * Suggested Save as PDF filename. Browsers use `document.title` for the print dialog.
+ * Example: "Application ID 1364 - Site Risk Classification Report"
+ */
+export function buildApplicationExportPdfTitle(
+  applicationId: string | number,
+  formName?: string | null,
+): string {
+  const id = String(applicationId).trim();
+  const name = (formName ?? '')
+    .replace(INVALID_FILENAME_CHARS, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!name) {
+    return `Application ID ${id}`;
+  }
+
+  return `Application ID ${id} - ${name}`;
+}
+
+/** Sets the page title so Save as PDF uses the records-management file name, then prints. */
+export function printApplicationFormAsPdf(title: string): void {
+  const previousTitle = document.title;
+  document.title = title;
+
+  const restoreTitle = () => {
+    document.title = previousTitle;
+  };
+
+  window.addEventListener('afterprint', restoreTitle, { once: true });
+
+  try {
+    window.print();
+  } catch {
+    window.removeEventListener('afterprint', restoreTitle);
+    restoreTitle();
+  }
+}
+
 /** SDS (Site Disclosure Statement) — abbrev SDS from CHEFS / app_type. */
 export function isSdsAppType(appType?: AppTypeFields | null): boolean {
   if (!appType) {
