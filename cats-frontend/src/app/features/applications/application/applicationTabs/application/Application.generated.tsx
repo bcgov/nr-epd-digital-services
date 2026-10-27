@@ -8,7 +8,7 @@ export type GetApplicationByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetApplicationByIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, formId?: string | null, submissionId?: string | null, receivedDate: any, currentStatus?: { __typename?: 'DetailField', id: number, description: string } | null } | null } };
+export type GetApplicationByIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, formId?: string | null, submissionId?: string | null, receivedDate: any, currentStatus?: { __typename?: 'DetailField', id: number, description: string } | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
 
 export type GetSubmissionByApplicationIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
@@ -41,6 +41,9 @@ export const GetApplicationByIdDocument = gql`
       receivedDate
       currentStatus {
         id
+        description
+      }
+      appType {
         description
       }
     }

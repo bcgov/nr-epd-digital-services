@@ -9,6 +9,9 @@ query getApplicationById($applicationId: Int!) {
         id
         description
       }
+      appType {
+        description
+      }
     }
   }
 }

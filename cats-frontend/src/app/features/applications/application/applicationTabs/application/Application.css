@@ -252,6 +252,12 @@
   margin: 0;
 }
 
+/* Inverse of .no-print: keep in the DOM for PDF, hide on the Application tab
+   so it does not duplicate the page header app type. */
+.print-only {
+  display: none;
+}
+
 .application-form-title {
   margin: 0 0 var(--layout-margin-medium);
   color: var(--typography-color-primary);
@@ -369,6 +375,11 @@
   .application-print-root .no-print * {
     display: none !important;
     visibility: hidden !important;
+  }
+
+  .application-print-root .print-only {
+    display: block !important;
+    visibility: visible !important;
   }
 
   .application-print-root {
