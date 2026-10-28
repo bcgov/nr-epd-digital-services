@@ -181,17 +181,15 @@ export const Application: React.FC<ApplicationProps> = () => {
   }
 
   const formName =
-    formJson.title?.trim() ||
-    (typeof formData?.data?.form?.formName === 'string'
-      ? formData.data.form.formName.trim()
-      : '');
+    applicationData?.getApplicationDetailsById?.data?.appType?.description?.trim() ||
+    '';
 
   return (
     <div className="application-container" id="main">
       <div className="application-form-content application-print-root">
         {formName && (
           <h2
-            className="application-form-title"
+            className="application-form-title print-only"
             data-testid="application-form-title"
           >
             {formName}

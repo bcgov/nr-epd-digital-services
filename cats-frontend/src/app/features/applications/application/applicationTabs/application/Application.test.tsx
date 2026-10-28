@@ -65,6 +65,7 @@ const applicationStatusMock = {
           submissionId: 'sub-1',
           receivedDate: '2024-01-15',
           currentStatus: { id: 2, description: 'In Review' },
+          appType: { description: 'Notice of Likely or Actual Migration' },
         },
       },
     },
@@ -104,9 +105,11 @@ describe('Application tab status', () => {
     renderApplication([submissionMock, applicationStatusMock, statusTypesMock]);
 
     await waitFor(() => {
-      expect(screen.getByTestId('application-form-title')).toHaveTextContent(
+      const formTitle = screen.getByTestId('application-form-title');
+      expect(formTitle).toHaveTextContent(
         'Notice of Likely or Actual Migration',
       );
+      expect(formTitle).toHaveClass('print-only');
       expect(
         screen.getByText('Application Received: 2024/01/15'),
       ).toBeInTheDocument();
@@ -214,8 +217,23 @@ describe('Application tab status', () => {
     });
   });
 
-  it('falls back to form.formName when the schema has no title', async () => {
-    const submissionWithoutSchemaTitle = {
+  it('uses app_type.description for the print title, not the CHEFS schema title', async () => {
+    const cssaApplicationMock = {
+      ...applicationStatusMock,
+      result: {
+        data: {
+          getApplicationDetailsById: {
+            data: {
+              ...applicationStatusMock.result.data.getApplicationDetailsById
+                .data,
+              appType: { description: 'Contaminated Site Request' },
+            },
+          },
+        },
+      },
+    };
+
+    const chefsTitleSubmission = {
       ...submissionMock,
       result: {
         data: {
@@ -224,10 +242,11 @@ describe('Application tab status', () => {
             data: {
               ...submissionMock.result.data.getSubmissionByApplicationId.data,
               formData: JSON.stringify({
-                form: { formName: 'Site Disclosure Statement' },
+                form: { formName: 'Contaminated Site Services Application' },
               }),
               formSchema: JSON.stringify({
                 schema: {
+                  title: 'Contaminated Sites Services Application Form',
                   components: [{ type: 'textfield', key: 'owner' }],
                 },
               }),
@@ -238,14 +257,14 @@ describe('Application tab status', () => {
     };
 
     renderApplication([
-      submissionWithoutSchemaTitle,
-      applicationStatusMock,
+      chefsTitleSubmission,
+      cssaApplicationMock,
       statusTypesMock,
     ]);
 
     await waitFor(() => {
       expect(screen.getByTestId('application-form-title')).toHaveTextContent(
-        'Site Disclosure Statement',
+        'Contaminated Site Request',
       );
     });
   });
