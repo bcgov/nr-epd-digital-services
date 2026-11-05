@@ -21,6 +21,9 @@ jobs:
     # TODO - Re-enable below before submitting PR, jsut have it disabled while I work via draft.
     # if: ${{ ! github.event.pull_request.draft }}
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: write
     timeout-minutes: 5
     services:
       postgres:
