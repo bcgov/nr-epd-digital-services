@@ -18,6 +18,13 @@ import { ApplicationSecondaryServiceType } from '../../entities/applicationSecon
 import { ChesEmailService } from '../email/chesEmail.service';
 import { ChefsService } from '../chefs/chefs.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
+import { ApplicationNotesService } from './applicationNotes.service';
+import {
+  isCommentRequiredStatus,
+  isMoreInformationStatus,
+  isRejectionStatus,
+  REJECTION_STATUS_ABBREV,
+} from '../../utilities/applicationStatusComment';
 
 @Injectable()
 export class ApplicationService {
@@ -38,6 +45,7 @@ export class ApplicationService {
     private readonly configService: ConfigService,
     private readonly chefsService: ChefsService,
     private readonly applicationSubmissionService: ApplicationSubmissionService,
+    private readonly applicationNotesService: ApplicationNotesService,
   ) {}
 
   // this method will be called from formsflow when an application is submitted
@@ -397,6 +405,11 @@ export class ApplicationService {
         serviceTypeId: application.serviceTypeId,
         secondaryServiceTypeIds:
           application.secondaryServiceTypes?.map((s) => s.serviceTypeId) || [],
+        hasBeenWithdrawn: application.appStatuses?.some(
+          (status) =>
+            status.statusType?.abbrev?.trim().toUpperCase() ===
+            REJECTION_STATUS_ABBREV,
+        ) ?? false,
       };
     } catch (err) {
       this.loggerService.error(
@@ -418,6 +431,7 @@ export class ApplicationService {
     applicationId: number,
     statusTypeId: number,
     user: any,
+    comment?: string | null,
   ): Promise<void> {
     this.loggerService.log('ApplicationService.updateApplicationStatus() start');
 
@@ -446,17 +460,63 @@ export class ApplicationService {
         );
       }
 
+      const trimmedComment = comment?.trim() ?? '';
+      const requiresComment = isCommentRequiredStatus(statusType.abbrev);
+
+      if (requiresComment && !trimmedComment) {
+        throw new HttpException(
+          'A comment/reason is required for this status',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (isRejectionStatus(statusType.abbrev)) {
+        const alreadyWithdrawn =
+          await this.hasApplicationHadStatusAbbrev(
+            applicationId,
+            REJECTION_STATUS_ABBREV,
+          );
+        if (alreadyWithdrawn) {
+          throw new HttpException(
+            'This application has already been rejected. The applicant must submit a new application.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
+
       const updatedBy =
         `${user?.given_name ?? ''} ${user?.family_name ?? ''}`.trim() ||
         'SYSTEM';
       const now = new Date();
+      const noteUser = {
+        name: updatedBy === 'SYSTEM' ? user?.name || 'SYSTEM' : updatedBy,
+      };
 
       const currentStatus = await this.appStatusRepository.findOne({
         where: { applicationId, isCurrent: true },
       });
 
-      // No-op when status is already current — avoid duplicate history rows
+      // Already on this status: for more-info (PEND), allow a repeat comment+email.
       if (currentStatus?.statusTypeId === statusType.id) {
+        if (isMoreInformationStatus(statusType.abbrev) && trimmedComment) {
+          await this.saveStatusCommentNote(
+            applicationId,
+            trimmedComment,
+            noteUser,
+          );
+          this.notifySubmitterOfMoreInformationRequest({
+            applicationId,
+            comment: trimmedComment,
+            statusType,
+          }).catch((emailErr) => {
+            this.loggerService.error(
+              `Failed to send more-information email for application ${applicationId}`,
+              JSON.stringify(emailErr),
+            );
+          });
+          return;
+        }
+
         this.loggerService.log(
           `Application ${applicationId} already has status type ${statusType.id}; skipping`,
         );
@@ -478,7 +538,7 @@ export class ApplicationService {
         applicationId,
         statusTypeId: statusType.id,
         isCurrent: true,
-        comment: '',
+        comment: trimmedComment,
         formId: currentStatus?.formId ?? null,
         submissionId: currentStatus?.submissionId ?? null,
         formsflowAppId: currentStatus?.formsflowAppId ?? null,
@@ -494,6 +554,39 @@ export class ApplicationService {
       this.loggerService.log(
         `Application status updated successfully for ID: ${applicationId}`,
       );
+
+      if (requiresComment) {
+        await this.saveStatusCommentNote(
+          applicationId,
+          trimmedComment,
+          noteUser,
+        );
+
+        if (isMoreInformationStatus(statusType.abbrev)) {
+          this.notifySubmitterOfMoreInformationRequest({
+            applicationId,
+            comment: trimmedComment,
+            statusType,
+          }).catch((emailErr) => {
+            this.loggerService.error(
+              `Failed to send more-information email for application ${applicationId}`,
+              JSON.stringify(emailErr),
+            );
+          });
+        } else if (isRejectionStatus(statusType.abbrev)) {
+          this.notifySubmitterOfRejection({
+            applicationId,
+            comment: trimmedComment,
+            statusType,
+          }).catch((emailErr) => {
+            this.loggerService.error(
+              `Failed to send rejection email for application ${applicationId}`,
+              JSON.stringify(emailErr),
+            );
+          });
+        }
+        return;
+      }
 
       // Email only when the client-facing (external) status changes.
       // Internal-only moves (e.g. IP-SDM → REASSIGN, both "Review") still save history.
@@ -544,6 +637,33 @@ export class ApplicationService {
         'ApplicationService.updateApplicationStatus() end',
       );
     }
+  }
+
+  private async hasApplicationHadStatusAbbrev(
+    applicationId: number,
+    abbrev: string,
+  ): Promise<boolean> {
+    const history = await this.appStatusRepository.find({
+      where: { applicationId },
+      relations: ['statusType'],
+    });
+    const target = abbrev.trim().toUpperCase();
+    return history.some(
+      (row) => row.statusType?.abbrev?.trim().toUpperCase() === target,
+    );
+  }
+
+  private async saveStatusCommentNote(
+    applicationId: number,
+    comment: string,
+    user: { name?: string },
+  ): Promise<void> {
+    await this.applicationNotesService.createApplicationNote(
+      applicationId,
+      new Date(),
+      comment,
+      user,
+    );
   }
 
   /**
@@ -609,7 +729,7 @@ export class ApplicationService {
     );
 
     // Same formula as Application.tsx "Original Submission Link":
-    // `${CHEFS_APP_URL}/app/form/view?s=${chefsSubmissionId}`
+    // `${CHEFS_APP_URL}/app/form/success?s=${chefsSubmissionId}`
     const submission =
       await this.applicationSubmissionService.getSubmissionByApplicationId(
         applicationId,
@@ -632,6 +752,103 @@ export class ApplicationService {
 
     this.loggerService.log(
       `Status update email sent for application ${applicationId} to ${toEmailAddress}`,
+    );
+  }
+
+  /**
+   * Email the CHEFS submitter after staff request more information.
+   * Includes the staff comment and instructions to use Recall Submission.
+   */
+  private async notifySubmitterOfMoreInformationRequest(params: {
+    applicationId: number;
+    comment: string;
+    statusType: {
+      description?: string;
+      externalDescription?: string | null;
+    };
+  }): Promise<void> {
+    const { applicationId, comment, statusType } = params;
+
+    const toEmailAddress = await this.resolveSubmitterEmail(applicationId);
+    if (!toEmailAddress) {
+      this.loggerService.warn(
+        `No submitter email found for application ${applicationId}; skipping more-information email`,
+      );
+      return;
+    }
+
+    const currentStatusLabel =
+      statusType.externalDescription?.trim() ||
+      statusType.description ||
+      'Additional Information Requested';
+
+    const submission =
+      await this.applicationSubmissionService.getSubmissionByApplicationId(
+        applicationId,
+      );
+    const chefsSubmissionId = submission?.chefsSubmissionId?.trim() || '';
+    const submissionLinkHtml =
+      this.buildOriginalSubmissionLinkHtml(chefsSubmissionId);
+
+    const html = this.generateMoreInformationEmailTemplate({
+      applicationId,
+      currentStatus: currentStatusLabel,
+      commentHtml: this.escapeHtml(comment).replace(/\n/g, '<br />'),
+      submissionLinkHtml,
+    });
+
+    await this.emailService.sendEmail(
+      [toEmailAddress],
+      `Application #${applicationId}: additional information requested`,
+      html,
+    );
+
+    this.loggerService.log(
+      `More-information email sent for application ${applicationId} to ${toEmailAddress}`,
+    );
+  }
+
+  /**
+   * Email the CHEFS submitter after staff reject/withdraw the application.
+   * No Recall instructions — applicant should submit a new application.
+   */
+  private async notifySubmitterOfRejection(params: {
+    applicationId: number;
+    comment: string;
+    statusType: {
+      description?: string;
+      externalDescription?: string | null;
+    };
+  }): Promise<void> {
+    const { applicationId, comment, statusType } = params;
+
+    const toEmailAddress = await this.resolveSubmitterEmail(applicationId);
+    if (!toEmailAddress) {
+      this.loggerService.warn(
+        `No submitter email found for application ${applicationId}; skipping rejection email`,
+      );
+      return;
+    }
+
+    const statusLabel =
+      statusType.externalDescription?.trim() ||
+      statusType.description ||
+      'Withdrawn';
+
+    const html = this.generateRejectionEmailTemplate({
+      applicationId,
+      currentStatus: statusLabel,
+      commentHtml: this.escapeHtml(comment).replace(/\n/g, '<br />'),
+    });
+
+    await this.emailService.sendEmail(
+      [toEmailAddress],
+      `Application #${applicationId}: application rejected`,
+      html,
+    );
+
+    this.loggerService.log(
+      `Rejection email sent for application ${applicationId} to ${toEmailAddress}`,
     );
   }
 
@@ -804,8 +1021,8 @@ export class ApplicationService {
   }
 
   /**
-   * Builds the same CHEFS URL as Application.tsx Original Submission Link:
-   * `${chefsAppBaseUrl}/app/form/view?s=${chefsSubmissionId}`
+   * Builds the CHEFS success URL so submitters land where Recall Submission appears:
+   * `${chefsAppBaseUrl}/app/form/success?s=${chefsSubmissionId}`
    */
   private buildOriginalSubmissionLinkHtml(chefsSubmissionId: string): string {
     if (!chefsSubmissionId) {
@@ -813,7 +1030,7 @@ export class ApplicationService {
     }
 
     const chefsAppBaseUrl = this.getChefsAppBaseUrl();
-    const url = `${chefsAppBaseUrl}/app/form/view?s=${encodeURIComponent(chefsSubmissionId)}`;
+    const url = `${chefsAppBaseUrl}/app/form/success?s=${encodeURIComponent(chefsSubmissionId)}`;
     const label = url.replace(/^https?:\/\//, '');
 
     return `
@@ -821,6 +1038,15 @@ export class ApplicationService {
         <span style="color: #555555;">Original Submission Link:</span><br />
         <a href="${url}" style="color: #1a73e8; word-break: break-all;">${label}</a>
       </p>`;
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   /**
@@ -887,13 +1113,49 @@ export class ApplicationService {
       'application-status-update.html',
     );
 
-    let template = fs.readFileSync(filePath, 'utf8');
+    const template = fs.readFileSync(filePath, 'utf8');
 
     return template
       .replace(/\$\{applicationId\}/g, () => String(params.applicationId))
       .replace(/\$\{currentStatus\}/g, () => params.currentStatus)
       .replace(/\$\{statusTrackerHtml\}/g, () => params.statusTrackerHtml)
       .replace(/\$\{submissionLinkHtml\}/g, () => params.submissionLinkHtml);
+  }
+
+  private generateMoreInformationEmailTemplate(params: {
+    applicationId: number;
+    currentStatus: string;
+    commentHtml: string;
+    submissionLinkHtml: string;
+  }): string {
+    const filePath = this.resolveApplicationEmailTemplatePath(
+      'application-more-information.html',
+    );
+
+    const template = fs.readFileSync(filePath, 'utf8');
+
+    return template
+      .replace(/\$\{applicationId\}/g, () => String(params.applicationId))
+      .replace(/\$\{currentStatus\}/g, () => params.currentStatus)
+      .replace(/\$\{commentHtml\}/g, () => params.commentHtml)
+      .replace(/\$\{submissionLinkHtml\}/g, () => params.submissionLinkHtml);
+  }
+
+  private generateRejectionEmailTemplate(params: {
+    applicationId: number;
+    currentStatus: string;
+    commentHtml: string;
+  }): string {
+    const filePath = this.resolveApplicationEmailTemplatePath(
+      'application-rejection.html',
+    );
+
+    const template = fs.readFileSync(filePath, 'utf8');
+
+    return template
+      .replace(/\$\{applicationId\}/g, () => String(params.applicationId))
+      .replace(/\$\{currentStatus\}/g, () => params.currentStatus)
+      .replace(/\$\{commentHtml\}/g, () => params.commentHtml);
   }
 
   async updateApplicationServiceType(

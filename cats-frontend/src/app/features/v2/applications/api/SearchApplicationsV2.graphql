@@ -57,6 +57,7 @@ query SearchApplicationsV2(
       applicationType
       lastUpdated
       status
+      isResubmitted
       staffAssigned {
         firstName
         lastName

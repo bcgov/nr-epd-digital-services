@@ -101,6 +101,7 @@ describe('ApplicationSearchService', () => {
     expect(result).toBeInstanceOf(ApplicationSearchResult);
     expect(result.applications.length).toBe(1);
     expect(result.count).toBe(1);
+    expect(result.applications[0].isResubmitted).toBe(false);
     expect(loggerService.log).toHaveBeenNthCalledWith(
       1,
       `ApplicationSearchService: searchParam: ${searchParam}, page: ${page}, pageSize: ${pageSize}, filter: ${filter}, sortBy: ${sortBy}, sortByDir: ${sortByDir}.`,
@@ -108,6 +109,62 @@ describe('ApplicationSearchService', () => {
     expect(loggerService.log).toHaveBeenNthCalledWith(
       3,
       'ApplicationSearchService: 1 applications found.',
+    );
+  });
+
+  it('should set isResubmitted when PEND and submission updated after status', async () => {
+    const statusSetAt = new Date('2024-06-01T10:00:00.000Z');
+    const resubmittedAt = new Date('2024-06-02T12:00:00.000Z');
+
+    const mockApplication = new Application();
+    mockApplication.id = 7;
+    mockApplication.siteId = 1;
+    mockApplication.updatedDateTime = resubmittedAt;
+    mockApplication.appParticipants = [];
+    mockApplication.appPriorities = [];
+    mockApplication.applicationSpecificData = {};
+    mockApplication.site = { address: '1 Main', commonName: 'Site' } as any;
+    mockApplication.appType = { description: 'NOM' } as any;
+    mockApplication.appStatuses = [
+      {
+        isCurrent: true,
+        createdDateTime: statusSetAt,
+        statusType: {
+          description: 'Pending: Information Required',
+          abbrev: 'PEND',
+        },
+      },
+    ] as any;
+    mockApplication.applicationSubmissions = [
+      {
+        updatedDateTime: resubmittedAt,
+      },
+    ] as any;
+
+    jest.spyOn(repository, 'createQueryBuilder').mockReturnValue({
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orWhere: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[mockApplication], 1]),
+    } as any);
+
+    const result = await service.searchApplications(
+      '',
+      1,
+      10,
+      Filter.ALL,
+      {},
+      SortByField.ID,
+      SortByDirection.ASC,
+      null,
+    );
+
+    expect(result.applications[0].isResubmitted).toBe(true);
+    expect(result.applications[0].status).toBe(
+      'Pending: Information Required',
     );
   });
 

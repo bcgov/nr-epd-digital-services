@@ -5,6 +5,7 @@ import { formatDateUTC } from '../../../helpers/utility';
 import StaffAssigned from './StaffAssigned';
 import type { ApplicationsSearchResult } from './api/ApplicationsApi';
 import { isSortableColumnId } from './applicationsV2Sort';
+import styles from './applicationsV2Columns.module.css';
 
 export type ApplicationV2Row = ApplicationsSearchResult['applications'][number];
 
@@ -97,6 +98,19 @@ export const applicationsV2Columns: ColumnDef<ApplicationV2Row, unknown>[] = [
     id: 'status',
     accessorKey: 'status',
     header: 'Status',
+    cell: ({ row }) => (
+      <span className={styles.statusCell}>
+        <span>{row.original.status}</span>
+        {row.original.isResubmitted ? (
+          <span
+            className={styles.resubmittedBadge}
+            title="Proponent recalled and resubmitted the form"
+          >
+            Resubmitted
+          </span>
+        ) : null}
+      </span>
+    ),
   }),
   withSortFlag({
     id: 'staffAssigned',

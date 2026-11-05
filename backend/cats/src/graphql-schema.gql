@@ -92,6 +92,7 @@ type ApplicationResultDto {
   applicationType: String!
   lastUpdated: String!
   status: String!
+  isResubmitted: Boolean!
   staffAssigned: [ApplicationResultPersonDto!]!
   priority: String!
   url: String!
@@ -310,6 +311,7 @@ type ViewApplicationDetails {
   submissionId: String
   serviceTypeId: Float
   secondaryServiceTypeIds: [Int!]
+  hasBeenWithdrawn: Boolean!
 }
 
 type ApplicationResponse {
@@ -949,7 +951,7 @@ type Mutation {
   updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
   linkApplicationSiteId(applicationId: Int!, siteId: String): LinkApplicationSiteIdResponse!
   pushSiteDisclosure(applicationId: Int!): PushSiteDisclosureResponse!
-  updateApplicationStatus(applicationId: Int!, statusTypeId: Int!): BaseHttpResponse!
+  updateApplicationStatus(applicationId: Int!, statusTypeId: Int!, comment: String): BaseHttpResponse!
   updateApplicationServiceType(applicationId: Int!, serviceTypeId: Int): BaseHttpResponse!
   updateSecondaryServiceTypes(applicationId: Int!, serviceTypeIds: [Int!]!): BaseHttpResponse!
   createInvoice(invoice: CreateInvoice!): InvoiceResponse!

@@ -64,7 +64,12 @@ const applicationStatusMock = {
           formId: 'form-1',
           submissionId: 'sub-1',
           receivedDate: '2024-01-15',
-          currentStatus: { id: 2, description: 'In Review' },
+          hasBeenWithdrawn: false,
+          currentStatus: {
+            id: 2,
+            abbrev: 'IP-CW',
+            description: 'In Review',
+          },
           appType: { description: 'Notice of Likely or Actual Migration' },
         },
       },
@@ -79,8 +84,9 @@ const statusTypesMock = {
   result: {
     data: {
       getAllStatusTypes: [
-        { id: 2, description: 'In Review' },
-        { id: 4, description: 'Approved' },
+        { id: 2, abbrev: 'IP-CW', description: 'In Review' },
+        { id: 3, abbrev: 'PEND', description: 'Pending: Information Required' },
+        { id: 4, abbrev: 'ODM', description: 'Approved' },
       ],
     },
   },
@@ -128,7 +134,7 @@ describe('Application tab status', () => {
       window?._env_?.VITE_CHEFS_APP_URL ||
       'https://submit.digital.gov.bc.ca'
     ).replace(/\/$/, '');
-    const expectedHref = `${chefsAppBaseUrl}/app/form/view?s=1234567654212345665432`;
+    const expectedHref = `${chefsAppBaseUrl}/app/form/success?s=1234567654212345665432`;
     const expectedLabel = expectedHref.replace(/^https?:\/\//, '');
 
     const originalSubmissionLink = screen.getByRole('link', {
@@ -146,7 +152,7 @@ describe('Application tab status', () => {
     const updateMock = {
       request: {
         query: UpdateApplicationStatusDocument,
-        variables: { applicationId: 1, statusTypeId: 4 },
+        variables: { applicationId: 1, statusTypeId: 4, comment: null },
       },
       result: {
         data: {
@@ -167,7 +173,11 @@ describe('Application tab status', () => {
             data: {
               ...applicationStatusMock.result.data.getApplicationDetailsById
                 .data,
-              currentStatus: { id: 4, description: 'Approved' },
+              currentStatus: {
+                id: 4,
+                abbrev: 'ODM',
+                description: 'Approved',
+              },
             },
           },
         },
@@ -273,7 +283,7 @@ describe('Application tab status', () => {
     const updateMock = {
       request: {
         query: UpdateApplicationStatusDocument,
-        variables: { applicationId: 1, statusTypeId: 4 },
+        variables: { applicationId: 1, statusTypeId: 4, comment: null },
       },
       result: {
         data: {
@@ -307,6 +317,46 @@ describe('Application tab status', () => {
 
     await waitFor(() => {
       expect(screen.getByRole('combobox')).toHaveDisplayValue('Select Status');
+    });
+  });
+
+  it('opens the more-information modal again when PEND is already selected', async () => {
+    const pendApplicationMock = {
+      ...applicationStatusMock,
+      result: {
+        data: {
+          getApplicationDetailsById: {
+            data: {
+              ...applicationStatusMock.result.data.getApplicationDetailsById
+                .data,
+              currentStatus: {
+                id: 3,
+                abbrev: 'PEND',
+                description: 'Pending: Information Required',
+              },
+            },
+          },
+        },
+      },
+    };
+
+    renderApplication([submissionMock, pendApplicationMock, statusTypesMock]);
+
+    await waitFor(() => {
+      expect(screen.getByRole('combobox')).toHaveValue('3');
+    });
+
+    // Simulate re-select after mouseDown clear (native select same-value quirk).
+    fireEvent.mouseDown(screen.getByRole('combobox'));
+    await waitFor(() => {
+      expect(screen.getByRole('combobox')).toHaveValue('');
+    });
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: '3' } });
+
+    await waitFor(() => {
+      expect(screen.getByText('Request More Information')).toBeInTheDocument();
+      expect(screen.getByLabelText(/Comment/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Send' })).toBeInTheDocument();
     });
   });
 });
