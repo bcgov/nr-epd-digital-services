@@ -24,6 +24,10 @@ jobs:
   test:
     name: ${{ inputs.component }}
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - name: Add Node.js

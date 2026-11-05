@@ -12,6 +12,10 @@ concurrency:
 jobs:
   builds:
     name: Builds
+    permissions:
+      contents: read
+      packages: write
+      actions: write
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
@@ -34,6 +38,10 @@ jobs:
 
   tests:
     name: Unit Tests
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
