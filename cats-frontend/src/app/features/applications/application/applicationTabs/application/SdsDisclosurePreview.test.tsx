@@ -218,6 +218,8 @@ describe('SdsDisclosurePreview', () => {
   });
 
   it('records the last push and offers a SITE disclosure link on success', async () => {
+    vi.stubEnv('VITE_SITE_REGISTRY_URL', 'https://registry.test');
+
     renderPanel([
       successMock(previewWithSite()),
       pushMock({
@@ -232,7 +234,10 @@ describe('SdsDisclosurePreview', () => {
     expect(await screen.findByTestId('last-pushed')).toHaveTextContent(
       'Last pushed to Site ID 12345 on 2024/06/01 18:30',
     );
-    expect(screen.getByTestId('site-disclosure-link')).toBeInTheDocument();
+    expect(screen.getByTestId('site-disclosure-link')).toHaveAttribute(
+      'href',
+      'https://registry.test/site/details/12345/disclosure',
+    );
     expect(screen.queryByTestId('push-confirmation')).not.toBeInTheDocument();
   });
 
