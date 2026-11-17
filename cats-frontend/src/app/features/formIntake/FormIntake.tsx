@@ -29,14 +29,12 @@ const FormIntake: React.FC = () => {
     message: string;
   } | null>(null);
 
-  const { data: formsData, error: formsError } =
-    useGetManualIntakeFormsQuery();
+  const { data: formsData, error: formsError } = useGetManualIntakeFormsQuery();
   const [processSubmission, { loading: processing }] =
     useProcessChefsSubmissionManuallyMutation();
 
   const queriedForms = formsData?.getManualIntakeForms?.data ?? [];
-  const forms =
-    queriedForms.length > 0 ? queriedForms : FALLBACK_INTAKE_FORMS;
+  const forms = queriedForms.length > 0 ? queriedForms : FALLBACK_INTAKE_FORMS;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
