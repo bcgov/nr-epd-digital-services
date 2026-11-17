@@ -1,0 +1,12 @@
+mutation pushSiteDisclosure($applicationId: Int!) {
+  pushSiteDisclosure(applicationId: $applicationId) {
+    message
+    httpStatusCode
+    success
+    errorCode
+    data {
+      siteId
+      lastPushedAt
+    }
+  }
+}

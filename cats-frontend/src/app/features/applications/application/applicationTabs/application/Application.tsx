@@ -8,6 +8,10 @@ import {
   useGetSubmissionByApplicationIdQuery,
   useUpdateApplicationStatusMutation,
 } from './Application.generated';
+import { useGetHeaderDetailsByApplicationIdQuery } from '../../ApplicationDetails.generated';
+import { isSdsAppType } from '../../../../navigation/NavigationPillsConfig';
+import { LinkToSiteId } from './LinkToSiteId';
+import { SdsDisclosurePreview } from './SdsDisclosurePreview';
 import LoadingOverlay from '../../../../../components/loader/LoadingOverlay';
 import { DropdownInput } from '../../../../../components/input-controls/InputControls';
 import { FormFieldType } from '../../../../../components/input-controls/IFormField';
@@ -43,6 +47,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [componentsReady, setComponentsReady] = useState(false);
+  const [hasPushed, setHasPushed] = useState(false);
   const [statusTypeId, setStatusTypeId] = useState('');
 
   const applicationId = parseInt(id ?? '', 10);
@@ -59,11 +64,19 @@ export const Application: React.FC<ApplicationProps> = () => {
     skip: !applicationId,
   });
 
+  const { data: headerData } = useGetHeaderDetailsByApplicationIdQuery({
+    variables: { applicationId },
+    skip: !applicationId,
+  });
+
   const { data: statusTypesData, loading: statusTypesLoading } =
     useGetApplicationStatusTypesQuery();
 
   const [updateApplicationStatus, { loading: updatingStatus }] =
     useUpdateApplicationStatusMutation();
+
+  const application = headerData?.getApplicationDetailsById?.data;
+  const showLinkPanel = applicationId > 0 && isSdsAppType(application?.appType);
 
   const currentStatusId =
     applicationData?.getApplicationDetailsById?.data?.currentStatus?.id;
@@ -185,89 +198,121 @@ export const Application: React.FC<ApplicationProps> = () => {
     '';
 
   return (
-    <div className="application-container" id="main">
-      <div className="application-form-content application-print-root">
-        {formName && (
-          <h2
-            className="application-form-title print-only"
-            data-testid="application-form-title"
+    <>
+      {showLinkPanel && (
+        <>
+          <div className="application-link-area">
+            {formattedReceivedDate && (
+              <p className="application-received-label">
+                Application Received: {formattedReceivedDate}
+              </p>
+            )}
+            <LinkToSiteId
+              key={applicationId}
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId ?? null}
+              linkedSiteAddress={application?.siteAddress ?? null}
+              linkedSiteCity={application?.siteCity ?? null}
+              hasBeenPushed={hasPushed}
+            />
+          </div>
+          <div className="application-disclosure-area">
+            <SdsDisclosurePreview
+              applicationId={applicationId}
+              linkedSiteId={application?.siteId}
+              onPushStatusChange={setHasPushed}
+            />
+          </div>
+        </>
+      )}
+      <div className="application-container" id="main">
+        <div className="application-form-content application-print-root">
+          {formName && (
+            <h2
+              className="application-form-title print-only"
+              data-testid="application-form-title"
+            >
+              {formName}
+            </h2>
+          )}
+          <div
+            className="application-status-bar"
+            data-testid="application-status-bar"
           >
-            {formName}
-          </h2>
-        )}
-        <div
-          className="application-status-bar"
-          data-testid="application-status-bar"
-        >
-          {formattedReceivedDate && (
-            <p className="application-received-label">
-              Application Received: {formattedReceivedDate}
+            {formattedReceivedDate && (
+              <p
+                className={`application-received-label${
+                  showLinkPanel ? ' print-only' : ''
+                }`}
+              >
+                Application Received: {formattedReceivedDate}
+              </p>
+            )}
+            <div className="application-status-bar__actions no-print">
+              <div className="application-status-bar__status">
+                <span className="application-status-bar__status-label">
+                  Status:
+                </span>
+                <DropdownInput
+                  type={FormFieldType.DropDown}
+                  label=""
+                  placeholder="Select Status"
+                  value={statusTypeId}
+                  isEditing
+                  isDisabled={statusTypesLoading || updatingStatus}
+                  options={statusOptions}
+                  onChange={(value) => handleStatusChange(String(value ?? ''))}
+                />
+              </div>
+            </div>
+          </div>
+          {originalSubmissionUrl && originalSubmissionLinkLabel && (
+            <p
+              className="application-original-submission no-print"
+              data-testid="original-submission-link"
+            >
+              <span className="application-original-submission__label">
+                Original Submission Link:
+              </span>{' '}
+              <a
+                href={originalSubmissionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="application-original-submission__link"
+              >
+                {originalSubmissionLinkLabel}
+              </a>
             </p>
           )}
-          <div className="application-status-bar__actions no-print">
-            <div className="application-status-bar__status">
-              <span className="application-status-bar__status-label">
-                Status:
-              </span>
-              <DropdownInput
-                type={FormFieldType.DropDown}
-                label=""
-                placeholder="Select Status"
-                value={statusTypeId}
-                isEditing
-                isDisabled={statusTypesLoading || updatingStatus}
-                options={statusOptions}
-                onChange={(value) => handleStatusChange(String(value ?? ''))}
-              />
+          {error ? (
+            <div className="error-container">
+              <div className="error-message">
+                <p className="error-details">
+                  Application was not submitted through the platform. Please
+                  check your file records for reference.
+                </p>
+              </div>
             </div>
-          </div>
+          ) : formJson?.components?.length > 0 ? (
+            <Form
+              src={formJson as any}
+              submission={formData}
+              options={
+                {
+                  hide: { submit: true },
+                  noAlerts: false,
+                  readOnly: true,
+                  viewAsHtml: true,
+                } as any
+              }
+            />
+          ) : (
+            <pre className="submission-data">
+              {JSON.stringify(formData?.data, null, 2)}
+            </pre>
+          )}
         </div>
-        {originalSubmissionUrl && originalSubmissionLinkLabel && (
-          <p
-            className="application-original-submission no-print"
-            data-testid="original-submission-link"
-          >
-            <span className="application-original-submission__label">
-              Original Submission Link:
-            </span>{' '}
-            <a
-              href={originalSubmissionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="application-original-submission__link"
-            >
-              {originalSubmissionLinkLabel}
-            </a>
-          </p>
-        )}
-        {error ? (
-          <div className="error-container">
-            <div className="error-message">
-              <p className="error-details">
-                Application was not submitted through the platform. Please check
-                your file records for reference.
-              </p>
-            </div>
-          </div>
-        ) : formJson?.components?.length > 0 ? (
-          <Form
-            src={formJson as any}
-            submission={formData}
-            options={
-              {
-                hide: { submit: true },
-                noAlerts: false,
-                readOnly: true,
-                viewAsHtml: true,
-              } as any
-            }
-          />
-        ) : (
-          <pre className="submission-data">
-            {JSON.stringify(formData?.data, null, 2)}
-          </pre>
-        )}
       </div>
-    </div>
+    </>
   );
 };
