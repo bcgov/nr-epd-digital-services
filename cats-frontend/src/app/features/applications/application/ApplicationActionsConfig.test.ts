@@ -1,13 +1,74 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   ApplicationAction,
+  buildApplicationExportPdfTitle,
   buildSiteRegistryEditTabUrl,
+  getApplicationActionItems,
   getSiteRegistryTabForAction,
+  isSdsAppType,
+  printApplicationFormAsPdf,
 } from './ApplicationActionsConfig';
 
 describe('ApplicationActionsConfig', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
+  });
+
+  describe('isSdsAppType', () => {
+    it('detects SDS by abbrev', () => {
+      expect(isSdsAppType({ abbrev: 'SDS' })).toBe(true);
+      expect(isSdsAppType({ abbrev: 'sds' })).toBe(true);
+    });
+
+    it('detects SDS by description', () => {
+      expect(isSdsAppType({ description: 'Site Disclosure Statement' })).toBe(
+        true,
+      );
+    });
+
+    it('returns false for other app types', () => {
+      expect(isSdsAppType({ abbrev: 'NOM' })).toBe(false);
+      expect(isSdsAppType({ abbrev: 'CSSA' })).toBe(false);
+      expect(isSdsAppType(null)).toBe(false);
+    });
+  });
+
+  describe('getApplicationActionItems', () => {
+    it('returns disclosure action and Export PDF for SDS', () => {
+      expect(getApplicationActionItems({ abbrev: 'SDS' })).toEqual([
+        {
+          label: 'Add Disclosures to Site Registry',
+          value: ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
+        },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
+        },
+      ]);
+    });
+
+    it('returns notation action and Export PDF for non-SDS forms', () => {
+      expect(getApplicationActionItems({ abbrev: 'NOM' })).toEqual([
+        {
+          label: 'Add Notation to Site Registry',
+          value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
+        },
+      ]);
+      expect(getApplicationActionItems(undefined)).toEqual([
+        {
+          label: 'Add Notation to Site Registry',
+          value: ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+        },
+        {
+          label: 'Export PDF',
+          value: ApplicationAction.EXPORT_PDF,
+        },
+      ]);
+    });
   });
 
   describe('getSiteRegistryTabForAction', () => {
@@ -29,6 +90,54 @@ describe('ApplicationActionsConfig', () => {
 
     it('returns null for unknown actions', () => {
       expect(getSiteRegistryTabForAction('UNKNOWN')).toBeNull();
+    });
+
+    it('returns null for Export PDF', () => {
+      expect(
+        getSiteRegistryTabForAction(ApplicationAction.EXPORT_PDF),
+      ).toBeNull();
+    });
+  });
+
+  describe('buildApplicationExportPdfTitle', () => {
+    it('uses Application ID and form name', () => {
+      expect(
+        buildApplicationExportPdfTitle(1364, 'Site Risk Classification Report'),
+      ).toBe('Application ID 1364 - Site Risk Classification Report');
+    });
+
+    it('omits the form name when it is missing', () => {
+      expect(buildApplicationExportPdfTitle(1364, null)).toBe(
+        'Application ID 1364',
+      );
+      expect(buildApplicationExportPdfTitle(' 12 ', '   ')).toBe(
+        'Application ID 12',
+      );
+    });
+
+    it('strips characters that cannot appear in a file name', () => {
+      expect(buildApplicationExportPdfTitle(1, 'Site/Risk: "Report"|A')).toBe(
+        'Application ID 1 - Site Risk Report A',
+      );
+    });
+  });
+
+  describe('printApplicationFormAsPdf', () => {
+    it('sets document.title for Save as PDF and restores it after print', () => {
+      const expectedTitle =
+        'Application ID 1364 - Site Risk Classification Report';
+      const previousTitle = document.title;
+      const print = vi.spyOn(window, 'print').mockImplementation(() => {
+        expect(document.title).toBe(expectedTitle);
+        window.dispatchEvent(new Event('afterprint'));
+      });
+
+      printApplicationFormAsPdf(expectedTitle);
+
+      expect(print).toHaveBeenCalledOnce();
+      expect(document.title).toBe(previousTitle);
+
+      print.mockRestore();
     });
   });
 

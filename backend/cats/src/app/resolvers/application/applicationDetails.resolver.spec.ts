@@ -20,6 +20,7 @@ describe('ApplicationDetailsResolver', () => {
             findApplicationDetailsById: jest.fn(),
             updateApplicationServiceType: jest.fn(),
             updateSecondaryServiceTypes: jest.fn(),
+            updateApplicationStatus: jest.fn(),
           },
         },
         {
@@ -114,6 +115,37 @@ describe('ApplicationDetailsResolver', () => {
         httpStatusCode: 500,
         success: false,
         data: null,
+      });
+    });
+  });
+
+  describe('updateApplicationStatus', () => {
+    it('should update application status successfully', async () => {
+      service.updateApplicationStatus = jest.fn().mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      const result = await resolver.updateApplicationStatus(1, 4, user);
+
+      expect(service.updateApplicationStatus).toHaveBeenCalledWith(1, 4, user);
+      expect(result).toMatchObject({
+        message: 'Application status updated successfully',
+        httpStatusCode: 200,
+        success: true,
+      });
+    });
+
+    it('should handle errors when updating status', async () => {
+      const error = new Error('Update failed');
+      service.updateApplicationStatus = jest.fn().mockRejectedValue(error);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      const result = await resolver.updateApplicationStatus(1, 4, user);
+
+      expect(service.updateApplicationStatus).toHaveBeenCalledWith(1, 4, user);
+      expect(result).toMatchObject({
+        message: 'Update failed',
+        httpStatusCode: 500,
+        success: false,
       });
     });
   });

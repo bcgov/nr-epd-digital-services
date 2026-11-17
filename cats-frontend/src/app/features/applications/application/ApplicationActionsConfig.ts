@@ -3,10 +3,16 @@ import { DropdownItem } from '../../../components/action/IActions';
 export enum ApplicationAction {
   ADD_NOTATION_TO_SITE_REGISTRY = 'ADD_NOTATION_TO_SITE_REGISTRY',
   ADD_DISCLOSURES_TO_SITE_REGISTRY = 'ADD_DISCLOSURES_TO_SITE_REGISTRY',
+  EXPORT_PDF = 'EXPORT_PDF',
 }
 
 /** Site Registry nested tab paths used by deep links. */
 export type SiteRegistryTabPath = 'notations' | 'disclosure';
+
+type AppTypeFields = {
+  abbrev?: string | null;
+  description?: string | null;
+};
 
 export const applicationActionItems: DropdownItem[] = [
   {
@@ -18,6 +24,95 @@ export const applicationActionItems: DropdownItem[] = [
     value: ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
   },
 ];
+
+export const exportPdfActionItem: DropdownItem = {
+  label: 'Export PDF',
+  value: ApplicationAction.EXPORT_PDF,
+};
+
+const INVALID_FILENAME_CHARS = /[\\/:*?"<>|]/g;
+
+/**
+ * Suggested Save as PDF filename. Browsers use `document.title` for the print dialog.
+ * Example: "Application ID 1364 - Site Risk Classification Report"
+ */
+export function buildApplicationExportPdfTitle(
+  applicationId: string | number,
+  formName?: string | null,
+): string {
+  const id = String(applicationId).trim();
+  const name = (formName ?? '')
+    .replace(INVALID_FILENAME_CHARS, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!name) {
+    return `Application ID ${id}`;
+  }
+
+  return `Application ID ${id} - ${name}`;
+}
+
+/** Sets the page title so Save as PDF uses the records-management file name, then prints. */
+export function printApplicationFormAsPdf(title: string): void {
+  const previousTitle = document.title;
+  document.title = title;
+
+  const restoreTitle = () => {
+    document.title = previousTitle;
+  };
+
+  window.addEventListener('afterprint', restoreTitle, { once: true });
+
+  try {
+    window.print();
+  } catch {
+    window.removeEventListener('afterprint', restoreTitle);
+    restoreTitle();
+  }
+}
+
+/** SDS (Site Disclosure Statement) — abbrev SDS from CHEFS / app_type. */
+export function isSdsAppType(appType?: AppTypeFields | null): boolean {
+  if (!appType) {
+    return false;
+  }
+
+  const abbrev = appType.abbrev?.trim().toUpperCase();
+  if (abbrev === 'SDS') {
+    return true;
+  }
+
+  const description = appType.description?.trim().toUpperCase() ?? '';
+  return (
+    description.includes('SITE DISCLOSURE') || description.startsWith('SDS')
+  );
+}
+
+/**
+ * SDS apps only get the disclosure action; all other form types get notation.
+ * Export PDF is available for every application type.
+ */
+export function getApplicationActionItems(
+  appType?: AppTypeFields | null,
+): DropdownItem[] {
+  if (isSdsAppType(appType)) {
+    return [
+      ...applicationActionItems.filter(
+        (item) =>
+          item.value === ApplicationAction.ADD_DISCLOSURES_TO_SITE_REGISTRY,
+      ),
+      exportPdfActionItem,
+    ];
+  }
+
+  return [
+    ...applicationActionItems.filter(
+      (item) => item.value === ApplicationAction.ADD_NOTATION_TO_SITE_REGISTRY,
+    ),
+    exportPdfActionItem,
+  ];
+}
 
 export const getSiteRegistryBaseUrl = (): string | undefined =>
   import.meta.env.VITE_SITE_REGISTRY_URL ||

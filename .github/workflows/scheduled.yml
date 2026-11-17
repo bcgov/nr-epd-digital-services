@@ -19,6 +19,9 @@ jobs:
   zap_scan:
     runs-on: ubuntu-latest
     name: ZAP Scans
+    permissions:
+      contents: read
+      issues: write
     env:
       DOMAIN: apps.silver.devops.gov.bc.ca
       PREFIX: ${{ github.event.repository.name }}-test

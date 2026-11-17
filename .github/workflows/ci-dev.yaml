@@ -27,6 +27,10 @@ concurrency:
 jobs:
   tests:
     name: Unit Tests
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:

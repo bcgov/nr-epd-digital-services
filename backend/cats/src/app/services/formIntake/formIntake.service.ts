@@ -6,6 +6,10 @@ import { LoggerService } from '../../logger/logger.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
 import { ApplicationService } from '../application/application.service';
 import {
+  ApplicationLinkService,
+  normalizeApplicantConfirmationIds,
+} from '../applicationLink/applicationLink.service';
+import {
   getFormConfigByAppType,
   getFormConfigByFormName,
 } from './formIntake.constants';
@@ -18,6 +22,7 @@ export class FormIntakeService {
   constructor(
     private readonly applicationSubmissionService: ApplicationSubmissionService,
     private readonly applicationService: ApplicationService,
+    private readonly applicationLinkService: ApplicationLinkService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly loggerService: LoggerService,
@@ -131,8 +136,15 @@ export class FormIntakeService {
       );
 
       const chefsConfirmationId = this.extractConfirmationId(rawFormData);
-      const linkedConfirmationIds =
-        this.extractLinkedConfirmationIds(rawFormData);
+      const isCssa =
+        getFormConfigByFormName(rawFormData?.form?.formName)?.appTypeAbbrev ===
+        'CSR';
+      const linkedConfirmationIds = isCssa
+        ? normalizeApplicantConfirmationIds(
+            rawFormData?.linkedConfirmationIds,
+            chefsConfirmationId,
+          )
+        : null;
       const chefsFormVersionNumber = this.extractFormVersionNumber(rawFormData);
       const receivedAt = this.extractSubmittedAt(rawFormData);
 
@@ -167,6 +179,27 @@ export class FormIntakeService {
           );
           submission.applicationId = application.id;
         }
+      } else {
+        await this.syncApplicationSitesFromSubmission(
+          rawFormData,
+          submission.applicationId,
+          user,
+        );
+      }
+
+      if (submission.applicationId && isCssa) {
+        await this.applicationLinkService.ensureApplicantLinks(
+          submission.applicationId,
+          linkedConfirmationIds ?? [],
+          user,
+        );
+      }
+
+      if (submission.applicationId) {
+        await this.applicationLinkService.ensureListedConfirmation(
+          chefsConfirmationId,
+          user,
+        );
       }
 
       this.loggerService.log(
@@ -220,6 +253,42 @@ export class FormIntakeService {
     });
   }
 
+  private async syncApplicationSitesFromSubmission(
+    rawFormData: Record<string, any>,
+    applicationId: number,
+    user: string,
+  ) {
+    const formName = rawFormData?.form?.formName;
+    const formConfig = getFormConfigByFormName(formName);
+
+    if (!formConfig) {
+      this.loggerService.error(
+        `No form configuration found for form name: "${formName}"`,
+        null,
+      );
+      throw new Error(`No form configuration found for form: "${formName}"`);
+    }
+
+    // Forms without a source site field (SDS/IR) skip sync so staff-linked sites are kept
+    if (!formConfig.siteIdField) {
+      return;
+    }
+
+    const siteIds = this.extractSiteIds(rawFormData, formConfig.siteIdField);
+
+    this.loggerService.log(
+      `Syncing site IDs [${siteIds.join(
+        ', ',
+      )}] onto application ${applicationId} from edited CHEFS submission`,
+    );
+
+    await this.applicationService.syncApplicationSites(
+      applicationId,
+      siteIds,
+      user,
+    );
+  }
+
   private extractSiteIds(
     rawFormData: Record<string, any>,
     siteIdField: string,
@@ -251,16 +320,6 @@ export class FormIntakeService {
     rawFormData: Record<string, any>,
   ): string | null {
     return rawFormData?.form?.confirmationId ?? null;
-  }
-
-  private extractLinkedConfirmationIds(
-    rawFormData: Record<string, any>,
-  ): string[] | null {
-    const ids = rawFormData?.confirmationId;
-    if (!ids) return null;
-    if (Array.isArray(ids)) return ids;
-    if (typeof ids === 'string') return [ids];
-    return null;
   }
 
   private extractFormVersionNumber(

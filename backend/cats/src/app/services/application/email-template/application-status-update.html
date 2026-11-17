@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Application ${applicationId} status update</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+    <tr>
+      <td style="background-color: #003366; padding: 20px 24px;">
+        <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: bold;">Application status update</h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 24px;">
+        <p style="margin: 0 0 16px; color: #333333; font-size: 15px; line-height: 1.5;">
+          The status of application <strong>#${applicationId}</strong> has been updated.
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 0 20px; border: 1px solid #e1e4e8; border-radius: 6px;">
+          <tr>
+            <td style="padding: 12px 16px; font-size: 13px; color: #555555; width: 140px;">Current status</td>
+            <td style="padding: 12px 16px; font-size: 14px; color: #003366;"><strong>${currentStatus}</strong></td>
+          </tr>
+        </table>
+
+        <h2 style="margin: 0 0 12px; color: #333333; font-size: 16px;">Progress</h2>
+        <p style="margin: 0 0 16px; color: #666666; font-size: 13px;">Your application progress:</p>
+
+        ${statusTrackerHtml}
+
+        ${submissionLinkHtml}
+
+        <p style="margin: 24px 0 0; color: #888888; font-size: 12px; line-height: 1.4;">
+          This is an automated message. Please do not reply directly to this email.
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

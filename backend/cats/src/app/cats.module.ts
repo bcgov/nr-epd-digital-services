@@ -112,11 +112,14 @@ import { ColumnPreferencesService } from './services/application/columnPreferenc
 import { UserColumnPreferences } from './entities/userColumnPreferences.entity';
 import { ApplicationSecondaryServiceType } from './entities/applicationSecondaryServiceType.entity';
 import { ApplicationSubmission } from './entities/applicationSubmission.entity';
+import { ApplicationLink } from './entities/applicationLink.entity';
 import { FinancialSummaryService } from './services/financialSummary/financialSummary.service';
 import { FinancialSummaryResolver } from './resolvers/financialSummary/financialSummary.resolver';
 import { ApplicationSubmissionService } from './services/applicationSubmission/applicationSubmission.service';
 import { FormIntakeService } from './services/formIntake/formIntake.service';
 import { FormIntakeResolver } from './resolvers/formIntake/formIntake.resolver';
+import { ApplicationLinkService } from './services/applicationLink/applicationLink.service';
+import { ApplicationLinkResolver } from './resolvers/application/applicationLink.resolver';
 import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
 
 /**
@@ -186,6 +189,7 @@ import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
       UserColumnPreferences,
       ApplicationSecondaryServiceType,
       ApplicationSubmission,
+      ApplicationLink,
     ]),
     HttpModule,
   ],
@@ -242,6 +246,8 @@ import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
     ApplicationSubmissionService,
     FormIntakeService,
     FormIntakeResolver,
+    ApplicationLinkService,
+    ApplicationLinkResolver,
   ],
   controllers: [
     UserController,

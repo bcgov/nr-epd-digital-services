@@ -189,17 +189,17 @@
   {
     "type": "Non-CSAP",
     "description": "26-Indemnification",
-    "CW": 60.5,
-    "SDM": 2,
-    "MNTR": 1,
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 15000
   },
   {
     "type": "Non-CSAP",
     "description": "26-Minor Contribution Status",
-    "CW": 7.25,
-    "SDM": 4.97,
-    "MNTR": 2.49,
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 5000
   },
   {
@@ -253,9 +253,9 @@
   {
     "type": "Non-CSAP",
     "description": "26-Transfer Agreement",
-    "CW": 22,
-    "SDM": 1.8,
-    "MNTR": 0.9,
+    "CW": 0,
+    "SDM": 0,
+    "MNTR": 0,
     "fee": 10000
   },
   {
@@ -317,9 +317,9 @@
   {
     "type": "Non-CSAP",
     "description": "26-P12 - Reclassification",
-    "CW": 24.65,
-    "SDM": 1.85,
-    "MNTR": 0.93,
+    "CW": 25,
+    "SDM": 1.9,
+    "MNTR": 1,
     "fee": 10000
   },
   {
@@ -372,7 +372,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "Compliance verification activity - reports and other (Table 2.16)",
+    "description": "26-Compliance verification activity - reports and other (Table 2.16)",
     "CW": 0,
     "SDM": 0,
     "MNTR": 0,
@@ -380,7 +380,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "Compliance verification P12 reporting (Table 2.16)",
+    "description": "26-Compliance verification P12 reporting (Table 2.16)",
     "CW": 0,
     "SDM": 0,
     "MNTR": 0,
@@ -388,7 +388,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "Compliance verification P12 other (Table 2.16)",
+    "description": "26-Compliance verification P12 other (Table 2.16)",
     "CW": 0,
     "SDM": 0,
     "MNTR": 0,
@@ -396,7 +396,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "Confirmation of remediation - release request (Table 2.16)",
+    "description": "26-Confirmation of remediation - release request (Table 2.16)",
     "CW": 0,
     "SDM": 0,
     "MNTR": 0,
@@ -404,7 +404,7 @@
   },
   {
     "type": "Non-CSAP",
-    "description": "Detailed site investigation - release request (Table 2.16)",
+    "description": "26-Detailed site investigation - release request (Table 2.16)",
     "CW": 0,
     "SDM": 0,
     "MNTR": 0,
@@ -413,9 +413,9 @@
   {
     "type": "Non-CSAP",
     "description": "26-Request to director  (Table 2 16.)",
-    "CW": 0,
-    "SDM": 9.44,
-    "MNTR": 2.84,
+    "CW": 9.44,
+    "SDM": 2.84,
+    "MNTR": 0,
     "fee": 0
   },
   {

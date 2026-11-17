@@ -11,9 +11,12 @@ import LoadingOverlay from '../../../components/loader/LoadingOverlay';
 import cx from 'classnames';
 import { getApplicationNavigationItems } from '../../navigation/NavigationPillsConfig';
 import {
-  applicationActionItems,
+  ApplicationAction,
+  buildApplicationExportPdfTitle,
   buildSiteRegistryEditTabUrl,
+  getApplicationActionItems,
   getSiteRegistryTabForAction,
+  printApplicationFormAsPdf,
 } from './ApplicationActionsConfig';
 import { notifyError } from '../../../components/alert/Alert';
 
@@ -40,12 +43,36 @@ const ApplicationDetails = () => {
     [application?.appType],
   );
 
+  const actionItems = useMemo(
+    () => getApplicationActionItems(application?.appType),
+    [application?.appType],
+  );
+
   const onClickBackButton = () => {
     navigate(`/${fromScreenRef.current.replace(/\s+/g, '').toLowerCase()}`);
   };
 
   const handleActionClick = useCallback(
     (value: string) => {
+      if (value === ApplicationAction.EXPORT_PDF) {
+        const printRoot = document.querySelector('.application-print-root');
+        if (!printRoot) {
+          notifyError('Open the Application tab to export the form as PDF.');
+          return;
+        }
+        if (printRoot.querySelector('.error-container')) {
+          notifyError('Application form is not available to export.');
+          return;
+        }
+        printApplicationFormAsPdf(
+          buildApplicationExportPdfTitle(
+            application?.id ?? applicationId,
+            application?.appType?.description,
+          ),
+        );
+        return;
+      }
+
       const tab = getSiteRegistryTabForAction(value);
       if (!tab) {
         return;
@@ -73,7 +100,12 @@ const ApplicationDetails = () => {
 
       window.open(url, '_blank', 'noopener,noreferrer');
     },
-    [application?.id, application?.siteId, applicationId],
+    [
+      application?.appType?.description,
+      application?.id,
+      application?.siteId,
+      applicationId,
+    ],
   );
 
   useEffect(() => {
@@ -210,7 +242,7 @@ const ApplicationDetails = () => {
           actions={
             <Actions
               label="Actions"
-              items={applicationActionItems}
+              items={actionItems}
               onItemClick={handleActionClick}
             />
           }

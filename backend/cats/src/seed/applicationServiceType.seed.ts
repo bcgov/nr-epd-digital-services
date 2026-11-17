@@ -180,6 +180,35 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           'Detailed site investigation, Risk assessment with other services',
         newName: 'Detailed site investigation',
       },
+      {
+        type: 'Non-CSAP',
+        oldName:
+          'Compliance verification activity - reports and other (Table 2.16)',
+        newName:
+          '26-Compliance verification activity - reports and other (Table 2.16)',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: 'Compliance verification P12 reporting (Table 2.16)',
+        newName: '26-Compliance verification P12 reporting (Table 2.16)',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: 'Compliance verification P12 other (Table 2.16)',
+        newName: '26-Compliance verification P12 other (Table 2.16)',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: 'Confirmation of remediation - release request (Table 2.16)',
+        newName:
+          '26-Confirmation of remediation - release request (Table 2.16)',
+      },
+      {
+        type: 'Non-CSAP',
+        oldName: 'Detailed site investigation - release request (Table 2.16)',
+        newName:
+          '26-Detailed site investigation - release request (Table 2.16)',
+      },
     ];
 
     for (const rename of descriptionRenames) {
@@ -269,29 +298,40 @@ export const ApplicationServiceTypeSeeder = async (manager: EntityManager) => {
           },
         );
 
-        if (!sdmRoleServiceTypeItem) {
-          const sdmRoleServiceType = new ServiceAssignmentFactor();
-          sdmRoleServiceType.applicationServiceType = serviceTypeItem;
-          sdmRoleServiceType.role = sdmRole;
-          sdmRoleServiceType.assignmentFactor = item.SDM;
-          await manager.save(sdmRoleServiceType);
-        }
+        const upsertAssignmentFactor = async (
+          existing: ServiceAssignmentFactor | null,
+          role: ParticipantRole,
+          assignmentFactor: number,
+        ) => {
+          if (!existing) {
+            const factor = new ServiceAssignmentFactor();
+            factor.applicationServiceType = serviceTypeItem;
+            factor.role = role;
+            factor.assignmentFactor = assignmentFactor;
+            await manager.save(factor);
+            return;
+          }
 
-        if (!mentorRoleServiceTypeItem) {
-          const mentorRoleServiceType = new ServiceAssignmentFactor();
-          mentorRoleServiceType.applicationServiceType = serviceTypeItem;
-          mentorRoleServiceType.role = mentorRole;
-          mentorRoleServiceType.assignmentFactor = item.MNTR;
-          await manager.save(mentorRoleServiceType);
-        }
+          if (Number(existing.assignmentFactor) !== Number(assignmentFactor)) {
+            await manager.update(
+              ServiceAssignmentFactor,
+              { id: existing.id },
+              { assignmentFactor },
+            );
+          }
+        };
 
-        if (!caseWorkerRoleServiceTypeItem) {
-          const caseWorkerRoleServiceType = new ServiceAssignmentFactor();
-          caseWorkerRoleServiceType.applicationServiceType = serviceTypeItem;
-          caseWorkerRoleServiceType.role = caseWorkerRole;
-          caseWorkerRoleServiceType.assignmentFactor = item.CW;
-          await manager.save(caseWorkerRoleServiceType);
-        }
+        await upsertAssignmentFactor(sdmRoleServiceTypeItem, sdmRole, item.SDM);
+        await upsertAssignmentFactor(
+          mentorRoleServiceTypeItem,
+          mentorRole,
+          item.MNTR,
+        );
+        await upsertAssignmentFactor(
+          caseWorkerRoleServiceTypeItem,
+          caseWorkerRole,
+          item.CW,
+        );
       }
     }
   } catch (error) {

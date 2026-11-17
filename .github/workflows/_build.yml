@@ -46,6 +46,10 @@ jobs:
   build:
     name: ${{ inputs.component }}
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+      actions: write
     outputs:
       build: ${{ steps.check.outputs.build }}
     steps:

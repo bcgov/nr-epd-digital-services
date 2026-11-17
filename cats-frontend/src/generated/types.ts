@@ -88,6 +88,46 @@ export type ApplicationHousingResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
+export type ApplicationLinkDto = {
+  __typename?: 'ApplicationLinkDto';
+  applicationId?: Maybe<Scalars['Int']['output']>;
+  confirmationId?: Maybe<Scalars['String']['output']>;
+  fileName?: Maybe<Scalars['String']['output']>;
+  fromForm: Scalars['Boolean']['output'];
+  id: Scalars['String']['output'];
+  submittedDate?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationLinkInput = {
+  confirmationId?: InputMaybe<Scalars['String']['input']>;
+  targetApplicationId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ApplicationLinkSearchHitDto = {
+  __typename?: 'ApplicationLinkSearchHitDto';
+  applicationId: Scalars['Int']['output'];
+  confirmationId?: Maybe<Scalars['String']['output']>;
+  fileName: Scalars['String']['output'];
+};
+
+export type ApplicationLinkSearchResponse = {
+  __typename?: 'ApplicationLinkSearchResponse';
+  data: Array<ApplicationLinkSearchHitDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
+export type ApplicationLinksResponse = {
+  __typename?: 'ApplicationLinksResponse';
+  data: Array<ApplicationLinkDto>;
+  httpStatusCode?: Maybe<Scalars['Int']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+  timestamp?: Maybe<Scalars['String']['output']>;
+};
+
 export type ApplicationNotesResponse = {
   __typename?: 'ApplicationNotesResponse';
   data: Array<AppNoteDto>;
@@ -490,22 +530,6 @@ export type InvoicesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type LinkApplicationSiteIdResponse = {
-  __typename?: 'LinkApplicationSiteIdResponse';
-  data?: Maybe<LinkedApplicationSiteDto>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type LinkedApplicationSiteDto = {
-  __typename?: 'LinkedApplicationSiteDto';
-  siteAddress?: Maybe<Scalars['String']['output']>;
-  siteCity?: Maybe<Scalars['String']['output']>;
-  siteId?: Maybe<Scalars['Int']['output']>;
-};
-
 export type ManualIntakeFormDto = {
   __typename?: 'ManualIntakeFormDto';
   appTypeAbbrev: Scalars['String']['output'];
@@ -552,14 +576,14 @@ export type Mutation = {
   deleteInvoice: InvoiceResponse;
   deleteObject: ComsResponse;
   deletePersonNote: PersonNoteResponse;
-  linkApplicationSiteId: LinkApplicationSiteIdResponse;
   processChefsSubmissionManually: ManualIntakeResponse;
-  pushSiteDisclosure: PushSiteDisclosureResponse;
+  saveApplicationLinks: ApplicationLinksResponse;
   saveUserColumnPreferences: ColumnPreferencesResponse;
   updateAppParticipant: UpdateAppParticipantsResponse;
   updateApplicationHousing: ApplicationHousingResponse;
   updateApplicationNote: ApplicationNotesResponse;
   updateApplicationServiceType: BaseHttpResponse;
+  updateApplicationStatus: BaseHttpResponse;
   updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
@@ -644,20 +668,14 @@ export type MutationDeletePersonNoteArgs = {
 };
 
 
-export type MutationLinkApplicationSiteIdArgs = {
-  applicationId: Scalars['Int']['input'];
-  siteId?: InputMaybe<Scalars['String']['input']>;
-};
-
-
 export type MutationProcessChefsSubmissionManuallyArgs = {
   appTypeAbbrev: Scalars['String']['input'];
   chefsSubmissionId: Scalars['String']['input'];
 };
 
 
-export type MutationPushSiteDisclosureArgs = {
-  applicationId: Scalars['Int']['input'];
+export type MutationSaveApplicationLinksArgs = {
+  input: SaveApplicationLinksInput;
 };
 
 
@@ -686,6 +704,12 @@ export type MutationUpdateApplicationNoteArgs = {
 export type MutationUpdateApplicationServiceTypeArgs = {
   applicationId: Scalars['Int']['input'];
   serviceTypeId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationUpdateApplicationStatusArgs = {
+  applicationId: Scalars['Int']['input'];
+  statusTypeId: Scalars['Int']['input'];
 };
 
 
@@ -798,22 +822,6 @@ export type PreviousStaffInformation = {
   personId: Scalars['Float']['output'];
 };
 
-export type PushSiteDisclosureResponse = {
-  __typename?: 'PushSiteDisclosureResponse';
-  data?: Maybe<PushedSiteDisclosureDto>;
-  errorCode?: Maybe<Scalars['String']['output']>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type PushedSiteDisclosureDto = {
-  __typename?: 'PushedSiteDisclosureDto';
-  lastPushedAt?: Maybe<Scalars['String']['output']>;
-  siteId?: Maybe<Scalars['Int']['output']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   _service: _Service;
@@ -827,6 +835,7 @@ export type Query = {
   getAppParticipantsByAppId: AppParticipantsResponse;
   getApplicationDetailsById: ApplicationDetailsResponse;
   getApplicationHousingByApplicationId: ApplicationHousingResponse;
+  getApplicationLinks: ApplicationLinksResponse;
   getApplicationNotesByApplicationId: ApplicationNotesResponse;
   getApplicationServiceTypes: DropdownResponse;
   getApplications: DashboardResponse;
@@ -842,7 +851,6 @@ export type Query = {
   getPermissions: PermissionsResponse;
   getPersonNotesByPersonId: PersonNoteResponse;
   getRecentViewedApplications: DashboardResponse;
-  getSdsDisclosurePreview: SdsDisclosurePreviewResponse;
   getSiteDetailsBySiteId: SiteDetailsResponse;
   getStaffAssignedByAppId: ViewStaffAssignedResponse;
   getStaffGroupedByRoleForServiceType: StaffGroupedByRoleResponse;
@@ -850,6 +858,7 @@ export type Query = {
   getSubmissionByApplicationId: ApplicationSubmissionResponse;
   getTimesheetDaysForAssignedStaff: PersonWithTimesheetDaysResponse;
   getUserColumnPreferences: ColumnPreferencesResponse;
+  searchApplicationLinkTargets: ApplicationLinkSearchResponse;
   searchApplications: ApplicationSearchResponse;
   searchApplicationsById: ApplicationSearchResponse;
   searchPerson: SearchPersonResponse;
@@ -883,6 +892,11 @@ export type QueryGetApplicationDetailsByIdArgs = {
 
 
 export type QueryGetApplicationHousingByApplicationIdArgs = {
+  applicationId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetApplicationLinksArgs = {
   applicationId: Scalars['Int']['input'];
 };
 
@@ -939,11 +953,6 @@ export type QueryGetPersonNotesByPersonIdArgs = {
 };
 
 
-export type QueryGetSdsDisclosurePreviewArgs = {
-  applicationId: Scalars['Int']['input'];
-};
-
-
 export type QueryGetSiteDetailsBySiteIdArgs = {
   siteId: Scalars['String']['input'];
 };
@@ -983,6 +992,13 @@ export type QueryGetTimesheetDaysForAssignedStaffArgs = {
 
 export type QueryGetUserColumnPreferencesArgs = {
   page: Scalars['String']['input'];
+};
+
+
+export type QuerySearchApplicationLinkTargetsArgs = {
+  cssaApplicationId: Scalars['Int']['input'];
+  excludeApplicationIds: Array<Scalars['Int']['input']>;
+  query: Scalars['String']['input'];
 };
 
 
@@ -1042,45 +1058,14 @@ export type RoleWithPermissions = {
   roleId: Scalars['Float']['output'];
 };
 
+export type SaveApplicationLinksInput = {
+  cssaApplicationId: Scalars['Int']['input'];
+  links: Array<ApplicationLinkInput>;
+};
+
 export type SaveColumnPreferencesDto = {
   columns: Array<ColumnConfigInput>;
   page: Scalars['String']['input'];
-};
-
-export type Schedule2ReferenceDto = {
-  __typename?: 'Schedule2ReferenceDto';
-  code: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-};
-
-export type SdsDisclosureDto = {
-  __typename?: 'SdsDisclosureDto';
-  dateCompleted?: Maybe<Scalars['String']['output']>;
-  govDocumentsComment?: Maybe<Scalars['String']['output']>;
-  localAuthDateRecd?: Maybe<Scalars['String']['output']>;
-  plannedActivityComment?: Maybe<Scalars['String']['output']>;
-  rwmDateDecision?: Maybe<Scalars['String']['output']>;
-  schedule2References: Array<Schedule2ReferenceDto>;
-  siteDisclosureComment?: Maybe<Scalars['String']['output']>;
-  siteRegDateEntered?: Maybe<Scalars['String']['output']>;
-  siteRegDateRecd?: Maybe<Scalars['String']['output']>;
-};
-
-export type SdsDisclosurePreviewDto = {
-  __typename?: 'SdsDisclosurePreviewDto';
-  disclosure?: Maybe<SdsDisclosureDto>;
-  lastPushedAt?: Maybe<Scalars['String']['output']>;
-  lastPushedSiteId?: Maybe<Scalars['Int']['output']>;
-  siteId?: Maybe<Scalars['Int']['output']>;
-};
-
-export type SdsDisclosurePreviewResponse = {
-  __typename?: 'SdsDisclosurePreviewResponse';
-  data?: Maybe<SdsDisclosurePreviewDto>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
 };
 
 export type SearchPersonResponse = {
