@@ -5,10 +5,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  SdsDisclosureDuplicateException,
-  SdsDisclosurePushService,
-} from './sdsDisclosurePush.service';
+import { SdsDisclosurePushService } from './sdsDisclosurePush.service';
 import { Application } from '../../entities/application.entity';
 import { ApplicationSubmission } from '../../entities/applicationSubmission.entity';
 import { LoggerService } from '../../logger/logger.service';
@@ -55,8 +52,28 @@ describe('SdsDisclosurePushService', () => {
     },
   };
 
+  const duplicateResponse = {
+    saveSiteDisclosureForService: {
+      message:
+        'A site disclosure already exists for this site and date completed.',
+      httpStatusCode: 409,
+      success: false,
+      errorCode: 'DUPLICATE_DATE_COMPLETED',
+    },
+  };
+
+  const persistApplication = (application: Application) => {
+    let stored = application;
+    applicationRepositoryMock.findOne.mockImplementation(async () => stored);
+    applicationRepositoryMock.update.mockImplementation(async (_id, patch) => {
+      stored = { ...stored, ...patch } as Application;
+    });
+
+    return { read: () => stored };
+  };
+
   beforeEach(async () => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -150,7 +167,7 @@ describe('SdsDisclosurePushService', () => {
   });
 
   it('stores { lastPushedAt, siteId } on the application-specific JSON', async () => {
-    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+    const persisted = persistApplication(sdsApplication);
     submissionRepositoryMock.findOne.mockResolvedValue({
       formData: sdsSubmissionFixture,
     });
@@ -162,17 +179,20 @@ describe('SdsDisclosurePushService', () => {
 
     expect(result.siteId).toBe(12345);
     expect(result.lastPushedAt).toEqual(expect.any(String));
-    expect(applicationRepositoryMock.update).toHaveBeenCalledWith(
-      10,
-      expect.objectContaining({
-        applicationSpecificData: {
-          siteRiskClassification: 'high',
-          sdsDisclosureLastPush: {
-            siteId: 12345,
-            lastPushedAt: result.lastPushedAt,
-          },
-        },
-      }),
+    expect(
+      applicationRepositoryMock.update.mock.invocationCallOrder[0],
+    ).toBeLessThan(
+      siteServiceMock.saveSiteDisclosureForService.mock.invocationCallOrder[0],
+    );
+    expect(persisted.read().applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+      sdsDisclosureLastPush: {
+        siteId: 12345,
+        lastPushedAt: result.lastPushedAt,
+      },
+    });
+    expect(persisted.read()).toEqual(
+      expect.objectContaining({ updatedBy: 'jdoe' }),
     );
   });
 
@@ -200,33 +220,110 @@ describe('SdsDisclosurePushService', () => {
     );
   });
 
-  it('surfaces the SITE duplicate constraint distinctly and keeps the date', async () => {
-    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+  it('keeps a genuine duplicate a conflict across retries', async () => {
+    const persisted = persistApplication(sdsApplication);
     submissionRepositoryMock.findOne.mockResolvedValue({
       formData: sdsSubmissionFixture,
     });
-    siteServiceMock.saveSiteDisclosureForService.mockResolvedValue({
-      saveSiteDisclosureForService: {
-        message:
-          'A site disclosure already exists for this site and date completed.',
-        httpStatusCode: 409,
-        success: false,
-        errorCode: 'DUPLICATE_DATE_COMPLETED',
-      },
-    });
+    siteServiceMock.saveSiteDisclosureForService.mockResolvedValue(
+      duplicateResponse,
+    );
 
     await expect(service.pushSiteDisclosure(10)).rejects.toMatchObject({
       errorCode: 'DUPLICATE_DATE_COMPLETED',
       status: 409,
     });
-    expect(applicationRepositoryMock.update).not.toHaveBeenCalled();
+    await expect(service.pushSiteDisclosure(10)).rejects.toMatchObject({
+      errorCode: 'DUPLICATE_DATE_COMPLETED',
+      status: 409,
+    });
+
+    expect(persisted.read().applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+    });
     expect(siteServiceMock.saveSiteDisclosureForService).toHaveBeenCalledTimes(
-      1,
+      2,
     );
   });
 
-  it('keeps other SITE failures retryable and writes nothing', async () => {
-    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+  it('records last push when a retry duplicates a disclosure SITE already accepted', async () => {
+    let stored = sdsApplication;
+    let failLastPushWrite = true;
+    applicationRepositoryMock.findOne.mockImplementation(async () => stored);
+    applicationRepositoryMock.update.mockImplementation(async (_id, patch) => {
+      if (
+        failLastPushWrite &&
+        patch.applicationSpecificData?.sdsDisclosureLastPush
+      ) {
+        throw new Error('db down');
+      }
+      stored = { ...stored, ...patch } as Application;
+    });
+    submissionRepositoryMock.findOne.mockResolvedValue({
+      formData: sdsSubmissionFixture,
+    });
+    siteServiceMock.saveSiteDisclosureForService
+      .mockResolvedValueOnce(successResponse)
+      .mockResolvedValueOnce(duplicateResponse);
+
+    await expect(service.pushSiteDisclosure(10)).rejects.toThrow('db down');
+    expect(stored.applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+      sdsDisclosurePushAttempt: expect.objectContaining({
+        siteId: 12345,
+        dateCompleted: '2024-05-01',
+      }),
+    });
+
+    failLastPushWrite = false;
+    const result = await service.pushSiteDisclosure(10);
+
+    expect(result).toEqual({
+      siteId: 12345,
+      lastPushedAt: expect.any(String),
+    });
+    expect(stored.applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+      sdsDisclosureLastPush: {
+        siteId: 12345,
+        lastPushedAt: result.lastPushedAt,
+      },
+    });
+    expect(siteServiceMock.saveSiteDisclosureForService).toHaveBeenCalledTimes(
+      2,
+    );
+  });
+
+  it('does not record last push when the pending attempt is for a different disclosure', async () => {
+    const persisted = persistApplication({
+      ...sdsApplication,
+      applicationSpecificData: {
+        siteRiskClassification: 'high',
+        sdsDisclosurePushAttempt: {
+          siteId: 999,
+          dateCompleted: '2020-01-01',
+          attemptedAt: '2024-06-01T18:00:00.000Z',
+        },
+      },
+    } as Application);
+    submissionRepositoryMock.findOne.mockResolvedValue({
+      formData: sdsSubmissionFixture,
+    });
+    siteServiceMock.saveSiteDisclosureForService.mockResolvedValue(
+      duplicateResponse,
+    );
+
+    await expect(service.pushSiteDisclosure(10)).rejects.toMatchObject({
+      errorCode: 'DUPLICATE_DATE_COMPLETED',
+      status: 409,
+    });
+    expect(persisted.read().applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+    });
+  });
+
+  it('clears the pending attempt when SITE rejects the disclosure', async () => {
+    const persisted = persistApplication(sdsApplication);
     submissionRepositoryMock.findOne.mockResolvedValue({
       formData: sdsSubmissionFixture,
     });
@@ -242,11 +339,13 @@ describe('SdsDisclosurePushService', () => {
     await expect(service.pushSiteDisclosure(10)).rejects.toBeInstanceOf(
       BadRequestException,
     );
-    expect(applicationRepositoryMock.update).not.toHaveBeenCalled();
+    expect(persisted.read().applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+    });
   });
 
-  it('reports a SITE/network failure without writing last-push state', async () => {
-    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+  it('leaves the pending attempt when the SITE call fails in an unknown way', async () => {
+    const persisted = persistApplication(sdsApplication);
     submissionRepositoryMock.findOne.mockResolvedValue({
       formData: sdsSubmissionFixture,
     });
@@ -257,7 +356,44 @@ describe('SdsDisclosurePushService', () => {
     await expect(service.pushSiteDisclosure(10)).rejects.toBeInstanceOf(
       InternalServerErrorException,
     );
-    expect(applicationRepositoryMock.update).not.toHaveBeenCalled();
+    expect(persisted.read().applicationSpecificData).toEqual({
+      siteRiskClassification: 'high',
+      sdsDisclosurePushAttempt: expect.objectContaining({
+        siteId: 12345,
+        dateCompleted: '2024-05-01',
+      }),
+    });
+    expect(persisted.read().updatedBy).toBeUndefined();
+  });
+
+  it('does not call SITE when the pending attempt cannot be saved', async () => {
+    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+    submissionRepositoryMock.findOne.mockResolvedValue({
+      formData: sdsSubmissionFixture,
+    });
+    applicationRepositoryMock.update.mockRejectedValue(new Error('db down'));
+
+    await expect(service.pushSiteDisclosure(10)).rejects.toThrow('db down');
+    expect(siteServiceMock.saveSiteDisclosureForService).not.toHaveBeenCalled();
+  });
+
+  it('still returns the duplicate when clearing the pending attempt fails', async () => {
+    applicationRepositoryMock.findOne.mockResolvedValue(sdsApplication);
+    submissionRepositoryMock.findOne.mockResolvedValue({
+      formData: sdsSubmissionFixture,
+    });
+    siteServiceMock.saveSiteDisclosureForService.mockResolvedValue(
+      duplicateResponse,
+    );
+    applicationRepositoryMock.update
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('db down'));
+
+    await expect(service.pushSiteDisclosure(10)).rejects.toMatchObject({
+      errorCode: 'DUPLICATE_DATE_COMPLETED',
+      status: 409,
+    });
+    expect(loggerMock.error).toHaveBeenCalled();
   });
 
   it('is add-only: only the SITE add mutation is called, never an update/delete', async () => {
