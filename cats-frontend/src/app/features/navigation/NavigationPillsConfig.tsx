@@ -55,6 +55,9 @@ const CSSA_ABBREVS = new Set(['CSSA', 'CSR']);
 const CSSA_DESCRIPTIONS = new Set(['Contaminated Site Request']);
 /** Form hdnAppType / app_type.abbrev for Site Information Request */
 const SIR_ABBREVS = new Set(['IR', 'SIR']);
+/** Site Disclosure Statement — CHEFS SDS intake */
+const SDS_ABBREVS = new Set(['SDS']);
+const SDS_DESCRIPTION = 'SITE DISCLOSURE STATEMENT';
 
 type AppTypeFields = {
   abbrev?: string | null;
@@ -103,6 +106,21 @@ export function isSirAppType(appType?: AppTypeFields | null): boolean {
     description.includes('SITE INFORMATION REQUEST') ||
     description.startsWith('SIR')
   );
+}
+
+/** Site Disclosure Statement (SDS) — gates the Link to Site ID / disclosure panel */
+export function isSdsAppType(appType?: AppTypeFields | null): boolean {
+  if (!appType) {
+    return false;
+  }
+
+  const abbrev = appType.abbrev?.trim().toUpperCase();
+  if (abbrev && SDS_ABBREVS.has(abbrev)) {
+    return true;
+  }
+
+  const description = appType.description?.trim().toUpperCase() ?? '';
+  return description === SDS_DESCRIPTION;
 }
 
 export function getApplicationNavigationItems(

@@ -1,0 +1,12 @@
+mutation linkApplicationSiteId($applicationId: Int!, $siteId: String) {
+  linkApplicationSiteId(applicationId: $applicationId, siteId: $siteId) {
+    message
+    httpStatusCode
+    success
+    data {
+      siteId
+      siteAddress
+      siteCity
+    }
+  }
+}
