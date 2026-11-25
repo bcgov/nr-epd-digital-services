@@ -116,8 +116,10 @@ export const Application: React.FC<ApplicationProps> = () => {
     'https://submit.digital.gov.bc.ca'
   ).replace(/\/$/, '');
 
+  // Staff UI: /view opens the submission (Status / Notes / Form).
+  // Submitter emails keep /success (Recall-friendly deep link) via backend.
   const originalSubmissionUrl = chefsSubmissionId
-    ? `${chefsAppBaseUrl}/app/form/success?s=${encodeURIComponent(chefsSubmissionId)}`
+    ? `${chefsAppBaseUrl}/app/form/view?s=${encodeURIComponent(chefsSubmissionId)}`
     : null;
   const originalSubmissionLinkLabel = originalSubmissionUrl
     ? originalSubmissionUrl.replace(/^https?:\/\//, '')
