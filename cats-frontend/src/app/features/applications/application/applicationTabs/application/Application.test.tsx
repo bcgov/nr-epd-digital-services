@@ -135,7 +135,7 @@ describe('Application tab status', () => {
       window?._env_?.VITE_CHEFS_APP_URL ||
       'https://submit.digital.gov.bc.ca'
     ).replace(/\/$/, '');
-    const expectedHref = `${chefsAppBaseUrl}/app/form/success?s=1234567654212345665432`;
+    const expectedHref = `${chefsAppBaseUrl}/app/form/view?s=1234567654212345665432`;
     const expectedLabel = expectedHref.replace(/^https?:\/\//, '');
 
     const originalSubmissionLink = screen.getByRole('link', {
