@@ -27,7 +27,10 @@ import {
   isMoreInformationStatus,
   isRejectionStatus,
 } from '../../statusCommentPolicy';
-import { notifyError, notifySuccess } from '../../../../../components/alert/Alert';
+import {
+  notifyError,
+  notifySuccess,
+} from '../../../../../components/alert/Alert';
 
 type FormJson = {
   title?: string;
@@ -94,8 +97,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   const application = headerData?.getApplicationDetailsById?.data;
   const showLinkPanel = applicationId > 0 && isSdsAppType(application?.appType);
 
-  const applicationDetails =
-    applicationData?.getApplicationDetailsById?.data;
+  const applicationDetails = applicationData?.getApplicationDetailsById?.data;
   const currentStatusId = applicationDetails?.currentStatus?.id;
   const hasBeenWithdrawn = Boolean(applicationDetails?.hasBeenWithdrawn);
 
@@ -318,8 +320,7 @@ export const Application: React.FC<ApplicationProps> = () => {
     return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
-  const formName =
-    applicationDetails?.appType?.description?.trim() || '';
+  const formName = applicationDetails?.appType?.description?.trim() || '';
 
   return (
     <>
