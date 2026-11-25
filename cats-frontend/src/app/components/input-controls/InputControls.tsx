@@ -380,7 +380,10 @@ export const DropdownInput: React.FC<InputProps> = ({
             <option
               key={index}
               value={option.key}
-              className="custom-option custom-primary-option"
+              disabled={Boolean(option.disabled)}
+              className={`custom-option custom-primary-option${
+                option.disabled ? ' custom-disabled-option' : ''
+              }`}
             >
               {option.value}
             </option>

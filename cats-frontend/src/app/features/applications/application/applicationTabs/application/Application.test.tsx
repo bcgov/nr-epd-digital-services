@@ -87,6 +87,7 @@ const statusTypesMock = {
         { id: 2, abbrev: 'IP-CW', description: 'In Review' },
         { id: 3, abbrev: 'PEND', description: 'Pending: Information Required' },
         { id: 4, abbrev: 'ODM', description: 'Approved' },
+        { id: 5, abbrev: 'WITHDRAWN', description: 'Withdrawn' },
       ],
     },
   },
@@ -358,5 +359,44 @@ describe('Application tab status', () => {
       expect(screen.getByLabelText(/Comment/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Send' })).toBeInTheDocument();
     });
+  });
+
+  it('keeps Withdrawn visible but disabled after rejection', async () => {
+    const withdrawnApplicationMock = {
+      ...applicationStatusMock,
+      result: {
+        data: {
+          getApplicationDetailsById: {
+            data: {
+              ...applicationStatusMock.result.data.getApplicationDetailsById
+                .data,
+              hasBeenWithdrawn: true,
+              currentStatus: {
+                id: 5,
+                abbrev: 'WITHDRAWN',
+                description: 'Withdrawn',
+              },
+            },
+          },
+        },
+      },
+    };
+
+    renderApplication([
+      submissionMock,
+      withdrawnApplicationMock,
+      statusTypesMock,
+    ]);
+
+    await waitFor(() => {
+      expect(screen.getByRole('combobox')).toHaveValue('5');
+      expect(screen.getByRole('combobox')).toHaveDisplayValue('Withdrawn');
+    });
+
+    const withdrawnOption = screen.getByRole('option', { name: 'Withdrawn' });
+    expect(withdrawnOption).toBeDisabled();
+    expect(
+      screen.getByRole('option', { name: 'In Review' }),
+    ).not.toBeDisabled();
   });
 });

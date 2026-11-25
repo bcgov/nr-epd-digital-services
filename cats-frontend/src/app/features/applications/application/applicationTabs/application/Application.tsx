@@ -176,18 +176,12 @@ export const Application: React.FC<ApplicationProps> = () => {
 
   const statusOptions = useMemo(
     () =>
-      statusTypes
-        .filter((status) => {
-          if (!hasBeenWithdrawn) {
-            return true;
-          }
-          // Rejection is once-only: hide WITHDRAWN after it has been used.
-          return !isRejectionStatus(status.abbrev);
-        })
-        .map((status) => ({
-          key: String(status.id),
-          value: status.description,
-        })),
+      statusTypes.map((status) => ({
+        key: String(status.id),
+        value: status.description,
+        // Rejection is once-only: keep WITHDRAWN visible but greyed out.
+        disabled: hasBeenWithdrawn && isRejectionStatus(status.abbrev),
+      })),
     [statusTypes, hasBeenWithdrawn],
   );
 
