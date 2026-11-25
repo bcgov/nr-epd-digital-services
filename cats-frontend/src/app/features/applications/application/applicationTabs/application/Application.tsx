@@ -117,7 +117,7 @@ export const Application: React.FC<ApplicationProps> = () => {
   ).replace(/\/$/, '');
 
   const originalSubmissionUrl = chefsSubmissionId
-    ? `${chefsAppBaseUrl}/app/form/view?s=${encodeURIComponent(chefsSubmissionId)}`
+    ? `${chefsAppBaseUrl}/app/form/success?s=${encodeURIComponent(chefsSubmissionId)}`
     : null;
   const originalSubmissionLinkLabel = originalSubmissionUrl
     ? originalSubmissionUrl.replace(/^https?:\/\//, '')
