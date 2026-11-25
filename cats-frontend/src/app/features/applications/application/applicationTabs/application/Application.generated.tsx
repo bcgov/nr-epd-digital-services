@@ -8,7 +8,7 @@ export type GetApplicationByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetApplicationByIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, formId?: string | null, submissionId?: string | null, receivedDate: any, currentStatus?: { __typename?: 'DetailField', id: number, description: string } | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
+export type GetApplicationByIdQuery = { __typename?: 'Query', getApplicationDetailsById: { __typename?: 'ApplicationDetailsResponse', data?: { __typename?: 'ViewApplicationDetails', id: number, formId?: string | null, submissionId?: string | null, receivedDate: any, hasBeenWithdrawn: boolean, currentStatus?: { __typename?: 'DetailField', id: number, abbrev: string, description: string } | null, appType?: { __typename?: 'DetailField', description: string } | null } | null } };
 
 export type GetSubmissionByApplicationIdQueryVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
@@ -20,11 +20,12 @@ export type GetSubmissionByApplicationIdQuery = { __typename?: 'Query', getSubmi
 export type GetApplicationStatusTypesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetApplicationStatusTypesQuery = { __typename?: 'Query', getAllStatusTypes: Array<{ __typename?: 'StatusType', id: number, description: string }> };
+export type GetApplicationStatusTypesQuery = { __typename?: 'Query', getAllStatusTypes: Array<{ __typename?: 'StatusType', id: number, abbrev?: string | null, description: string }> };
 
 export type UpdateApplicationStatusMutationVariables = Types.Exact<{
   applicationId: Types.Scalars['Int']['input'];
   statusTypeId: Types.Scalars['Int']['input'];
+  comment?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
@@ -39,8 +40,10 @@ export const GetApplicationByIdDocument = gql`
       formId
       submissionId
       receivedDate
+      hasBeenWithdrawn
       currentStatus {
         id
+        abbrev
         description
       }
       appType {
@@ -140,6 +143,7 @@ export const GetApplicationStatusTypesDocument = gql`
     query getApplicationStatusTypes {
   getAllStatusTypes {
     id
+    abbrev
     description
   }
 }
@@ -177,10 +181,11 @@ export type GetApplicationStatusTypesLazyQueryHookResult = ReturnType<typeof use
 export type GetApplicationStatusTypesSuspenseQueryHookResult = ReturnType<typeof useGetApplicationStatusTypesSuspenseQuery>;
 export type GetApplicationStatusTypesQueryResult = Apollo.QueryResult<GetApplicationStatusTypesQuery, GetApplicationStatusTypesQueryVariables>;
 export const UpdateApplicationStatusDocument = gql`
-    mutation updateApplicationStatus($applicationId: Int!, $statusTypeId: Int!) {
+    mutation updateApplicationStatus($applicationId: Int!, $statusTypeId: Int!, $comment: String) {
   updateApplicationStatus(
     applicationId: $applicationId
     statusTypeId: $statusTypeId
+    comment: $comment
   ) {
     message
     httpStatusCode
@@ -205,6 +210,7 @@ export type UpdateApplicationStatusMutationFn = Apollo.MutationFunction<UpdateAp
  *   variables: {
  *      applicationId: // value for 'applicationId'
  *      statusTypeId: // value for 'statusTypeId'
+ *      comment: // value for 'comment'
  *   },
  * });
  */

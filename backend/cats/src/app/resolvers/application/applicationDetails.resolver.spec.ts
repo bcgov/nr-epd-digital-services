@@ -124,9 +124,19 @@ describe('ApplicationDetailsResolver', () => {
       service.updateApplicationStatus = jest.fn().mockResolvedValue(undefined);
       const user = { given_name: 'John', family_name: 'Doe' };
 
-      const result = await resolver.updateApplicationStatus(1, 4, user);
+      const result = await resolver.updateApplicationStatus(
+        1,
+        4,
+        null,
+        user,
+      );
 
-      expect(service.updateApplicationStatus).toHaveBeenCalledWith(1, 4, user);
+      expect(service.updateApplicationStatus).toHaveBeenCalledWith(
+        1,
+        4,
+        user,
+        null,
+      );
       expect(result).toMatchObject({
         message: 'Application status updated successfully',
         httpStatusCode: 200,
@@ -134,14 +144,38 @@ describe('ApplicationDetailsResolver', () => {
       });
     });
 
+    it('should pass comment through for comment-required statuses', async () => {
+      service.updateApplicationStatus = jest.fn().mockResolvedValue(undefined);
+      const user = { given_name: 'John', family_name: 'Doe' };
+
+      await resolver.updateApplicationStatus(1, 3, 'Need site plan', user);
+
+      expect(service.updateApplicationStatus).toHaveBeenCalledWith(
+        1,
+        3,
+        user,
+        'Need site plan',
+      );
+    });
+
     it('should handle errors when updating status', async () => {
       const error = new Error('Update failed');
       service.updateApplicationStatus = jest.fn().mockRejectedValue(error);
       const user = { given_name: 'John', family_name: 'Doe' };
 
-      const result = await resolver.updateApplicationStatus(1, 4, user);
+      const result = await resolver.updateApplicationStatus(
+        1,
+        4,
+        null,
+        user,
+      );
 
-      expect(service.updateApplicationStatus).toHaveBeenCalledWith(1, 4, user);
+      expect(service.updateApplicationStatus).toHaveBeenCalledWith(
+        1,
+        4,
+        user,
+        null,
+      );
       expect(result).toMatchObject({
         message: 'Update failed',
         httpStatusCode: 500,

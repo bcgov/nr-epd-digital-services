@@ -153,6 +153,7 @@ export type ApplicationResultDto = {
   csapReference: Scalars['String']['output'];
   dateCompleted?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
+  isResubmitted: Scalars['Boolean']['output'];
   lastUpdated: Scalars['String']['output'];
   priority: Scalars['String']['output'];
   receivedDate?: Maybe<Scalars['String']['output']>;
@@ -738,6 +739,7 @@ export type MutationUpdateApplicationServiceTypeArgs = {
 
 export type MutationUpdateApplicationStatusArgs = {
   applicationId: Scalars['Int']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
   statusTypeId: Scalars['Int']['input'];
 };
 
@@ -1444,6 +1446,7 @@ export type ViewApplicationDetails = {
   currentStatus?: Maybe<DetailField>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
   formId?: Maybe<Scalars['String']['output']>;
+  hasBeenWithdrawn: Scalars['Boolean']['output'];
   id: Scalars['Float']['output'];
   isHousing: Scalars['Boolean']['output'];
   isTaxExempt: Scalars['Boolean']['output'];

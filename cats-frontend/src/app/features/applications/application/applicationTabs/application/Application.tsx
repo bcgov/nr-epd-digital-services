@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDateUTC, getUser } from '../../../../../helpers/utility';
 import './Application.css';
@@ -21,6 +21,16 @@ import 'formiojs/dist/formio.full.min.css';
 import '../../../../../../../vendor/chefs-formio/bcgov-formio-components.css';
 import '../../../../../../../vendor/chefs-formio/chefs-form-viewer.css';
 import { registerChefsComponents } from './registerChefsComponents';
+import StatusReasonModal from '../../components/StatusReasonModal';
+import {
+  isCommentRequiredStatus,
+  isMoreInformationStatus,
+  isRejectionStatus,
+} from '../../statusCommentPolicy';
+import {
+  notifyError,
+  notifySuccess,
+} from '../../../../../components/alert/Alert';
 
 type FormJson = {
   title?: string;
@@ -31,6 +41,12 @@ type Submission = {
   data: { [key: string]: any };
   metadata?: { [key: string]: any };
   state?: string;
+};
+
+type PendingStatusSelection = {
+  id: string;
+  abbrev?: string | null;
+  description?: string | null;
 };
 
 interface ApplicationProps {}
@@ -49,6 +65,8 @@ export const Application: React.FC<ApplicationProps> = () => {
   const [componentsReady, setComponentsReady] = useState(false);
   const [hasPushed, setHasPushed] = useState(false);
   const [statusTypeId, setStatusTypeId] = useState('');
+  const [pendingStatus, setPendingStatus] =
+    useState<PendingStatusSelection | null>(null);
 
   const applicationId = parseInt(id ?? '', 10);
 
@@ -59,10 +77,11 @@ export const Application: React.FC<ApplicationProps> = () => {
       skip: !applicationId,
     });
 
-  const { data: applicationData } = useGetApplicationByIdQuery({
-    variables: { applicationId },
-    skip: !applicationId,
-  });
+  const { data: applicationData, refetch: refetchApplication } =
+    useGetApplicationByIdQuery({
+      variables: { applicationId },
+      skip: !applicationId,
+    });
 
   const { data: headerData } = useGetHeaderDetailsByApplicationIdQuery({
     variables: { applicationId },
@@ -78,8 +97,9 @@ export const Application: React.FC<ApplicationProps> = () => {
   const application = headerData?.getApplicationDetailsById?.data;
   const showLinkPanel = applicationId > 0 && isSdsAppType(application?.appType);
 
-  const currentStatusId =
-    applicationData?.getApplicationDetailsById?.data?.currentStatus?.id;
+  const applicationDetails = applicationData?.getApplicationDetailsById?.data;
+  const currentStatusId = applicationDetails?.currentStatus?.id;
+  const hasBeenWithdrawn = Boolean(applicationDetails?.hasBeenWithdrawn);
 
   useEffect(() => {
     setStatusTypeId(currentStatusId ? String(currentStatusId) : '');
@@ -96,6 +116,8 @@ export const Application: React.FC<ApplicationProps> = () => {
     'https://submit.digital.gov.bc.ca'
   ).replace(/\/$/, '');
 
+  // Staff UI: /view opens the submission (Status / Notes / Form).
+  // Submitter emails keep /success (Recall-friendly deep link) via backend.
   const originalSubmissionUrl = chefsSubmissionId
     ? `${chefsAppBaseUrl}/app/form/view?s=${encodeURIComponent(chefsSubmissionId)}`
     : null;
@@ -152,50 +174,149 @@ export const Application: React.FC<ApplicationProps> = () => {
     setIsLoading(false);
   }, [submissionLoading, submissionFormData, submissionFormSchema]);
 
-  const handleStatusChange = async (value: string) => {
-    const nextStatusTypeId = String(value ?? '').trim();
-    if (!applicationId || nextStatusTypeId === statusTypeId) {
-      return;
+  const statusTypes = statusTypesData?.getAllStatusTypes ?? [];
+
+  const statusOptions = useMemo(
+    () =>
+      statusTypes.map((status) => ({
+        key: String(status.id),
+        value: status.description,
+        // Rejection is once-only: keep WITHDRAWN visible but greyed out.
+        disabled: hasBeenWithdrawn && isRejectionStatus(status.abbrev),
+      })),
+    [statusTypes, hasBeenWithdrawn],
+  );
+
+  const commitStatusChange = async (
+    nextStatusTypeId: string,
+    comment?: string,
+  ) => {
+    if (!applicationId || !nextStatusTypeId) {
+      return false;
     }
 
     const previousStatusTypeId = statusTypeId;
     setStatusTypeId(nextStatusTypeId);
-
-    // Empty value is a valid choice, same as the All Applications filter.
-    if (!nextStatusTypeId) {
-      return;
-    }
 
     try {
       const result = await updateApplicationStatus({
         variables: {
           applicationId,
           statusTypeId: Number(nextStatusTypeId),
+          comment: comment ?? null,
         },
         refetchQueries: ['getApplicationById', 'getApplicationDetailsById'],
       });
 
       if (!result.data?.updateApplicationStatus?.success) {
         setStatusTypeId(previousStatusTypeId);
+        notifyError(
+          result.data?.updateApplicationStatus?.message ||
+            'Failed to update application status.',
+        );
+        return false;
       }
+
+      await refetchApplication();
+      return true;
     } catch {
       setStatusTypeId(previousStatusTypeId);
+      notifyError('Failed to update application status.');
+      return false;
     }
   };
 
-  const statusOptions =
-    statusTypesData?.getAllStatusTypes?.map((status) => ({
-      key: String(status.id),
-      value: status.description,
-    })) ?? [];
+  const handleStatusChange = async (value: string) => {
+    const nextStatusTypeId = String(value ?? '').trim();
+    if (!applicationId) {
+      return;
+    }
+
+    // Empty value is a valid choice, same as the All Applications filter.
+    if (!nextStatusTypeId) {
+      setStatusTypeId('');
+      return;
+    }
+
+    const selected = statusTypes.find(
+      (status) => String(status.id) === nextStatusTypeId,
+    );
+    const isSameStatus = nextStatusTypeId === statusTypeId;
+
+    if (isCommentRequiredStatus(selected?.abbrev)) {
+      if (hasBeenWithdrawn && isRejectionStatus(selected?.abbrev)) {
+        notifyError(
+          'This application has already been rejected. The applicant must submit a new application.',
+        );
+        return;
+      }
+      // Repeat PEND is allowed (same status + new comment/email). If the
+      // dropdown was briefly cleared to allow re-select, put PEND back for
+      // display while the modal is open; otherwise leave the prior status.
+      if (!statusTypeId) {
+        setStatusTypeId(nextStatusTypeId);
+      }
+      setPendingStatus({
+        id: nextStatusTypeId,
+        abbrev: selected?.abbrev,
+        description: selected?.description,
+      });
+      return;
+    }
+
+    if (isSameStatus) {
+      return;
+    }
+
+    await commitStatusChange(nextStatusTypeId);
+  };
+
+  /**
+   * Native <select> does not fire onChange when re-picking the current option.
+   * Briefly clear the value when opening the dropdown on PEND so staff can
+   * request more information again.
+   */
+  const handleStatusSelectMouseDown = () => {
+    if (
+      pendingStatus ||
+      updatingStatus ||
+      !isMoreInformationStatus(applicationDetails?.currentStatus?.abbrev)
+    ) {
+      return;
+    }
+    setStatusTypeId('');
+  };
+
+  const restoreCommittedStatus = () => {
+    setStatusTypeId(currentStatusId ? String(currentStatusId) : '');
+  };
+
+  const handleReasonCancel = () => {
+    setPendingStatus(null);
+    restoreCommittedStatus();
+  };
+
+  const handleReasonConfirm = async (comment: string) => {
+    if (!pendingStatus) {
+      return;
+    }
+
+    const ok = await commitStatusChange(pendingStatus.id, comment);
+    if (ok) {
+      notifySuccess(
+        isRejectionStatus(pendingStatus.abbrev)
+          ? 'Application rejected. The applicant has been emailed.'
+          : 'Status updated. The applicant has been emailed.',
+      );
+      setPendingStatus(null);
+    }
+  };
 
   if (isLoading || !componentsReady) {
     return <LoadingOverlay loading={isLoading || !componentsReady} />;
   }
 
-  const formName =
-    applicationData?.getApplicationDetailsById?.data?.appType?.description?.trim() ||
-    '';
+  const formName = applicationDetails?.appType?.description?.trim() || '';
 
   return (
     <>
@@ -259,9 +380,19 @@ export const Application: React.FC<ApplicationProps> = () => {
                   placeholder="Select Status"
                   value={statusTypeId}
                   isEditing
-                  isDisabled={statusTypesLoading || updatingStatus}
+                  isDisabled={
+                    statusTypesLoading ||
+                    updatingStatus ||
+                    Boolean(pendingStatus)
+                  }
                   options={statusOptions}
                   onChange={(value) => handleStatusChange(String(value ?? ''))}
+                  onMouseDown={handleStatusSelectMouseDown}
+                  onBlur={() => {
+                    if (!pendingStatus && !statusTypeId) {
+                      restoreCommittedStatus();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -312,6 +443,13 @@ export const Application: React.FC<ApplicationProps> = () => {
             </pre>
           )}
         </div>
+        <StatusReasonModal
+          isOpen={Boolean(pendingStatus)}
+          statusAbbrev={pendingStatus?.abbrev}
+          isSubmitting={updatingStatus}
+          onCancel={handleReasonCancel}
+          onConfirm={handleReasonConfirm}
+        />
       </div>
     </>
   );

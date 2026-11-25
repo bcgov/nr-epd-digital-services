@@ -35,6 +35,7 @@ const sampleRow: ApplicationV2Row = {
   applicationType: 'Type A',
   lastUpdated: '2024-06-15T12:00:00.000Z',
   status: 'Open',
+  isResubmitted: false,
   staffAssigned: [
     { firstName: 'Ada', lastName: 'Lovelace' },
     { firstName: 'Grace', lastName: 'Hopper' },
@@ -207,5 +208,24 @@ describe('applicationsV2Columns', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('AL')).toBeInTheDocument();
     expect(screen.getByText('GH')).toBeInTheDocument();
+  });
+
+  it('shows a Resubmitted badge beside Status when isResubmitted is true', () => {
+    renderColumnsTable({
+      ...sampleRow,
+      status: 'Pending: Information Required',
+      isResubmitted: true,
+    });
+
+    expect(
+      screen.getByText('Pending: Information Required'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Resubmitted')).toBeInTheDocument();
+  });
+
+  it('does not show a Resubmitted badge when isResubmitted is false', () => {
+    renderColumnsTable();
+
+    expect(screen.queryByText('Resubmitted')).not.toBeInTheDocument();
   });
 });

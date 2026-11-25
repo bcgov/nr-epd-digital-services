@@ -77,6 +77,8 @@ export class ApplicationDetailsResolver {
   async updateApplicationStatus(
     @Args('applicationId', { type: () => Int }) applicationId: number,
     @Args('statusTypeId', { type: () => Int }) statusTypeId: number,
+    @Args('comment', { type: () => String, nullable: true })
+    comment: string | null,
     @AuthenticatedUser() user: any,
   ): Promise<BaseHttpResponse> {
     this.loggerService.log(
@@ -88,6 +90,7 @@ export class ApplicationDetailsResolver {
         applicationId,
         statusTypeId,
         user,
+        comment,
       );
 
       this.loggerService.log(

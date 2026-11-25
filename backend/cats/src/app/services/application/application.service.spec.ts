@@ -17,6 +17,7 @@ import { ApplicationSecondaryServiceType } from '../../entities/applicationSecon
 import { ChesEmailService } from '../email/chesEmail.service';
 import { ChefsService } from '../chefs/chefs.service';
 import { ApplicationSubmissionService } from '../applicationSubmission/applicationSubmission.service';
+import { ApplicationNotesService } from './applicationNotes.service';
 
 describe('ApplicationService', () => {
   let applicationService: ApplicationService;
@@ -51,6 +52,9 @@ describe('ApplicationService', () => {
       chefsConfirmationId: 'CONF123',
       application: { appType: { abbrev: 'NOM' } },
     }),
+  };
+  const applicationNotesServiceMock = {
+    createApplicationNote: jest.fn().mockResolvedValue([]),
   };
   const configServiceMock = {
     get: jest.fn((key: string) => {
@@ -141,6 +145,8 @@ describe('ApplicationService', () => {
         application: { appType: { abbrev: 'NOM' } },
       },
     );
+    applicationNotesServiceMock.createApplicationNote.mockClear();
+    applicationNotesServiceMock.createApplicationNote.mockResolvedValue([]);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -176,6 +182,10 @@ describe('ApplicationService', () => {
         {
           provide: ApplicationSubmissionService,
           useValue: applicationSubmissionServiceMock,
+        },
+        {
+          provide: ApplicationNotesService,
+          useValue: applicationNotesServiceMock,
         },
         {
           provide: ConfigService,
@@ -612,6 +622,7 @@ describe('ApplicationService', () => {
       expect(result).toEqual({
         id: 1,
         siteId: 67890,
+        hasBeenWithdrawn: false,
         csapRefNumber: 'CSR-2024-001',
         receivedDate: new Date('2024-01-01T00:00:00.000Z'),
         endDate: null,
@@ -1129,6 +1140,174 @@ describe('ApplicationService', () => {
           HttpStatus.BAD_REQUEST,
         ),
       );
+    });
+  });
+
+  describe('updateApplicationStatus with required comments', () => {
+    const user = { given_name: 'Jane', family_name: 'Smith' };
+
+    it('should require a comment for PEND and send more-information email', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 1,
+        isCurrent: true,
+        formId: 'form-1',
+        submissionId: 'sub-1',
+        formsflowAppId: 99,
+        rowVersionCount: 1,
+      });
+      appStatusRepositoryMock.create.mockImplementation((value) => value);
+      appStatusRepositoryMock.save.mockResolvedValue({});
+      (statusTypeServiceMock.getStatusTypeById as jest.Mock).mockResolvedValue({
+        id: 3,
+        description: 'Pending: Information Required',
+        displayOrder: 3,
+        abbrev: 'PEND',
+        externalDescription: 'Additional Information Requested',
+        externalDisplayOrder: 3,
+      });
+
+      await expect(
+        applicationService.updateApplicationStatus(1, 3, user),
+      ).rejects.toThrow(
+        new HttpException(
+          'A comment/reason is required for this status',
+          HttpStatus.BAD_REQUEST,
+        ),
+      );
+
+      await applicationService.updateApplicationStatus(
+        1,
+        3,
+        user,
+        'Please attach the site plan.',
+      );
+
+      expect(appStatusRepositoryMock.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          statusTypeId: 3,
+          comment: 'Please attach the site plan.',
+        }),
+      );
+      expect(
+        applicationNotesServiceMock.createApplicationNote,
+      ).toHaveBeenCalledWith(
+        1,
+        expect.any(Date),
+        'Please attach the site plan.',
+        expect.objectContaining({ name: 'Jane Smith' }),
+      );
+
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(emailServiceMock.sendEmail).toHaveBeenCalledWith(
+        ['tester@example.com'],
+        'Application #1: additional information requested',
+        expect.stringMatching(
+          /Additional information requested[\s\S]*Additional Information Requested[\s\S]*Recall Submission[\s\S]*Please attach the site plan\.[\s\S]*form\/success\?s=sub-uuid/,
+        ),
+      );
+      expect(emailServiceMock.sendEmail.mock.calls[0][2]).not.toMatch(
+        /\$\{currentStatus\}/,
+      );
+    });
+
+    it('should allow repeating PEND with a new comment without a new status row', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 3,
+        isCurrent: true,
+        rowVersionCount: 1,
+      });
+      (statusTypeServiceMock.getStatusTypeById as jest.Mock).mockResolvedValue({
+        id: 3,
+        description: 'Pending: Information Required',
+        abbrev: 'PEND',
+        externalDescription: 'Additional Information Requested',
+        externalDisplayOrder: 3,
+      });
+
+      await applicationService.updateApplicationStatus(
+        1,
+        3,
+        user,
+        'Second request for missing photos.',
+      );
+
+      expect(appStatusRepositoryMock.create).not.toHaveBeenCalled();
+      expect(
+        applicationNotesServiceMock.createApplicationNote,
+      ).toHaveBeenCalledWith(
+        1,
+        expect.any(Date),
+        'Second request for missing photos.',
+        expect.objectContaining({ name: 'Jane Smith' }),
+      );
+
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(emailServiceMock.sendEmail).toHaveBeenCalled();
+    });
+
+    it('should reject WITHDRAWN without comment and block a second rejection', async () => {
+      applicationRepositoryMock.findOne.mockResolvedValue({ id: 1 });
+      appStatusRepositoryMock.findOne.mockResolvedValue({
+        id: 10,
+        applicationId: 1,
+        statusTypeId: 1,
+        isCurrent: true,
+        rowVersionCount: 1,
+      });
+      appStatusRepositoryMock.find.mockResolvedValue([]);
+      (statusTypeServiceMock.getStatusTypeById as jest.Mock).mockResolvedValue({
+        id: 12,
+        description: 'Withdrawn',
+        abbrev: 'WITHDRAWN',
+        externalDescription: 'Withdrawn',
+        externalDisplayOrder: 7,
+      });
+
+      await expect(
+        applicationService.updateApplicationStatus(1, 12, user),
+      ).rejects.toThrow(/comment\/reason is required/i);
+
+      appStatusRepositoryMock.create.mockImplementation((value) => value);
+      appStatusRepositoryMock.save.mockResolvedValue({});
+
+      await applicationService.updateApplicationStatus(
+        1,
+        12,
+        user,
+        'Incomplete site disclosure.',
+      );
+
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(emailServiceMock.sendEmail).toHaveBeenCalledWith(
+        ['tester@example.com'],
+        'Application #1: application rejected',
+        expect.stringMatching(
+          /Application rejected[\s\S]*Incomplete site disclosure\.[\s\S]*new application/,
+        ),
+      );
+
+      emailServiceMock.sendEmail.mockClear();
+      appStatusRepositoryMock.find.mockResolvedValue([
+        {
+          statusType: { abbrev: 'WITHDRAWN' },
+        },
+      ]);
+
+      await expect(
+        applicationService.updateApplicationStatus(
+          1,
+          12,
+          user,
+          'Trying again',
+        ),
+      ).rejects.toThrow(/already been rejected/i);
+      expect(emailServiceMock.sendEmail).not.toHaveBeenCalled();
     });
   });
 });

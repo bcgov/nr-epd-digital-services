@@ -40,6 +40,8 @@ interface InputProps extends IFormField {
   isLoading?: RequestStatus;
   srMode?: boolean;
   onChange: (value: any) => void;
+  onMouseDown?: React.MouseEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
 }
 
 const renderTableCell = (
@@ -282,6 +284,8 @@ export const DropdownInput: React.FC<InputProps> = ({
   customEditInputTextCss,
   customPlaceholderCss,
   onChange,
+  onMouseDown,
+  onBlur,
   tableMode,
   isDisabled,
   customErrorCss,
@@ -359,6 +363,8 @@ export const DropdownInput: React.FC<InputProps> = ({
           }  ${error && 'error'}`}
           value={value.toString().trim() ?? ''}
           onChange={handleSelectChange}
+          onMouseDown={onMouseDown}
+          onBlur={onBlur}
           aria-label={label}
           disabled={isDisabled}
         >
@@ -374,7 +380,10 @@ export const DropdownInput: React.FC<InputProps> = ({
             <option
               key={index}
               value={option.key}
-              className="custom-option custom-primary-option"
+              disabled={Boolean(option.disabled)}
+              className={`custom-option custom-primary-option${
+                option.disabled ? ' custom-disabled-option' : ''
+              }`}
             >
               {option.value}
             </option>

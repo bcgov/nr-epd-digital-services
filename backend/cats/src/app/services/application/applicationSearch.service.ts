@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
 import { Application } from '../../entities/application.entity';
+import { AppStatus } from '../../entities/appStatus.entity';
+import { ApplicationSubmission } from '../../entities/applicationSubmission.entity';
 import { ApplicationSearchResult } from '../../dto/response/applicationSearchResponse';
 import { LoggerService } from '../../logger/logger.service';
 import { Filter } from '../../utilities/enums/application/filter.enum';
 import { SortByDirection } from '../../utilities/enums/application/sortByDirection.enum';
 import { SortByField } from '../../utilities/enums/application/sortByField.enum';
+import { isMoreInformationStatus } from '../../utilities/applicationStatusComment';
 import { StaffRoles } from '../assignment/staffRoles.enum';
 
 @Injectable()
@@ -27,6 +30,41 @@ export class ApplicationSearchService {
     EnvironmentalManagementArea: 'Environmental management area',
     OtherServicesAndFunctions: 'Other services and functions',
   };
+
+  /**
+   * Proponent recalled/resubmitted while staff requested more information.
+   * Clears automatically when status leaves PEND (new current status row).
+   */
+  private isResubmittedAfterMoreInfoRequest(
+    currentStatus: AppStatus | undefined,
+    submissions: ApplicationSubmission[] | undefined,
+  ): boolean {
+    if (!isMoreInformationStatus(currentStatus?.statusType?.abbrev)) {
+      return false;
+    }
+
+    const statusSetAt = currentStatus?.createdDateTime;
+    if (!statusSetAt) {
+      return false;
+    }
+
+    const latestSubmission = (submissions ?? [])
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(b.updatedDateTime).getTime() -
+          new Date(a.updatedDateTime).getTime(),
+      )[0];
+
+    if (!latestSubmission?.updatedDateTime) {
+      return false;
+    }
+
+    return (
+      new Date(latestSubmission.updatedDateTime).getTime() >
+      new Date(statusSetAt).getTime()
+    );
+  }
 
   private extractStringValue(data: any, useMapping: boolean = false): string {
     if (!data) return '';
@@ -127,7 +165,11 @@ export class ApplicationSearchService {
       )
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
-      .leftJoinAndSelect('appPriority.priority', 'priority');
+      .leftJoinAndSelect('appPriority.priority', 'priority')
+      .leftJoinAndSelect(
+        'application.applicationSubmissions',
+        'applicationSubmission',
+      );
     query.andWhere('appStatus.isCurrent = :isCurrent', { isCurrent: true });
     query.andWhere(
       new Brackets((qb) => {
@@ -353,37 +395,44 @@ export class ApplicationSearchService {
       return result;
     }
 
-    result.applications = applicationList.map((app) => ({
-      id: app.id.toString(),
-      siteId: app.siteId?.toString() || '',
-      siteAddress: app.site?.address || '',
-      applicationType: app.appType?.description || '',
-      lastUpdated: app.updatedDateTime.toISOString(),
-      status: app.appStatuses?.find((s) => s.isCurrent)?.statusType?.description || '',
-      staffAssigned: app.appParticipants
-        .filter(
-          (participant) =>
-            participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
-            participant.participantRole?.abbrev === StaffRoles.MENTOR ||
-            participant.participantRole?.abbrev === StaffRoles.SDM,
-        )
-        .map((participant) => participant.person),
-      priority: app.appPriorities?.[0]?.priority?.abbrev || '',
-      url: app.id.toString(),
-      siteRiskClassification: this.extractStringValue(
-        app.applicationSpecificData?.['siteRiskClassification'],
-      ),
-      csapReference: this.extractStringValue(
-        app.applicationSpecificData?.['csapReference'],
-      ),
-      serviceType: this.extractStringValue(
-        app.applicationSpecificData?.['serviceType'],
-        true,
-      ),
-      commonName: app.site?.commonName || '',
-      receivedDate: app.receivedDate || null,
-      dateCompleted: app.endDate || null,
-    }));
+    result.applications = applicationList.map((app) => {
+      const currentStatus = app.appStatuses?.find((s) => s.isCurrent);
+      return {
+        id: app.id.toString(),
+        siteId: app.siteId?.toString() || '',
+        siteAddress: app.site?.address || '',
+        applicationType: app.appType?.description || '',
+        lastUpdated: app.updatedDateTime.toISOString(),
+        status: currentStatus?.statusType?.description || '',
+        isResubmitted: this.isResubmittedAfterMoreInfoRequest(
+          currentStatus,
+          app.applicationSubmissions,
+        ),
+        staffAssigned: app.appParticipants
+          .filter(
+            (participant) =>
+              participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
+              participant.participantRole?.abbrev === StaffRoles.MENTOR ||
+              participant.participantRole?.abbrev === StaffRoles.SDM,
+          )
+          .map((participant) => participant.person),
+        priority: app.appPriorities?.[0]?.priority?.abbrev || '',
+        url: app.id.toString(),
+        siteRiskClassification: this.extractStringValue(
+          app.applicationSpecificData?.['siteRiskClassification'],
+        ),
+        csapReference: this.extractStringValue(
+          app.applicationSpecificData?.['csapReference'],
+        ),
+        serviceType: this.extractStringValue(
+          app.applicationSpecificData?.['serviceType'],
+          true,
+        ),
+        commonName: app.site?.commonName || '',
+        receivedDate: app.receivedDate || null,
+        dateCompleted: app.endDate || null,
+      };
+    });
     result.count = count;
     result.page = page;
     result.pageSize = pageSize;
@@ -422,7 +471,11 @@ export class ApplicationSearchService {
       )
       .leftJoinAndSelect('appStatus.statusType', 'statusType')
       .leftJoinAndSelect('application.appPriorities', 'appPriority')
-      .leftJoinAndSelect('appPriority.priority', 'priority');
+      .leftJoinAndSelect('appPriority.priority', 'priority')
+      .leftJoinAndSelect(
+        'application.applicationSubmissions',
+        'applicationSubmission',
+      );
 
     query.skip((page - 1) * pageSize).take(pageSize);
     query.where('CAST(application.id AS TEXT) LIKE :searchParam', {
@@ -431,37 +484,44 @@ export class ApplicationSearchService {
 
     const applicationList = await query.getMany();
 
-    result.applications = applicationList.map((app) => ({
-      id: app.id.toString(),
-      siteId: app.siteId?.toString() || '',
-      siteAddress: app.site?.address || '',
-      applicationType: app.appType?.description || '',
-      lastUpdated: app.updatedDateTime.toISOString(),
-      status: app.appStatuses?.find((s) => s.isCurrent)?.statusType?.abbrev || '',
-      staffAssigned: app.appParticipants
-        .filter(
-          (participant) =>
-            participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
-            participant.participantRole?.abbrev === StaffRoles.MENTOR ||
-            participant.participantRole?.abbrev === StaffRoles.SDM,
-        )
-        .map((participant) => participant.person),
-      priority: app.appPriorities?.[0]?.priority?.abbrev || '',
-      url: app.id.toString(),
-      siteRiskClassification: this.extractStringValue(
-        app.applicationSpecificData?.['siteRiskClassification'],
-      ),
-      csapReference: this.extractStringValue(
-        app.applicationSpecificData?.['csapReference'],
-      ),
-      serviceType: this.extractStringValue(
-        app.applicationSpecificData?.['serviceType'],
-        true,
-      ),
-      commonName: app.site?.commonName || '',
-      receivedDate: app.receivedDate || null,
-      dateCompleted: app.endDate || null,
-    }));
+    result.applications = applicationList.map((app) => {
+      const currentStatus = app.appStatuses?.find((s) => s.isCurrent);
+      return {
+        id: app.id.toString(),
+        siteId: app.siteId?.toString() || '',
+        siteAddress: app.site?.address || '',
+        applicationType: app.appType?.description || '',
+        lastUpdated: app.updatedDateTime.toISOString(),
+        status: currentStatus?.statusType?.abbrev || '',
+        isResubmitted: this.isResubmittedAfterMoreInfoRequest(
+          currentStatus,
+          app.applicationSubmissions,
+        ),
+        staffAssigned: app.appParticipants
+          .filter(
+            (participant) =>
+              participant.participantRole?.abbrev === StaffRoles.CASE_WORKER ||
+              participant.participantRole?.abbrev === StaffRoles.MENTOR ||
+              participant.participantRole?.abbrev === StaffRoles.SDM,
+          )
+          .map((participant) => participant.person),
+        priority: app.appPriorities?.[0]?.priority?.abbrev || '',
+        url: app.id.toString(),
+        siteRiskClassification: this.extractStringValue(
+          app.applicationSpecificData?.['siteRiskClassification'],
+        ),
+        csapReference: this.extractStringValue(
+          app.applicationSpecificData?.['csapReference'],
+        ),
+        serviceType: this.extractStringValue(
+          app.applicationSpecificData?.['serviceType'],
+          true,
+        ),
+        commonName: app.site?.commonName || '',
+        receivedDate: app.receivedDate || null,
+        dateCompleted: app.endDate || null,
+      };
+    });
 
     this.loggerService.log(
       `ApplicationSearchService.searchApplicationsById: ${result.applications.length} applications found.`,

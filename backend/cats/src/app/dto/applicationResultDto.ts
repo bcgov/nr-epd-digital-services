@@ -34,6 +34,13 @@ export class ApplicationResultDto {
   @Field()
   status: string;
 
+  /**
+   * True when current status is PEND (more info) and the CHEFS submission
+   * was updated after that status was set — i.e. proponent recalled/resubmitted.
+   */
+  @Field(() => Boolean)
+  isResubmitted: boolean;
+
   @Field(() => [ApplicationResultPersonDto])
   staffAssigned: ApplicationResultPersonDto[];
 

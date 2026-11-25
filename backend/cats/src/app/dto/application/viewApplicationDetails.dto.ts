@@ -73,4 +73,11 @@ export class ViewApplicationDetails {
 
   @Field(() => [Int], { nullable: true })
   secondaryServiceTypeIds: number[];
+
+  /**
+   * True when WITHDRAWN (rejection) appears anywhere in status history.
+   * Used to allow reject only once in the UI.
+   */
+  @Field(() => Boolean, { defaultValue: false })
+  hasBeenWithdrawn: boolean;
 }
