@@ -137,15 +137,6 @@ export type ApplicationNotesResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type ApplicationResponse = {
-  __typename?: 'ApplicationResponse';
-  data?: Maybe<Array<ViewApplication>>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
-
 export type ApplicationResultDto = {
   __typename?: 'ApplicationResultDto';
   applicationType: Scalars['String']['output'];
@@ -199,25 +190,6 @@ export enum ApplicationSortByField {
   SiteId = 'SITE_ID',
   Status = 'STATUS'
 }
-
-export type ApplicationStatusDto = {
-  applicationId: Scalars['Float']['input'];
-  formId: Scalars['String']['input'];
-  formsflowAppId: Scalars['Float']['input'];
-  id?: InputMaybe<Scalars['Float']['input']>;
-  isCurrent: Scalars['Boolean']['input'];
-  statusTypeAbbrev: Scalars['String']['input'];
-  submissionId: Scalars['String']['input'];
-};
-
-export type ApplicationStatusResponse = {
-  __typename?: 'ApplicationStatusResponse';
-  data?: Maybe<Array<ViewApplicationStatus>>;
-  httpStatusCode?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-  timestamp?: Maybe<Scalars['String']['output']>;
-};
 
 export type ApplicationSubmissionDto = {
   __typename?: 'ApplicationSubmissionDto';
@@ -313,14 +285,6 @@ export type CreateAppParticipantsResponse = {
   message?: Maybe<Scalars['String']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type CreateApplication = {
-  appTypeAbbrev: Scalars['String']['input'];
-  applicationSpecificData?: InputMaybe<Scalars['String']['input']>;
-  applicationStatus: Array<ApplicationStatusDto>;
-  receivedDate: Scalars['DateTime']['input'];
-  siteIds: Array<Scalars['Float']['input']>;
 };
 
 export type CreateInvoice = {
@@ -580,7 +544,6 @@ export type Mutation = {
   __typename?: 'Mutation';
   addHousingToApplication: ApplicationHousingResponse;
   createAppParticipant: CreateAppParticipantsResponse;
-  createApplication: ApplicationResponse;
   createApplicationNote: ApplicationNotesResponse;
   createBucket: ComsResponse;
   createInvoice: InvoiceResponse;
@@ -602,7 +565,6 @@ export type Mutation = {
   updateApplicationNote: ApplicationNotesResponse;
   updateApplicationServiceType: BaseHttpResponse;
   updateApplicationStatus: BaseHttpResponse;
-  updateFormsflowAppId: ApplicationStatusResponse;
   updateInvoice: InvoiceResponse;
   updatePerson: PersonResponse;
   updatePersonNote: PersonNoteResponse;
@@ -619,11 +581,6 @@ export type MutationAddHousingToApplicationArgs = {
 
 export type MutationCreateAppParticipantArgs = {
   newAppParticipant: CreateAppParticipantDto;
-};
-
-
-export type MutationCreateApplicationArgs = {
-  application: CreateApplication;
 };
 
 
@@ -739,11 +696,6 @@ export type MutationUpdateApplicationServiceTypeArgs = {
 export type MutationUpdateApplicationStatusArgs = {
   applicationId: Scalars['Int']['input'];
   statusTypeId: Scalars['Int']['input'];
-};
-
-
-export type MutationUpdateFormsflowAppIdArgs = {
-  appStatusInput: UpdateApplicationStatusDto;
 };
 
 
@@ -1290,14 +1242,6 @@ export type UpdateAppParticipantsResponse = {
   timestamp?: Maybe<Scalars['String']['output']>;
 };
 
-export type UpdateApplicationStatusDto = {
-  formId: Scalars['String']['input'];
-  formsflowAppId: Scalars['Float']['input'];
-  siteIds?: InputMaybe<Array<Scalars['Float']['input']>>;
-  statusTypeAbbrev: Scalars['String']['input'];
-  submissionId: Scalars['String']['input'];
-};
-
 export type UpdateHousingInputDto = {
   applicationHousingId: Scalars['Int']['input'];
   effectiveDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -1471,11 +1415,6 @@ export type ViewApplicationResponse = {
   pageSize?: Maybe<Scalars['Float']['output']>;
   success?: Maybe<Scalars['Boolean']['output']>;
   timestamp?: Maybe<Scalars['String']['output']>;
-};
-
-export type ViewApplicationStatus = {
-  __typename?: 'ViewApplicationStatus';
-  formsflowAppId: Scalars['Float']['output'];
 };
 
 export type ViewApplications = {

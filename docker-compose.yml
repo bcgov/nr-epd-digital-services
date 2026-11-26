@@ -82,33 +82,6 @@ services:
       retries: 3
       start_period: 40s
 
-  applications:
-    networks:
-      - app-tier
-    build:
-      context: backend/applications
-      dockerfile: ./local.Dockerfile
-    container_name: applications
-    hostname: applications
-    depends_on:
-      database:
-        condition: service_healthy
-    links:
-      - database
-    ports:
-      - "4006:4006"
-    expose:
-      - 4006
-    volumes:
-      - ./backend/applications:/app:z
-      - /app/node_modules
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:4006" ]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   site-database:
     image: postgres/postgis-debezium:15
     user: postgres

@@ -34,27 +34,16 @@ There are two parallel approaches currently co-existing:
 - Helm deployment is executed from GitHub Actions workflows (`pr-open.yml`, `merge-dev.yml`, `deploy-prod.yml`) through reusable deploy workflows.
 - PR -> ephemeral release, then promotion to test/prod through workflow triggers.
 
-### 2) FormsFlowAI-aligned integration approach
-- Runtime auth and identity integration uses `forms-flow-ai` Keycloak realm conventions in `charts/app/values*.yaml`.
-- Frontend runtime config points to platform services aligned with that ecosystem (Keycloak/COMS endpoints).
-- FormsFlowAI services are initially deployed manually with Helm (outside the always-on Site API GitHub Actions deploy path), then co-exist with Site API runtime integration.
+### 2) Keycloak realm name
+- CATS login still uses the Keycloak realm `forms-flow-ai` in `charts/app/values*.yaml`. Leave that realm, its clients, and its group names in place.
+- Form intake is CHEFS. Formsflow source, Helm charts, and image-build workflows have been removed from this repo.
 
 
 
 ## Image Streams and Tagging
-Image delivery follows two patterns aligned with the two co-existing architectures.
+Image delivery for the Site API and CATS follows the NR quickstart pattern.
 
-### 1) FormsFlowAI pattern (OpenShift BuildConfig + ImageStream tags)
-- Builds run in the `*-tools` project using OpenShift builds (`oc start-build <app>-build`).
-- Build output lands in the tools namespace `ImageStream` as `:latest`.
-- Promotion is done by tagging ImageStreamTags (`oc tag`), typically across `:dev`, `:test`, and `:prod`.
-- Runtime environments consume those promoted IST tags instead of pulling directly from GHCR at deploy time.
-
-Repo examples:
-- `cd-forms-flow-*.yaml` workflows: build in tools and tag `:latest` -> env tag.
-- `cd-openshift-test.yaml`: promotes microfrontend tags (for example `:dev` -> `:test`) in tools.
-
-### 2) NR quickstart pattern (GitHub build -> GHCR -> Helm deploy)
+### NR quickstart pattern (GitHub build -> GHCR -> Helm deploy)
 - Builds run in GitHub Actions (`action-builder-ghcr` or this repo's reusable `_build.yml`).
 - Images are pushed to GHCR (`ghcr.io/<org>/<repo>/<package>:<tag>`).
 - Deployment is direct to target namespaces via Helm (`helm upgrade --install` in `.deployer.yml`).
@@ -68,24 +57,10 @@ deployment policy:
 
 ```mermaid
 flowchart LR
-  subgraph F[FormsFlowAI ImageStream Promotion]
-    F1[Git push dev/main] --> F2[GitHub Action logs into OpenShift]
-    F2 --> F3[BuildConfig build in tools]
-    F3 --> F4[ImageStream app:latest in tools]
-    F4 --> F5[oc tag app:latest -> app:dev]
-    F5 --> F6[oc tag app:dev -> app:test]
-    F6 --> F7[oc tag app:test -> app:prod]
-    F5 --> F8[Deployments consume app:dev]
-    F6 --> F9[Deployments consume app:test]
-    F7 --> F10[Deployments consume app:prod]
-  end
-
-  subgraph Q[NR Quickstart GHCR + Helm]
-    Q1[Git push or PR] --> Q2[action-builder-ghcr or _build.yml]
-    Q2 --> Q3[Push image to ghcr.io]
-    Q3 --> Q4[.deployer.yml helm upgrade --install]
-    Q4 --> Q5[Direct deploy to dev/test/tools/prod namespace]
-  end
+  Q1[Git push or PR] --> Q2[action-builder-ghcr or _build.yml]
+  Q2 --> Q3[Push image to ghcr.io]
+  Q3 --> Q4[.deployer.yml helm upgrade --install]
+  Q4 --> Q5[Direct deploy to dev/test/tools/prod namespace]
 ```
 
 ## Environment and Promotion Flow
@@ -134,8 +109,8 @@ Primary path:
 - Deploy workflows pass secret values into Helm (`--set-string` and values files).
 - Helm renders Kubernetes/OpenShift `Secret`, `ConfigMap`, and workload env/mounts.
 
-FormsFlowAI runtime config:
-- Frontend runtime environment values (not secrets!) are emitted into `config.js` by the frontend ConfigMap template.
+Frontend runtime config:
+- Frontend runtime environment values (not secrets) are emitted into `config.js` by the frontend ConfigMap template. CHEFS is `VITE_CHEFS_APP_URL`. Auth URLs still use the `forms-flow-ai` Keycloak realm.
 
 Key file map:
 | Step | File | Why it matters |
@@ -179,8 +154,9 @@ Note: Already cleaned up dev namespace a lot, just left some unsure resources.
 
 ### e38158-test
 
-Investigate before deletion:
-- Some old database instances exist and can likely be deleted, current source of truth is `forms-flow-ai-postgresql`, with old ones being `patroni-standalone`, and `postgres-crunchy-*`. To change, simply change `DATABASE_SERVICE_NAME` in https://console.apps.silver.devops.gov.bc.ca/k8s/ns/e38158-test/configmaps/forms-flow-ai and then restart all servivces.
+Hold, do not delete yet:
+- `forms-flow-ai-postgresql` and its pgpool restarter. Formsflow is gone from this repo, and CATS did not store the form answers. Product still has to say whether any production submissions must be kept before that database, the `epd-backend-applications` database, or `openshift/pgpool-cronjob/cronjob.yaml` is removed.
+- Older `patroni-standalone` and `postgres-crunchy-*` instances may be unused. Confirm they are not the Formsflow database above before deleting them.
 
 ### e38158-prod
 High-confidence candidates for deletion:
@@ -205,8 +181,7 @@ Deletion sequencing recommendation:
 |---|---|---|---|---|
 | Site API runtime (`nr-epd-digital-services-*`) | GitHub Actions -> Helm | Active, with some drift and unhealthy preview backends | Active | Active |
 | Legacy EPD stack (`epd-*`) | Legacy/manual/history | Mixed: some active, some failed/zero-scaled | Mixed | Mixed, many zero-scaled DeploymentConfigs |
-| FormsFlowAI core (`forms-flow-*`, `forms-flow-ai-*`) | Manual Helm bootstrap, with GitHub Actions to deploy new images | Active | Active | Active |
-| Database planes (Crunchy, Patroni, FormsFlow Postgres) | Mixed operators/charts | Multiple DB stacks present | Multiple DB stacks present | Multiple DB stacks present |
+| Database planes (Crunchy, Patroni, `forms-flow-ai-postgresql`) | Mixed operators/charts | Multiple DB stacks present. Do not drop `forms-flow-ai-postgresql` until the Formsflow submission question is answered. | Same hold | Same hold |
 
 
 

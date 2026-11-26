@@ -33,7 +33,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set ENV variables
         id: set-variable
-        # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
         run: |
           if [ '${{ github.ref_name }}' == 'dev' ]; then
             echo "For ${{ github.ref_name }} branch"

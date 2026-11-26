@@ -247,7 +247,6 @@ export class FormIntakeService {
           isCurrent: true,
           formId: chefsFormId,
           submissionId: chefsSubmissionId,
-          formsflowAppId: 0,
         },
       ],
     });

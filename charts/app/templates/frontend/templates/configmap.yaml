@@ -26,9 +26,6 @@ data:
   VITE_SITE_REGISTRAR_USER_ROLE: {{ .Values.frontend.config.VITE_SITE_REGISTRAR_USER_ROLE | quote }}
   VITE_INTERNAL_USER_ROLE: {{ .Values.frontend.config.VITE_INTERNAL_USER_ROLE | quote }}
   VITE_SITE_REGISTRY_URL: {{ .Values.frontend.config.VITE_SITE_REGISTRY_URL | quote }}
-  VITE_FORM_API: {{ .Values.frontend.config.VITE_FORM_API | quote }}
-  VITE_FORM_BACKEND_API: {{ .Values.frontend.config.VITE_FORM_BACKEND_API | quote }}
-  VITE_FORM_FLOW_API: {{ .Values.frontend.config.VITE_FORM_FLOW_API | quote }}
   VITE_CATS_CSSA_MANAGER_ROLE: {{ .Values.frontend.config.VITE_CATS_CSSA_MANAGER_ROLE | quote }}
  
 
@@ -44,9 +41,6 @@ data:
       \"VITE_SITE_REGISTRAR_USER_ROLE\": \"{{ .Values.frontend.config.VITE_SITE_REGISTRAR_USER_ROLE }}\",\n    
       \"VITE_INTERNAL_USER_ROLE\": \"{{ .Values.frontend.config.VITE_INTERNAL_USER_ROLE }}\",\n   
       \"VITE_SITE_REGISTRY_URL\": \"{{ .Values.frontend.config.VITE_SITE_REGISTRY_URL }}\",\n   
-      \"VITE_FORM_API\": \"{{ .Values.frontend.config.VITE_FORM_API }}\",\n   
-      \"VITE_FORM_BACKEND_API\": \"{{ .Values.frontend.config.VITE_FORM_BACKEND_API }}\",\n   
-      \"VITE_FORM_FLOW_API\": \"{{ .Values.frontend.config.VITE_FORM_FLOW_API }}\",\n    
       \"VITE_CATS_CSSA_MANAGER_ROLE\": \"{{ .Values.frontend.config.VITE_CATS_CSSA_MANAGER_ROLE }}\",\n
       }"
 {{- end }}

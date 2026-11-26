@@ -11,7 +11,6 @@ import { UserTypeEum } from '../../utilities/enums/userType';
 import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
-import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 import { ApplicationSite } from '../../entities/applicationSite.entity';
 import { ApplicationSecondaryServiceType } from '../../entities/applicationSecondaryServiceType.entity';
 import { ChesEmailService } from '../email/chesEmail.service';
@@ -303,7 +302,6 @@ describe('ApplicationService', () => {
         applicationStatus: [
           {
             statusTypeAbbrev: 'New',
-            formsflowAppId: 1234,
             isCurrent: true,
             applicationId: 0,
             formId: '67e70d854d238fa5ddcfc3b0',
@@ -359,184 +357,6 @@ describe('ApplicationService', () => {
       expect(applicationSiteRepositoryMock.save).toHaveBeenCalledTimes(1);
 
       expect(result).toEqual({ id: 1 });
-    });
-  });
-
-  describe('updateFormsflowAppId', () => {
-    it('should update formsflowAppId when matching AppStatus is found', async () => {
-      const input: UpdateApplicationStatusDto = {
-        formId: 'form-123',
-        submissionId: 'sub-456',
-        formsflowAppId: 9999,
-        statusTypeAbbrev: 'Accepted',
-      };
-
-      const mockAppStatus = {
-        id: 101,
-        formId: input.formId,
-        submissionId: input.submissionId,
-        formsflowAppId: null,
-        updatedBy: null,
-        updatedDateTime: null,
-        isCurrent: false,
-      };
-
-      // Mock findOne to return existing app status
-      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
-        if (
-          where.formId === input.formId &&
-          where.submissionId === input.submissionId
-        ) {
-          return Promise.resolve(mockAppStatus);
-        }
-        return Promise.resolve(undefined);
-      });
-
-      appStatusRepositoryMock.save.mockResolvedValue({
-        ...mockAppStatus,
-        formsflowAppId: input.formsflowAppId,
-        updatedBy: 'SYSTEM',
-        updatedDateTime: expect.any(Date),
-        isCurrent: true,
-      });
-
-      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
-        update: () => ({
-          set: () => ({
-            where: () => ({
-              andWhere: () => ({
-                execute: jest.fn().mockResolvedValue({ affected: 1 }),
-              }),
-            }),
-          }),
-        }),
-      });
-
-      const result = await applicationService.updateFormsflowAppId(input);
-
-      expect(appStatusRepositoryMock.findOne).toHaveBeenCalledWith({
-        where: { formId: input.formId, submissionId: input.submissionId },
-      });
-
-      expect(appStatusRepositoryMock.save).toHaveBeenCalledWith(
-        expect.objectContaining({
-          formsflowAppId: input.formsflowAppId,
-          updatedBy: 'SYSTEM',
-          isCurrent: true,
-        }),
-      );
-
-      expect(result).toEqual({
-        success: true,
-        message: `Updated successfully for id=${mockAppStatus.id}`,
-        formsflowAppId: input.formsflowAppId,
-      });
-    });
-
-    it('should create new AppStatus if no matching entry found', async () => {
-      const input: UpdateApplicationStatusDto = {
-        formId: 'form-999',
-        submissionId: 'sub-888',
-        formsflowAppId: 1234,
-        statusTypeAbbrev: 'Accepted',
-      };
-
-      const mockStatusType = { id: 7 };
-      const existingAppStatus = { applicationId: 555 };
-
-      appStatusRepositoryMock.findOne.mockImplementation(({ where }) => {
-        if (where.formsflowAppId === input.formsflowAppId) {
-          return Promise.resolve(existingAppStatus);
-        }
-        return Promise.resolve(undefined);
-      });
-
-      (
-        statusTypeServiceMock.getStatusTypeByAbbrev as jest.Mock
-      ).mockResolvedValue({ id: 1 });
-
-      appStatusRepositoryMock.create.mockImplementation((data) => data);
-
-      appStatusRepositoryMock.save.mockResolvedValue({
-        id: 789,
-        ...input,
-        statusTypeId: mockStatusType.id,
-        applicationId: existingAppStatus.applicationId,
-        createdBy: 'SYSTEM',
-        updatedBy: 'SYSTEM',
-        isCurrent: true,
-      });
-
-      appStatusRepositoryMock.createQueryBuilder.mockReturnValue({
-        update: () => ({
-          set: () => ({
-            where: () => ({
-              andWhere: () => ({
-                execute: jest.fn().mockResolvedValue({ affected: 1 }),
-              }),
-            }),
-          }),
-        }),
-      });
-
-      const result = await applicationService.updateFormsflowAppId(input);
-
-      expect(statusTypeService.getStatusTypeByAbbrev).toHaveBeenCalledWith(
-        'Accepted',
-      );
-      expect(appStatusRepositoryMock.save).toHaveBeenCalled();
-      expect(result).toEqual({
-        success: true,
-        message: 'Updated successfully for id=789',
-        formsflowAppId: input.formsflowAppId,
-      });
-    });
-
-    it('should throw 404 if AppStatus not found', async () => {
-      const input: UpdateApplicationStatusDto = {
-        formId: 'missing-form',
-        submissionId: 'missing-sub',
-        formsflowAppId: 8888,
-        statusTypeAbbrev: 'Accepted',
-      };
-
-      appStatusRepositoryMock.findOne.mockResolvedValue(null);
-
-      await expect(
-        applicationService.updateFormsflowAppId(input),
-      ).rejects.toThrow(
-        new HttpException(
-          'Failed to update  Formsflow App ID',
-          HttpStatus.NOT_FOUND,
-        ),
-      );
-    });
-
-    it('should handle internal exceptions and throw HttpException with BAD_REQUEST', async () => {
-      const input: UpdateApplicationStatusDto = {
-        formId: 'form-crash',
-        submissionId: 'sub-crash',
-        formsflowAppId: 7777,
-        statusTypeAbbrev: 'Accepted',
-      };
-
-      appStatusRepositoryMock.findOne.mockRejectedValue(
-        new Error('DB is down'),
-      );
-
-      await expect(
-        applicationService.updateFormsflowAppId(input),
-      ).rejects.toThrow(
-        new HttpException(
-          'Failed to update  Formsflow App ID',
-          HttpStatus.BAD_REQUEST,
-        ),
-      );
-
-      expect(loggerService.error).toHaveBeenCalledWith(
-        'Exception occurred in ApplicationService.updateFormsflowAppId()',
-        expect.any(String),
-      );
     });
   });
 

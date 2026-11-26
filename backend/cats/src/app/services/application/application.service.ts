@@ -12,7 +12,6 @@ import { AppTypeService } from '../appType/appType.service';
 import { DashboardService } from '../dashboard/dashboard.service';
 import { AppStatus } from '../../entities/appStatus.entity';
 import { StatusTypeService } from '../statusType/statusType.service';
-import { UpdateApplicationStatusDto } from '../../dto/application/updateApplicationStatus.dto';
 import { ApplicationSite } from '../../entities/applicationSite.entity';
 import { ApplicationSecondaryServiceType } from '../../entities/applicationSecondaryServiceType.entity';
 import { ChesEmailService } from '../email/chesEmail.service';
@@ -40,7 +39,7 @@ export class ApplicationService {
     private readonly applicationSubmissionService: ApplicationSubmissionService,
   ) {}
 
-  // this method will be called from formsflow when an application is submitted
+  // Called by CHEFS form intake when a submission is processed.
   async createApplication(createApplication: CreateApplication) {
     this.loggerService.log('ApplicationService.createApplication() start'); // Log the start of the method
 
@@ -163,7 +162,7 @@ export class ApplicationService {
   }
 
   /**
-   * Sync primary site_id + application_site rows from CHEFS (or FormsFlow) site IDs.
+   * Sync primary site_id + application_site rows from CHEFS site IDs.
    * Empty siteIds clears the linked site so All Applications matches the form.
    */
   async syncApplicationSites(
@@ -199,109 +198,6 @@ export class ApplicationService {
     );
 
     await this.applicationSiteRepository.save(applicationSites);
-  }
-
-  // this method will be called from formsflow after an application is submitted to update the formsflow app id
-  async updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto) {
-    this.loggerService.log('ApplicationService.updateFormsflowAppId() start'); // Log the start of the method
-
-    try {
-      const {
-        formId,
-        submissionId,
-        formsflowAppId,
-        statusTypeAbbrev,
-        siteIds,
-      } = appStatusInput;
-
-      let appStatus = await this.appStatusRepository.findOne({
-        where: { formId, submissionId },
-      });
-
-      this.loggerService
-        .log(`App Status successfully with formId: ${formId}, submissionId: ${submissionId}, 
-        formsflowAppId: ${formsflowAppId}, statusTypeAbbrev: ${statusTypeAbbrev}, siteIds: ${siteIds}  `);
-
-      const statusType = await this.statusTypeService.getStatusTypeByAbbrev(
-        statusTypeAbbrev,
-      );
-      let applicationId: number;
-
-      if (!appStatus) {
-        const existingAppStatus = await this.appStatusRepository.findOne({
-          where: { formsflowAppId },
-        });
-
-        applicationId = existingAppStatus?.applicationId;
-
-        appStatus = this.appStatusRepository.create({
-          applicationId,
-          formId,
-          submissionId,
-          formsflowAppId,
-          statusTypeId: statusType.id,
-          isCurrent: true,
-          rowVersionCount: 1,
-          ts: Buffer.from(new Date().toISOString()),
-          createdBy: 'SYSTEM',
-          createdDateTime: new Date(),
-          updatedBy: 'SYSTEM',
-          updatedDateTime: new Date(),
-        });
-
-        appStatus = await this.appStatusRepository.save(appStatus);
-      } else {
-        appStatus.formsflowAppId = formsflowAppId;
-        appStatus.updatedBy = 'SYSTEM';
-        appStatus.updatedDateTime = new Date();
-        appStatus.isCurrent = true;
-        appStatus.statusTypeId = statusType.id;
-
-        await this.appStatusRepository.save(appStatus);
-        applicationId = appStatus.applicationId;
-      }
-
-      // Set isCurrent as false for all other entries with the same formsflowAppId but different formId/submissionId
-      await this.appStatusRepository
-        .createQueryBuilder()
-        .update()
-        .set({ isCurrent: false })
-        .where('formsflowAppId = :formsflowAppId', { formsflowAppId })
-        .andWhere('NOT (formId = :formId AND submissionId = :submissionId)', {
-          formId,
-          submissionId,
-        })
-        .execute();
-
-      // Preserve FormsFlow behaviour: only sync when site IDs are present
-      if (applicationId && siteIds?.length > 0) {
-        await this.syncApplicationSites(applicationId, siteIds, 'SYSTEM');
-      }
-
-      // Log success
-      this.loggerService.log(
-        `App Status successfully with Formsflow App ID: ${formsflowAppId}`,
-      );
-
-      return {
-        success: true,
-        message: `Updated successfully for id=${appStatus.id}`,
-        formsflowAppId: formsflowAppId,
-      };
-    } catch (err) {
-      // Log the error with the exception details
-      this.loggerService.error(
-        'Exception occurred in ApplicationService.updateFormsflowAppId()',
-        JSON.stringify(err),
-      );
-      throw new HttpException(
-        'Failed to update  Formsflow App ID',
-        HttpStatus.BAD_REQUEST,
-      );
-    } finally {
-      // Log the end of the method
-      this.loggerService.log('ApplicationService.updateFormsflowAppId() end');
-    }
   }
 
   async findApplicationDetailsById(
