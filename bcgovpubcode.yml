@@ -16,7 +16,6 @@ product_external_dependencies:
     - BCGov-SSO-Keycloak
   notification_standard:
     - Common-Hosted-Email-Service
-  other_dependencies: FormsFlow AI Premium Standard
 product_information:
   api_specifications: []
   business_capabilities_standard:
@@ -61,7 +60,6 @@ product_technology_information:
       version: 4.8.4
   hosting_platforms:
     - Private-Cloud-Openshift
-  other_tools: FormsFlow AI Premium Standard (5.2.0)
   spatial_mapping_technologies:
     - Leaflet
 version: 1

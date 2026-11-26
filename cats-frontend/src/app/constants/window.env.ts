@@ -11,7 +11,7 @@ export {};
  * Also see: `charts/app/templates/frontend/templates/configmap.yaml`
  *
  * example:
- *    const FORM_API: string = import.meta.env.VITE_FORM_API || window._env_.VITE_FORM_API;
+ *    const BACKEND_API: string = import.meta.env.VITE_BACKEND_API || window._env_.VITE_BACKEND_API;
  */
 declare global {
   interface Window {
@@ -23,9 +23,6 @@ declare global {
       VITE_AUTH_RESPONSE_TYPE: string;
       VITE_AUTH_SCOPE: string;
       VITE_AUTH_FILTER_PROTOCOL_CLAIMS: string;
-      VITE_FORM_API: string;
-      VITE_FORM_BACKEND_API: string;
-      VITE_FORM_FLOW_API: string;
       VITE_GEOCODER_API: string;
       VITE_BACKEND_API: string;
       VITE_BCBOX_APP_URL: string;

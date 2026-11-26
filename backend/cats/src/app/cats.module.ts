@@ -61,7 +61,6 @@ import { PersonNoteResolver } from './resolvers/note/personNote.resolver';
 import { PersonNoteService } from './services/note/personNote.service';
 import { ApplicationHousingService } from './services/application/applicationHousing.service';
 import { ApplicationHousingResolver } from './resolvers/application/applicationHousing.resolver';
-import { ApplicationResolver } from './resolvers/application/application.resolver';
 import { ApplicationService } from './services/application/application.service';
 import { ApplicationSiteLinkResolver } from './resolvers/application/applicationSiteLink.resolver';
 import { ApplicationSiteLinkService } from './services/application/applicationSiteLink.service';
@@ -207,7 +206,6 @@ import { ChefsWebhookController } from './controllers/chefsWebhook.controller';
     LoggerService,
     ApplicationHousingResolver,
     ApplicationHousingService,
-    ApplicationResolver,
     ApplicationService,
     ApplicationSiteLinkResolver,
     ApplicationSiteLinkService,

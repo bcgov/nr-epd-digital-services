@@ -280,10 +280,6 @@ type ApplicationHousingResponse {
   data: [ApplicationHousingDto!]!
 }
 
-type ViewApplication {
-  id: Float!
-}
-
 type DetailField {
   id: Float!
   abbrev: String!
@@ -314,32 +310,12 @@ type ViewApplicationDetails {
   hasBeenWithdrawn: Boolean!
 }
 
-type ApplicationResponse {
-  message: String
-  httpStatusCode: Int
-  success: Boolean
-  timestamp: String
-  data: [ViewApplication!]
-}
-
 type ApplicationDetailsResponse {
   message: String
   httpStatusCode: Int
   success: Boolean
   timestamp: String
   data: ViewApplicationDetails
-}
-
-type ViewApplicationStatus {
-  formsflowAppId: Float!
-}
-
-type ApplicationStatusResponse {
-  message: String
-  httpStatusCode: Int
-  success: Boolean
-  timestamp: String
-  data: [ViewApplicationStatus!]
 }
 
 type LinkedApplicationSiteDto {
@@ -947,8 +923,6 @@ type Mutation {
   deletePersonNote(notes: [DeletePersonNote!]!): PersonNoteResponse!
   addHousingToApplication(input: AddHousingInputDto!): ApplicationHousingResponse!
   updateApplicationHousing(input: UpdateHousingInputDto!): ApplicationHousingResponse!
-  createApplication(application: CreateApplication!): ApplicationResponse!
-  updateFormsflowAppId(appStatusInput: UpdateApplicationStatusDto!): ApplicationStatusResponse!
   linkApplicationSiteId(applicationId: Int!, siteId: String): LinkApplicationSiteIdResponse!
   pushSiteDisclosure(applicationId: Int!): PushSiteDisclosureResponse!
   updateApplicationStatus(applicationId: Int!, statusTypeId: Int!, comment: String): BaseHttpResponse!
@@ -1072,32 +1046,6 @@ input UpdateHousingInputDto {
   isSocial: Boolean
   isIndigenousLed: Boolean
   relatedApplicationIds: [Int!]
-}
-
-input CreateApplication {
-  siteIds: [Float!]!
-  appTypeAbbrev: String!
-  receivedDate: DateTime!
-  applicationStatus: [ApplicationStatusDto!]!
-  applicationSpecificData: String
-}
-
-input ApplicationStatusDto {
-  id: Float
-  applicationId: Float!
-  statusTypeAbbrev: String!
-  isCurrent: Boolean!
-  formId: String!
-  submissionId: String!
-  formsflowAppId: Float!
-}
-
-input UpdateApplicationStatusDto {
-  statusTypeAbbrev: String!
-  formId: String!
-  submissionId: String!
-  formsflowAppId: Float!
-  siteIds: [Float!]
 }
 
 input CreateInvoice {

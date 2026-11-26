@@ -8,7 +8,6 @@ on:
        - 'ss-79' #test
     paths:
       - 'backend/**'
-      - 'frontend/**'
       - '.github/workflows/ci-cd-openshift-tools.yaml'      
 
 concurrency:
@@ -25,16 +24,12 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [ backend/applications, backend/gateway, backend/cats, frontend ]
+        component: [ backend/gateway, backend/cats ]
         include:
-          - component: backend/applications
-            triggers: ('backend/applications/')
           - component: backend/gateway
             triggers: ('backend/gateway/')
           - component: backend/cats
             triggers:  ('backend/cats/')
-          - component: frontend
-            triggers: ('frontend/')
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -52,7 +47,7 @@ jobs:
     uses: ./.github/workflows/_code-cov.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/cats, frontend]
+        component: [backend/gateway, backend/cats]
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
@@ -69,16 +64,12 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [backend/applications, backend/gateway, backend/cats, database, frontend]
+        component: [backend/gateway, backend/cats, database]
         include:
           - component: database
             overwrite: false
             template_file: .github/openshift/deploy.database.yml
             template_vars: -p DB_PVC_SIZE=100Mi
-          - component: backend/applications
-            overwrite: true
-            template_file: .github/openshift/deploy.backend-applications.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/backend/applications -p CONTAINER_PORT=4006 -p ENV=tools -p IMAGE_TAG=tools
           - component: backend/gateway
             overwrite: true
             template_file: .github/openshift/deploy.backend-gateway.yml
@@ -87,10 +78,6 @@ jobs:
             overwrite: true
             template_file: .github/openshift/deploy.backend-cats.yml
             template_vars: -p PROMOTE=${{ github.repository }}/backend/cats -p CONTAINER_PORT=4005 -p ENV=tools -p IMAGE_TAG=tools
-          - component: frontend
-            overwrite: true
-            template_file: .github/openshift/deploy.frontend.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/frontend -p CONTAINER_PORT=8080 -p ENV=tools -p IMAGE_TAG=tools
     secrets:
       oc_namespace: ${{ secrets.OC_NAMESPACE }}
       oc_server: ${{ secrets.OC_SERVER }}
